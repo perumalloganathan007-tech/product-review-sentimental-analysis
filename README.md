@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Product Review Sentiment Analysis using NLP (Scala)
 
 A comprehensive web application for analyzing product reviews using Natural Language Processing techniques, built with Scala, Play Framework, and Stanford CoreNLP.
@@ -375,3 +376,6 @@ For support and questions:
 **Built with ❤️ using Scala and Play Framework**
  
  
+=======
+# product-review-sentimental-analysis
+>>>>>>> 0b8ed770570b4fd0addcc457404db0f6a14673e1
