@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sentiment Analysis — Main</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="assets/styles.css?v=10.1" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>Sentiment Analysis NLP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dataset" onclick="showSection('dataset')">
+                            <i class="fas fa-database me-1"></i>URLs based Dataset Analysis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#compare" onclick="showSection('compare')">
+                            <i class="fas fa-balance-scale me-1"></i>Compare
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#multi-compare" onclick="showSection('multi-compare')">
+                            <i class="fas fa-layer-group me-1"></i>Multi-Compare
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dataset-product" onclick="showSection('dataset-product')">
+                            <i class="fas fa-chart-pie me-1"></i>Dataset Analysis
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-warning nav-link" onclick="window.open('https://unsummarisable-yamileth-shortsightedly.ngrok-free.dev/jobs/', '_blank')" style="border: none; background-color: transparent; color: #ffc107; font-weight: 500;">
+                            <i class="fas fa-fire me-1"></i>Spark Web UI
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div id="statusIndicator" class="status-indicator">🔵 Checking API...</div>
+            <button id="serverControlBtn" class="btn btn-sm btn-outline-primary" onclick="toggleServer()">
+                <i class="fas fa-server me-1"></i><span id="serverBtnText">Server Control</span>
+            </button>
+        </div>
+
+        <!-- Dataset Analysis Section -->
+        <div id="dataset" class="section mb-5 hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-database"></i> Dataset Category Analysis</h3>
+                    <p class="mb-0 text-muted">Upload a dataset to analyze product categories and get recommendations</p>
+                </div>
+                <div class="card-body">
+                    <form id="datasetAnalysisForm">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="datasetFile" class="form-label">Upload Dataset (CSV/XLSX)</label>
+                                <input type="file" class="form-control" id="datasetFile" accept=".csv,.xlsx,.xls" required>
+                                <div class="form-text">
+                                    <strong>Required column:</strong> 'url' or 'product_url' with Flipkart/Amazon product links
+                                    <br>Example: url, product_name, category (optional columns)
+                                    <br><small class="text-muted">Tip: First 10 products will be scraped for real-time data</small>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-chart-line me-2"></i>Analyze Dataset
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compare Section -->
+        <div id="compare" class="section mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-balance-scale"></i> Advanced Product Comparison</h3>
+                    <p class="mb-0 text-muted">Compare products using URLs or select from predefined categories</p>
+                </div>
+                <div class="card-body">
+                    <form id="compareForm">
+                        <!-- URL Comparison Section -->
+                        <div id="urlComparisonSection" class="comparison-section">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="product1Urls" class="form-label">
+                                        <i class="fas fa-mobile-alt text-primary"></i> Product 1 URLs
+                                        <small class="text-muted">(Real web scraping - Amazon.in or Flipkart only)</small>
+                                    </label>
+
+                                    <textarea class="form-control" id="product1Urls" rows="3"
+                                              placeholder="Enter Amazon.in or Flipkart product URL (e.g., https://www.amazon.in/dp/XXXXXXXXXX)"></textarea>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="product2Urls" class="form-label">
+                                        <i class="fas fa-mobile-alt text-success"></i> Product 2 URLs
+                                        <small class="text-muted">(Real web scraping - Amazon.in or Flipkart only)</small>
+                                    </label>
+
+                                    <textarea class="form-control" id="product2Urls" rows="3"
+                                              placeholder="Enter Amazon.in or Flipkart product URL (e.g., https://www.flipkart.com/product/p/XXXXXXXXXX)"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            <i class="fas fa-balance-scale me-2"></i>Start Comparison
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Compare Section -->
+        <div id="multi-compare" class="section mb-5 hidden">
+            <div class="card">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h3><i class="fas fa-layer-group me-2"></i> Multi-Product Comparison</h3>
+                    <p class="mb-0">Compare multiple products simultaneously with advanced analytics</p>
+                </div>
+                <div class="card-body">
+                    <!-- Quick Actions Bar -->
+                    <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded">
+                        <div>
+                            <span class="text-muted me-3"><i class="fas fa-link me-1"></i><span id="urlCount">1</span> URL(s)</span>
+                            <span class="text-muted"><i class="fas fa-check-circle me-1"></i>Ready to compare</span>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="addUrlInput()" title="Add more URLs">
+                                <i class="fas fa-plus me-1"></i>Add URL
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="pasteFromClipboard()" title="Paste multiple URLs">
+                                <i class="fas fa-clipboard me-1"></i>Paste
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearAllUrls()" title="Clear all URLs">
+                                <i class="fas fa-eraser me-1"></i>Clear All
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- URL Input Container -->
+                    <div id="urlInputContainer">
+                            <!-- Dynamic URL inputs -->
+                            <div id="urlInputsList">
+                                <div class="url-input-group mb-3" data-index="0">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="fas fa-link"></i> <strong class="ms-2">1</strong>
+                                        </span>
+                                        <input type="url" class="form-control url-input"
+                                               placeholder="https://www.flipkart.com/product-url or https://www.amazon.in/product-url"
+                                               onchange="validateUrlInput(this)"
+                                               required>
+                                        <button type="button" class="btn btn-outline-danger" onclick="removeUrlInput(0)" disabled title="Remove this URL">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <small class="form-text text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>Enter Flipkart or Amazon product URL
+                                        </small>
+                                        <small class="url-status text-muted hidden">
+                                            <i class="fas fa-check-circle text-success"></i> Valid URL
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 mb-4">
+                            <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="scrapeMultipleUrls()" id="compareBtn">
+                                <i class="fas fa-rocket me-2"></i>Start Comparison Analysis
+                            </button>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-info w-100" onclick="showUrlHelp()">
+                                        <i class="fas fa-question-circle me-1"></i>URL Help
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-success w-100" onclick="loadSampleUrls()">
+                                        <i class="fas fa-magic me-1"></i>Load Sample
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Info Section -->
+                        <div class="alert alert-info border-info mb-0">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-lightbulb fa-2x text-info"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="alert-heading mb-2"><i class="fas fa-info-circle me-1"></i>How it works</h6>
+                                    <ul class="mb-2 small">
+                                        <li>Add 2 or more product URLs from Flipkart or Amazon</li>
+                                        <li>Click "Start Comparison Analysis" to begin</li>
+                                        <li>View real-time scraping progress and sentiment analysis</li>
+                                        <li>Get comprehensive comparison charts and recommendations</li>
+                                    </ul>
+                                    <div class="text-muted small">
+                                        <i class="fas fa-shield-alt me-1"></i>Secure •
+                                        <i class="fas fa-bolt me-1"></i>Fast •
+                                        <i class="fas fa-chart-line me-1"></i>Detailed Analytics
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dataset Product Analysis Section -->
+        <div id="dataset-product" class="section mb-5 hidden">
+            <div class="card">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h3><i class="fas fa-chart-pie me-2"></i> Analyze Product Dataset</h3>
+                    <p class="mb-0">Upload a CSV dataset to analyze reviews, ratings, and find best products by category</p>
+                </div>
+                <div class="card-body">
+                    <!-- Upload Section -->
+                    <div class="mb-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="datasetProductFile" class="form-label">
+                                    <i class="fas fa-upload me-1"></i><strong>Upload Product Dataset (CSV)</strong>
+                                </label>
+                                <input type="file" class="form-control form-control-lg" id="datasetProductFile" accept=".csv" required>
+                                <div class="form-text mt-2">
+                                    <i class="fas fa-info-circle me-1"></i><strong>Required columns:</strong>
+                                    <code>product_name</code>, <code>category</code>, <code>rating</code>, <code>reviews_count</code>
+                                    <br><small class="text-muted">Optional: price, brand, sentiment_score, positive_reviews, negative_reviews</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label"><strong>Quick Actions</strong></label>
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" onclick="analyzeDatasetProducts()">
+                                        <i class="fas fa-play me-1"></i>Analyze Dataset
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="downloadSampleDataset()">
+                                        <i class="fas fa-download me-1"></i>Download Sample CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Data Preview -->
+                    <div class="alert alert-info border-info">
+                        <h6 class="alert-heading"><i class="fas fa-table me-1"></i>Expected CSV Format:</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered mb-0 bg-white">
+                                <thead>
+                                    <tr>
+                                        <th>product_name</th>
+                                        <th>category</th>
+                                        <th>rating</th>
+                                        <th>reviews_count</th>
+                                        <th>price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>iPhone 15 Pro</td>
+                                        <td>Smartphones</td>
+                                        <td>4.5</td>
+                                        <td>1250</td>
+                                        <td>1,29,900</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Samsung Galaxy S24</td>
+                                        <td>Smartphones</td>
+                                        <td>4.3</td>
+                                        <td>890</td>
+                                        <td>79,999</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Results Container -->
+                    <div id="datasetProductResults" class="dataset-results-hidden">
+                        <hr class="my-4">
+                        <h4 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Analysis Results</h4>
+
+                        <!-- Summary Cards -->
+                        <div id="datasetSummaryCards" class="row mb-4">
+                            <!-- Cards will be inserted here -->
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0"><i class="fas fa-star me-1"></i>Top Rated Products</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="topRatedChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0"><i class="fas fa-comments me-1"></i>Most Reviewed Products</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="mostReviewedChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category Analysis -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-layer-group me-2"></i>Best Products by Category</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="categoryAnalysis">
+                                    <!-- Category tables will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ML Insights Section -->
+                        <div id="mlInsightsSection" class="mt-4">
+                            <!-- ML insights will be inserted here by dataset-analysis.js -->
+                        </div>
+
+                        <!-- Detailed Data Table -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-table me-2"></i>Complete Dataset</h5>
+                                <button class="btn btn-sm btn-success" onclick="exportDatasetResults()">
+                                    <i class="fas fa-file-excel me-1"></i>Export to CSV
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div id="datasetDataTable" class="table-responsive">
+                                    <!-- Data table will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="section mb-5 hidden">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3><i class="fas fa-chart-bar"></i> Analysis Results</h3>
+                    <div class="export-buttons">
+                        <button id="exportPDF" class="btn btn-outline-danger btn-sm" title="Export results as PDF" aria-label="Export results as PDF">
+                            <i class="fas fa-file-pdf me-1"></i>Export PDF
+                        </button>
+                        <button id="exportCSV" class="btn btn-outline-success btn-sm" title="Export results as CSV" aria-label="Export results as CSV">
+                            <i class="fas fa-file-csv me-1"></i>Export CSV
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="resultsContent"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="text-center text-white">
+            <div class="spinner-border mb-3" role="status" aria-label="Loading"></div>
+            <h5 id="loadingText">Processing your request...</h5>
+            <p id="loadingSubtext">This may take a few moments</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">© 2025 Sentiment Analysis NLP Dashboard</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js - Using specific version to ensure compatibility -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Custom Scripts -->
+    <script src="assets/main-app.js?v=20251105-improved-detection"></script>
+    <script src="assets/multi-compare.js?v=20251031-01"></script>
+    <script src="assets/dataset-analysis.js?v=20251031-01"></script>
+</body>
+</html>

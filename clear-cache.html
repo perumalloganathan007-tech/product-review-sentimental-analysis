@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache & Reload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .info {
+            margin: 20px 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Cache Cleared!</h1>
+        <p class="info">Browser cache has been cleared. Click below to load the updated version.</p>
+        <button onclick="goToApp()">Open Sentiment Analysis App</button>
+        <p class="info">Version: 20251023-15</p>
+    </div>
+
+    <script>
+        // Clear all caches
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                names.forEach(function(name) {
+                    caches.delete(name);
+                });
+            });
+        }
+
+        function goToApp() {
+            // Force reload with no cache
+            window.location.href = 'main-app.html?nocache=' + new Date().getTime();
+        }
+
+        // Auto-redirect after 3 seconds
+        setTimeout(() => {
+            goToApp();
+        }, 3000);
+    </script>
+</body>
+</html>

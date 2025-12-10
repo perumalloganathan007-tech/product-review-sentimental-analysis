@@ -1,0 +1,42 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.sql": "mysql",
+            "conf/evolutions/**/*.sql": "mysql"
+        },
+        "sql.dialectName": "mysql",
+        "mssql.enableIntelliSense": false,
+        "mssql.connections": [],
+        "sqltools.connections": [],
+        "[sql]": {
+            "editor.defaultFormatter": "formulahendry.vscode-mysql"
+        },
+        "sql.validate": false,
+        "sql.format.enable": false,
+        "extensions.ignoreRecommendations": true,
+        "workbench.extensions.ignoreRecommendations": [
+            "ms-mssql.mssql",
+            "ms-mssql.sql-database-projects-vscode",
+            "ms-mssql.data-workspace-vscode",
+            "ms-mssql.sql-bindings-vscode"
+        ]
+    },
+    "extensions": {
+        "recommendations": [
+            "formulahendry.vscode-mysql",
+            "mtxr.sqltools",
+            "mtxr.sqltools-driver-mysql"
+        ],
+        "unwantedRecommendations": [
+            "ms-mssql.mssql",
+            "ms-mssql.sql-database-projects-vscode",
+            "ms-mssql.data-workspace-vscode",
+            "ms-mssql.sql-bindings-vscode"
+        ]
+    }
+}

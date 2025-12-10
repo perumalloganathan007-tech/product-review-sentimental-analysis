@@ -1,0 +1,38 @@
+Sentiment Analysis NLP - System Architecture (ASCII)
+
+               +-----------------+                      +-------------------+
+               |   Browser / UI  |                      |  External Websites|
+               | (main-app.html) |                      +-------------------+
+               +--------+--------+                                ^
+                        |                                         |
+                        v                                         |
+               +--------+---------+      REST/API       +-----------+------------+
+               | Play Controllers |<--------------------|  Mock Server (Node)    |
+               +--------+---------+                     |  (Express + Puppeteer) |
+                        |                               +-----------+------------+
+     static assets      |                                         |
+     served from        v                                         |
+     /public/       +--------+---------+                          |
+                   |     Services      |--------------------------+
+                   +--------+---------+    submit jobs / read
+                            |             files / models
+                            v
+                   +--------+---------+
+                   |   Repositories   |
+                   |     (Slick)      |
+                   +--------+---------+
+                            |
+                            v
+                   +------------------+
+                   |   PostgreSQL DB   |
+                   +------------------+
+
+                     \ 
+                      \-> Apache Spark (analytics, local[*] or cluster)
+
+File storage: uploads/ models/ tmp/
+
+Notes:
+- Frontend -> Play Controllers -> Services -> Repositories -> PostgreSQL
+- Services may call Spark for heavy analytics
+- Controllers may delegate scraping to Mock Server which uses Puppeteer to fetch/parse external sites

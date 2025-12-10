@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Real Web Scraping</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        #output {
+            max-height: 600px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2><i class="fas fa-spider text-primary"></i> Real Web Scraping Test</h2>
+        <p class="text-muted">Testing with actual Flipkart product URLs</p>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5><i class="fas fa-mobile-alt"></i> Product URLs to Test</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="url1" class="form-label"><strong>Product 1 URL:</strong></label>
+                    <input type="text" class="form-control" id="url1"
+                           value="https://www.flipkart.com/samsung-galaxy-m14-5g-sapphire-blue-128-gb/p/itm6f7e5c77b42d3"
+                           placeholder="Enter first product URL"
+                           aria-label="First product URL for comparison">
+                    <small class="text-muted">Samsung Galaxy M14 5G</small>
+                </div>
+                <div class="mb-3">
+                    <label for="url2" class="form-label"><strong>Product 2 URL:</strong></label>
+                    <input type="text" class="form-control" id="url2"
+                           value="https://www.flipkart.com/poco-m6-5g-orion-blue-128-gb/p/itm1e52814f06bee"
+                           placeholder="Enter second product URL"
+                           aria-label="Second product URL for comparison">
+                    <small class="text-muted">POCO M6 5G</small>
+                </div>
+                <button id="testBtn" class="btn btn-success btn-lg">
+                    <i class="fas fa-play"></i> Start Real Web Scraping Test
+                </button>
+            </div>
+        </div>
+
+        <div id="status" class="mb-3"></div>
+
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-terminal"></i> Scraping Log</h6>
+            </div>
+            <div class="card-body">
+                <pre id="output" class="bg-dark text-light p-3"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:9000';
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+        const testBtn = document.getElementById('testBtn');
+        const url1Input = document.getElementById('url1');
+        const url2Input = document.getElementById('url2');
+
+        function log(msg, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const icons = {
+                info: 'ℹ️',
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                loading: '🔄'
+            };
+            const icon = icons[type] || '';
+            output.textContent += `[${timestamp}] ${icon} ${msg}\n`;
+            output.scrollTop = output.scrollHeight;
+            console.log(msg);
+        }
+
+        testBtn.addEventListener('click', async () => {
+            output.textContent = '';
+            status.innerHTML = '<div class="alert alert-info"><i class="fas fa-spinner fa-spin"></i> Testing real web scraping...</div>';
+            testBtn.disabled = true;
+
+            try {
+                const url1 = url1Input.value.trim();
+                const url2 = url2Input.value.trim();
+
+                if (!url1 || !url2) {
+                    throw new Error('Please enter both URLs');
+                }
+
+                log('🚀 Starting REAL web scraping test...', 'loading');
+                log(`📋 Product 1: ${url1}`);
+                log(`📋 Product 2: ${url2}`);
+                log('');
+
+                const requestBody = {
+                    name: "Real Data Test",
+                    description: "Testing real web scraping",
+                    products: [
+                        { name: "Product 1", urls: [url1] },
+                        { name: "Product 2", urls: [url2] }
+                    ]
+                };
+
+                log('📤 Sending request to server...', 'info');
+                log('⏳ This may take 30-60 seconds (scraping real websites)...', 'warning');
+                log('');
+
+                const startTime = Date.now();
+                const res = await fetch(`${API_BASE_URL}/api/compare/urls`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(requestBody)
+                });
+
+                const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+                log(`📥 Server responded in ${duration}s with status: ${res.status}`, res.ok ? 'success' : 'error');
+                log('');
+
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    log('❌ ERROR RESPONSE:', 'error');
+                    log(errorText);
+
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(errorText);
+                        log('');
+                        log('📋 Error Details:', 'error');
+                        log(`Message: ${errorData.message}`);
+                        log(`Failed URLs: ${JSON.stringify(errorData.failedUrls)}`);
+                        log(`Suggestion: ${errorData.suggestion}`);
+                        if (errorData.detailedError) {
+                            log('');
+                            log('Detailed Error:');
+                            log(errorData.detailedError);
+                        }
+                    } catch {
+                        log('Could not parse error as JSON', 'error');
+                    }
+
+                    status.innerHTML = '<div class="alert alert-danger"><i class="fas fa-times-circle"></i> Web Scraping Failed - Check log above</div>';
+                    throw new Error(`Server error: ${res.status}`);
+                }
+
+                const result = await res.json();
+                log('✅ SUCCESS! Web scraping completed!', 'success');
+                log('');
+                log('📊 Comparison Result:', 'success');
+                log(JSON.stringify(result.comparison, null, 2));
+
+                const p1 = result.comparison.products[0];
+                const p2 = result.comparison.products[1];
+
+                log('');
+                log('='.repeat(60));
+                log('📱 PRODUCT 1 DATA:', 'success');
+                log('='.repeat(60));
+                log(`Name: ${p1.productName}`);
+                log(`Price: ${p1.price}`);
+                log(`Total Reviews: ${p1.totalReviews}`);
+                log(`Sentiment: ${p1.overallSentiment} (${(p1.confidenceScore * 100).toFixed(1)}% confidence)`);
+                log(`Distribution: Positive=${p1.positiveCount}, Negative=${p1.negativeCount}, Neutral=${p1.neutralCount}`);
+                log(`Data Source: ${p1.dataSource}`);
+                log('');
+                log('='.repeat(60));
+                log('📱 PRODUCT 2 DATA:', 'success');
+                log('='.repeat(60));
+                log(`Name: ${p2.productName}`);
+                log(`Price: ${p2.price}`);
+                log(`Total Reviews: ${p2.totalReviews}`);
+                log(`Sentiment: ${p2.overallSentiment} (${(p2.confidenceScore * 100).toFixed(1)}% confidence)`);
+                log(`Distribution: Positive=${p2.positiveCount}, Negative=${p2.negativeCount}, Neutral=${p2.neutralCount}`);
+                log(`Data Source: ${p2.dataSource}`);
+                log('');
+                log('🏆 Winner: ' + result.comparison.winner.productName, 'success');
+
+                status.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Web scraping successful! Real data retrieved.</div>';
+
+            } catch (err) {
+                log('', 'error');
+                log('💥 EXCEPTION: ' + err.message, 'error');
+                log(err.stack);
+                if (!status.innerHTML.includes('alert-danger')) {
+                    status.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ${err.message}</div>`;
+                }
+            } finally {
+                testBtn.disabled = false;
+            }
+        });
+
+        // Check server status on load
+        window.addEventListener('load', async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/health`);
+                if (res.ok) {
+                    log('✅ Server is running and ready', 'success');
+                }
+            } catch {
+                log('❌ Cannot connect to server at ' + API_BASE_URL, 'error');
+                status.innerHTML = '<div class="alert alert-warning">⚠️ Server not responding. Make sure Node.js server is running.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

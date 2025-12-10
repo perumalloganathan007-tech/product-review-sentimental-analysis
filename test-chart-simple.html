@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chart Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body { font-family: Arial; padding: 50px; }
+        .chart-container {
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chart.js Simple Test</h1>
+    <p id="status">Testing...</p>
+
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        console.log('Script starting...');
+        console.log('Chart.js available?', typeof Chart !== 'undefined');
+
+        document.getElementById('status').innerHTML = 'Chart.js version: ' + Chart.version;
+
+        const ctx = document.getElementById('myChart');
+        console.log('Canvas element:', ctx);
+
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    data: [65, 15, 20],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(220, 53, 69, 0.8)',
+                        'rgba(108, 117, 125, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        console.log('Chart created:', myChart);
+        document.getElementById('status').innerHTML += '<br>✅ Chart created! You should see a doughnut chart above.';
+    </script>
+</body>
+</html>

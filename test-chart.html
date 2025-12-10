@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .chart-container {
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+            padding: 20px;
+        }
+        #status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        #console {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chart.js Library Test</h1>
+    <div id="status">Testing...</div>
+
+    <div class="chart-container">
+        <canvas id="testChart"></canvas>
+    </div>
+
+    <h3>Console Output:</h3>
+    <pre id="console"></pre>
+
+    <script>
+        const consoleOutput = document.getElementById('console');
+        const status = document.getElementById('status');
+
+        function log(message, data = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            let logMsg = `[${timestamp}] ${message}`;
+            if (data) {
+                logMsg += '\n' + JSON.stringify(data, null, 2);
+            }
+            consoleOutput.textContent += logMsg + '\n\n';
+            console.log(message, data);
+        }
+
+        // Test 1: Check if Chart.js is loaded
+        log('Step 1: Checking if Chart.js is loaded...');
+        if (typeof Chart === 'undefined') {
+            log('❌ FAIL: Chart.js is NOT loaded!');
+            status.textContent = '❌ Chart.js NOT loaded';
+            status.className = 'error';
+        } else {
+            log('✅ SUCCESS: Chart.js is loaded', { version: Chart.version });
+
+            // Test 2: Check canvas element
+            log('Step 2: Checking canvas element...');
+            const canvas = document.getElementById('testChart');
+            if (!canvas) {
+                log('❌ FAIL: Canvas element not found!');
+                status.textContent = '❌ Canvas NOT found';
+                status.className = 'error';
+            } else {
+                log('✅ SUCCESS: Canvas element found');
+
+                // Test 3: Try to create a simple chart
+                log('Step 3: Creating test chart...');
+                try {
+                    const ctx = canvas.getContext('2d');
+                    log('✅ Canvas context obtained');
+
+                    const testData = {
+                        labels: ['Positive', 'Negative', 'Neutral'],
+                        datasets: [{
+                            data: [65, 15, 20],
+                            backgroundColor: ['#28a745', '#dc3545', '#6c757d']
+                        }]
+                    };
+
+                    log('Creating Chart instance with data:', testData);
+
+                    const myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: testData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }
+                    });
+
+                    log('✅ SUCCESS: Chart created!', { chartId: myChart.id });
+                    status.textContent = '✅ Chart.js is working perfectly!';
+                    status.className = 'success';
+
+                } catch (error) {
+                    log('❌ FAIL: Error creating chart', {
+                        error: error.message,
+                        stack: error.stack
+                    });
+                    status.textContent = '❌ Error: ' + error.message;
+                    status.className = 'error';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

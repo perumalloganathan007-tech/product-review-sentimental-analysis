@@ -1,0 +1,9 @@
+@startuml
+actor Client
+rectangle Frontend
+rectangle Controller
+database DB
+Client -> Frontend : load UI
+Frontend -> Controller : API call
+Controller -> DB : query
+@enduml

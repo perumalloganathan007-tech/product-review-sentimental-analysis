@@ -1,0 +1,43 @@
+﻿*** SENTIMENT ANALYSIS REPORT - EXECUTIVE SUMMARY ***
+Generated on: 10/21/2025, 4:36:11 PM
+
+CATEGORY OVERVIEW
+Category Name,N/A
+Total Products Analyzed,0
+Total Reviews Analyzed,35
+Average Rating,4.40
+
+OVERALL SENTIMENT DISTRIBUTION
+Positive Sentiment,91.4%
+Neutral Sentiment,5.7%
+Negative Sentiment,2.9%
+
+RECOMMENDED BEST PRODUCT
+Product Name,N/A
+Rating,4.3
+Why Best,This product has the best combination of rating (4.3) and review count (20 reviews). Sentiment analysis shows POSITIVE feedback.
+Key Features,"20 reviews analyzed; 4.3★ average rating; POSITIVE sentiment"
+Considerations,Based on 35 total reviews across 2 products from live web scraping.
+
+
+*** DETAILED PRODUCT ANALYSIS ***
+
+Rank,Product Name,Rating,Total Reviews,Positive %,Neutral %,Negative %,Overall Sentiment,Price,Product URL
+1,"Samsung Galaxy S24 Ultra 5G AI Smartphone with Galaxy AI (Titanium Gray, 12GB, 256GB Storage), Snapdragon 8 Gen 3, 200 MP Camera with ProVisual Engine and 5000mAh Battery",4.5,15,100.0,0.0,0.0,POSITIVE,"₹79,999.00",https://www.amazon.in/dp/B0CS5XW6TN?pd_rd_w=ZFcxs&content-id=amzn1.sym.72909bff-7d05-4198-b9f1-a9f8296495e4&pf_rd_p=72909bff-7d05-4198-b9f1-a9f8296495e4&pf_rd_r=SYJFZ7WPR80G6HAF3B0K&pd_rd_wg=mesAY&pd_rd_r=4abbfb43-e157-49cc-a713-81da7e3b067b
+2,"Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Silverblue, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life",4.3,20,85.0,10.0,5.0,POSITIVE,"₹1,35,499.00",https://www.amazon.in/dp/B0DSBTKP5Q/ref=sspa_dk_detail_0?pd_rd_i=B0DSBTKP5Q&pd_rd_w=ISWHQ&content-id=amzn1.sym.67d3dec9-3503-44a1-a945-e969d04cca69&pf_rd_p=67d3dec9-3503-44a1-a945-e969d04cca69&pf_rd_r=3CJ58DG0PGGJM40976V1&pd_rd_wg=dJHgb&pd_rd_r=82a06700-ed90-46c8-8970-fcb89f984bbc&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM&th=1
+
+
+*** SENTIMENT BREAKDOWN BY PRODUCT ***
+
+Product Name,Positive Count,Neutral Count,Negative Count,Positive %,Neutral %,Negative %,Dominant Sentiment
+"Samsung Galaxy S24 Ultra 5G AI Smartphone with Galaxy AI (Titanium Gray, 12GB, 256GB Storage), Snapdragon 8 Gen 3, 200 MP Camera with ProVisual Engine and 5000mAh Battery",100,0,0,100.0%,0.0%,0.0%,POSITIVE
+"Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Silverblue, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life",85,10,5,85.0%,10.0%,5.0%,POSITIVE
+
+
+*** PERFORMANCE COMPARISON ***
+
+Product Name,Rating Score,Review Volume,Sentiment Score,Performance Indicator
+"Samsung Galaxy S24 Ultra 5G AI Smartphone with Galaxy AI (Titanium Gray, 12GB, 256GB Storage), Snapdragon 8 Gen 3, 200 MP Camera with ProVisual Engine and 5000mAh Battery",4.5,15,100.0%,Excellent
+"Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Silverblue, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life",4.3,20,80.0%,Good
+
+*** END OF REPORT ***

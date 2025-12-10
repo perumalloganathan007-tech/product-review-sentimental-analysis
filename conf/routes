@@ -1,0 +1,61 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.HomeController.index()
+
+# Simple health check (no database required)
+GET     /api/health                 controllers.SimpleController.health()
+GET     /api/info                   controllers.SimpleController.info()
+
+# Test page and API connection test
+# Temporarily disabled database endpoints
+# GET     /test                       controllers.TestController.testPage()
+# GET     /api/test/db                controllers.TestController.testDatabaseConnection()
+# GET     /api/test/stats             controllers.TestController.getDatabaseStats()
+
+# Temporarily disabled database endpoints
+# Legacy database test endpoints (keeping for compatibility)
+# GET     /api/test/db-legacy         controllers.DatabaseTestController.testConnection()
+# GET     /api/test/stats-legacy      controllers.DatabaseTestController.stats()
+# GET     /api/test/search            controllers.DatabaseTestController.searchTest(q: String)
+
+# Analysis endpoints
+# POST    /api/analyze/dataset        controllers.AnalysisController.analyzeDataset()
+# POST    /api/analyze/urls           controllers.AnalysisController.analyzeUrls()
+# GET     /api/analysis/:id           controllers.AnalysisController.getAnalysis(id: Long)
+# GET     /api/analyses               controllers.AnalysisController.getAllAnalyses()
+
+# Comparison endpoints
+# POST    /api/compare/datasets       controllers.ComparisonController.compareDatasets()
+# POST    /api/compare/urls           controllers.ComparisonController.compareUrls()
+# GET     /api/comparison/:id         controllers.ComparisonController.getComparison(id: Long)
+
+# Report endpoints
+# GET     /api/report/pdf/:id         controllers.ReportController.generatePDF(id: Long)
+# GET     /api/report/csv/:id         controllers.ReportController.generateCSV(id: Long)
+
+# History endpoints
+# GET     /api/history                controllers.HistoryController.getHistory(category: Option[String] ?= None, limit: Int ?= 100, offset: Int ?= 0, sessionId: Option[String] ?= None)
+# POST    /api/history                controllers.HistoryController.addHistory()
+# GET     /api/history/search         controllers.HistoryController.searchHistory(q: String, category: Option[String] ?= None, limit: Int ?= 50)
+# GET     /api/history/stats          controllers.HistoryController.getHistoryStats(sessionId: Option[String] ?= None)
+# GET     /api/history/:id            controllers.HistoryController.getHistoryById(id: Long)
+# PUT     /api/history/:id/status     controllers.HistoryController.updateHistoryStatus(id: Long)
+# DELETE  /api/history/:id            controllers.HistoryController.deleteHistory(id: Long)
+# DELETE  /api/history                controllers.HistoryController.clearHistory(sessionId: Option[String] ?= None)
+
+# Spark endpoints
+GET     /api/spark/info             controllers.SparkController.getSparkInfo()
+GET     /api/spark/webui            controllers.SparkController.redirectToWebUI()
+GET     /api/spark/test             controllers.SparkController.testSpark()
+
+# Flipkart Scraper Training endpoints
+POST    /api/scrape-flipkart        controllers.FlipkartScraperController.scrapeFlipkart()
+POST    /api/test-selectors         controllers.FlipkartScraperController.testSelectors()
+POST    /api/batch-train            controllers.FlipkartScraperController.batchTrain()
+GET     /api/scraper/stats          controllers.FlipkartScraperController.getStats()
+
+# Static assets
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

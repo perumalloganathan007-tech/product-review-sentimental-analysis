@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>🧪 Form Submission Diagnostic Test</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Purpose:</strong> Test if forms are submitting unexpectedly
+                </div>
+
+                <h5>Test 1: Compare Form (Old)</h5>
+                <form id="compareForm" class="border p-3 mb-4">
+                    <div class="mb-3">
+                        <label for="product1Urls">Product 1 URLs</label>
+                        <textarea class="form-control" id="product1Urls" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product2Urls">Product 2 URLs</label>
+                        <textarea class="form-control" id="product2Urls" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Submit Compare Form</button>
+                </form>
+
+                <h5>Test 2: URL Inputs (Multi-Compare Style)</h5>
+                <div class="border p-3 mb-4">
+                    <div class="mb-3">
+                        <label for="testUrlInput" class="form-label">Test URL Input</label>
+                        <input type="url" id="testUrlInput" class="form-control url-input" placeholder="Enter URL and press Enter">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="testMultiCompare()">
+                        Test Multi-Compare Function
+                    </button>
+                </div>
+
+                <h5>Event Log:</h5>
+                <div id="eventLog" class="border p-3 bg-light event-log-container">
+                    <p class="text-muted">Events will appear here...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const eventLog = document.getElementById('eventLog');
+
+        function logEvent(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'info';
+            eventLog.innerHTML += `<div class="alert alert-${color} py-1 mb-1">[${time}] ${message}</div>`;
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        // Test compare form
+        document.getElementById('compareForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            logEvent('❌ OLD COMPARE FORM SUBMITTED!', 'error');
+
+            const urls1 = document.getElementById('product1Urls').value.trim();
+            const urls2 = document.getElementById('product2Urls').value.trim();
+
+            if (!urls1 && !urls2) {
+                logEvent('⚠️ Form submitted with EMPTY fields!', 'warning');
+                alert('Form submitted with empty fields! This is the problem.');
+            } else {
+                logEvent(`URLs: Product1="${urls1}", Product2="${urls2}"`, 'info');
+            }
+        });
+
+        // Test URL input Enter key
+        document.querySelector('.url-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                logEvent(`⚠️ ENTER KEY pressed in URL input`, 'warning');
+
+                // Check if it would trigger form submission
+                const closestForm = this.closest('form');
+                if (closestForm) {
+                    logEvent(`❌ URL input IS inside a form! This would submit the form!`, 'error');
+                } else {
+                    logEvent(`✅ URL input is NOT inside a form - safe`, 'info');
+                }
+            }
+        });
+
+        function testMultiCompare() {
+            logEvent('🚀 testMultiCompare() function called', 'info');
+            logEvent('✅ This is how multi-compare should work - button click, no form submit', 'info');
+        }
+
+        // Global form submit detection
+        document.addEventListener('submit', function(e) {
+            logEvent(`🔔 GLOBAL: A form was submitted (${e.target.id || 'unnamed'})`, 'warning');
+        });
+
+        logEvent('✅ Test page loaded successfully', 'info');
+    </script>
+</body>
+</html>

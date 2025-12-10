@@ -1,0 +1,18 @@
+Amazon URLs with Reviews for Testing:
+
+1. Popular Smartphone:
+https://www.amazon.in/Apple-iPhone-15-128-GB/dp/B0CHX2F5QT
+
+2. Popular Laptop:
+https://www.amazon.in/HP-i5-1235U-39-62cm-Anti-Glare-14-ep0123TU/dp/B0B8NDS4MY
+
+3. Popular Headphones:
+https://www.amazon.in/Sony-WH-CH720N-Canceling-Headphones-Bluetooth/dp/B0BZL8PFZM
+
+4. Popular Gaming Mouse (different model):
+https://www.amazon.in/Logitech-G502-Gaming-Mouse-RGB/dp/B07GBZ4Q68
+
+5. Popular Keyboard:
+https://www.amazon.in/Logitech-Mechanical-Keyboard-Tactile-920-009296/dp/B07NY9ZT92
+
+These products typically have many customer reviews for testing the sentiment analysis.

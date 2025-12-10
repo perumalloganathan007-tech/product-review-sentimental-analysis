@@ -1,0 +1,379 @@
+/* Shared styles moved from inline <style> blocks to a central stylesheet */
+.hidden { display: none !important; }
+.progress-initial { width: 0%; }
+.api-demo { display: none; font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0; max-height: 300px; overflow-y: auto; }
+.status-card { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.demo-card { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.integration-card { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.test-result { margin: 10px 0; padding: 15px; border-radius: 8px; background: #f8f9fa; font-family: monospace; max-height: 300px; overflow-y: auto; }
+.status-success { border-left: 5px solid #28a745; }
+.status-error { border-left: 5px solid #dc3545; }
+.status-loading { border-left: 5px solid #ffc107; }
+
+/* Enhanced Dataset Analysis Styles */
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+}
+
+.stat-box {
+    transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+    transform: scale(1.05);
+}
+
+.progress {
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.card.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.175) !important;
+}
+
+.badge.bg-opacity-75 {
+    background-color: rgba(var(--bs-primary-rgb), 0.75) !important;
+}
+
+.list-group-item {
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    border-left-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Compare Section Styles */
+.comparison-section.hidden { display: none; }
+
+/* Prevent text overflow and layout crashes */
+.metric-box {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.card-title, .card-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Chart container protection */
+canvas {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Advanced Comparison Results */
+.metric-box {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.pros-cons ul li {
+    margin-bottom: 5px;
+}
+
+.recommendations ul li {
+    margin-bottom: 3px;
+}
+
+/* Product Classification Styles */
+.bg-bronze {
+    background-color: #cd7f32 !important;
+    color: white !important;
+}
+
+.bg-success-soft {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+}
+
+.text-bronze {
+    color: #cd7f32 !important;
+}
+
+.winner-card {
+    transition: all 0.3s ease;
+}
+
+.winner-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+}
+
+.bg-gradient-dark {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%) !important;
+}
+
+/* Classification Cards */
+.classification-card {
+    border-left: 4px solid;
+    transition: all 0.3s ease;
+}
+
+.classification-card:hover {
+    margin-left: -5px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.pricing-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.price-display {
+    margin-top: 10px;
+}
+
+.current-price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #28a745;
+    margin-right: 10px;
+}
+
+.original-price {
+    font-size: 1em;
+    text-decoration: line-through;
+    color: #6c757d;
+    margin-right: 10px;
+}
+
+.discount {
+    font-size: 0.8em;
+}
+
+/* Dataset Analysis Styles */
+.dataset-analysis-results .stat-box {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.dataset-analysis-results .recommendation-card {
+    transition: transform 0.2s ease;
+}
+
+.dataset-analysis-results .recommendation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.status-indicator {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background: #6c757d;
+}
+
+.sentiment-card {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.sentiment-positive { background: linear-gradient(135deg, #28a745, #20c997); }
+.sentiment-negative { background: linear-gradient(135deg, #dc3545, #e74c3c); }
+.sentiment-neutral { background: linear-gradient(135deg, #6c757d, #95a5a6); }
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 20px 0;
+}
+
+/* Category Card Styles (dataset analysis) */
+.category-header h5 { margin: 0; font-weight: 700; }
+.category-header small { opacity: 0.95; }
+.rating-badge { font-size: 1.05rem; }
+.classification-card { border-radius: 8px; overflow: hidden; }
+.classification-card .card-body { padding: 18px; }
+.classification-card .list-group-item { background: transparent; }
+.classification-card .list-group-item .badge { min-width:38px; }
+.winner-card h4 { font-size: 1.05rem; }
+.winner-card h6 { color: #6c757d; }
+
+@media (max-width: 767px) {
+    .category-header { padding: 12px !important; }
+    .classification-card .card-body { padding: 12px; }
+}
+
+/* Utility classes for moved inline styles */
+.url-break-all { word-break: break-all; }
+.event-log-container { max-height: 300px; overflow-y: auto; }
+.dataset-results-hidden { display: none; }
+.result-hidden { display: none; }
+
+/* Enhanced Multi-Compare Styles */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+}
+
+.url-input-group {
+    transition: all 0.3s ease;
+}
+
+.url-input-group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.url-input.is-valid {
+    border-color: #198754;
+    background-image: none;
+}
+
+.url-input.is-invalid {
+    border-color: #dc3545;
+    background-image: none;
+}
+
+.btn-group .btn {
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+#compareBtn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#compareBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}
+
+#compareBtn:active {
+    transform: translateY(0);
+}
+
+/* Notification Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+/* ML Insights Section Styles */
+#mlInsightsSection {
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#mlInsightsSection .card {
+    transition: all 0.3s ease;
+}
+
+#mlInsightsSection .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.2) !important;
+}
+
+#mlInsightsSection .table {
+    font-size: 0.95rem;
+}
+
+#mlInsightsSection .badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.7em;
+}
+
+#mlInsightsSection .alert {
+    border-left: 4px solid #28a745;
+}
+
+#mlInsightsSection code {
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #e91e63;
+    font-size: 0.9rem;
+}
+
+.text-purple {
+    color: #9c27b0 !important;
+}
+

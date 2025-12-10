@@ -1,0 +1,49 @@
+@startuml
+skinparam componentStyle rectangle
+title Sentiment Analysis NLP - System Architecture
+
+actor Browser as Client
+
+package "Frontend" {
+  rectangle "main-app.html / static pages" as Frontend
+}
+
+package "Backend - Play Framework (Scala)" {
+  rectangle "Play Controllers" as Controllers
+  rectangle "Services" as Services
+  rectangle "Repositories (Slick)" as Repositories
+  rectangle "Assets (Public)" as Assets
+}
+
+database "PostgreSQL (slick.dbs.default)" as Postgres
+
+package "Analytics" {
+  component "Apache Spark (spark-core, spark-sql, spark-mllib)" as Spark
+}
+
+package "Node Mock and Scraper" {
+  component "mock-server.js (Express + Puppeteer)" as MockServer
+}
+
+folder "Uploads / models / tmp" as FileStore
+
+actor "External Websites" as ExternalWebsites
+
+Client --> Frontend : load UI
+Frontend --> Controllers : REST API calls\n(e.g. /api/analyze/*, /api/compare/*)
+Controllers --> Services : business logic
+Services --> Repositories : CRUD (Slick)
+Repositories --> Postgres : SQL queries / evolutions
+Services --> Spark : submit analytics jobs (sync/async)
+Controllers --> MockServer : (optional) delegate scraping or headless browser tasks via HTTP
+MockServer --> ExternalWebsites : scrape pages (Puppeteer)
+MockServer --> FileStore : store scraped results
+Controllers --> FileStore : read/write uploaded datasets
+Services --> FileStore : read models, temporary files
+Controllers --> Assets : static content
+note right of Spark
+Spark configured local[*] in dev
+May run on cluster in production
+end note
+
+@enduml

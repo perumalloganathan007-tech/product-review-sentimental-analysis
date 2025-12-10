@@ -1,0 +1,12 @@
+﻿node_modules/
+.env
+*.log
+.DS_Store
+Thumbs.db
+*.tmp
+.vscode/
+coverage/
+dist/
+build/
+spark-python311-env/
+spark-venv/

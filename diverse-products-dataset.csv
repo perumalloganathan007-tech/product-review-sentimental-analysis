@@ -1,0 +1,36 @@
+url,product_name,category,platform,price_range,target_sentiment
+https://www.flipkart.com/boat-airdopes-800-anc-active-noise-cancellation/p/itm1b2c3d4e5f6g7,boAt Airdopes 800 ANC,Audio,Flipkart,Budget,MIXED
+https://www.flipkart.com/realme-buds-air6-pro-anc-earbuds/p/itm8g7f6e5d4c3b2,Realme Buds Air6 Pro,Audio,Flipkart,Budget,MIXED
+https://www.flipkart.com/noise-air-buds-mini-truly-wireless/p/itm5d4c3b2a1g9f8,Noise Air Buds Mini,Audio,Flipkart,Budget,NEGATIVE
+https://www.flipkart.com/ptron-bassbuds-pro-wireless-earbuds/p/itm2f1e9d8c7b6a5,pTron Bassbuds Pro,Audio,Flipkart,Budget,NEGATIVE
+https://www.flipkart.com/zebronics-zeb-sound-bomb-q-wireless/p/itm9c8b7a6f5e4d3,Zebronics Zeb-Sound Bomb Q,Audio,Flipkart,Budget,NEGATIVE
+https://www.amazon.in/Echo-Dot-5th-generation-Charcoal/dp/B09B8V1LZ3,Amazon Echo Dot 5th Gen,Smart Speaker,Amazon,Budget,POSITIVE
+https://www.amazon.in/Google-Nest-Audio-Chalk/dp/B085HN41R7,Google Nest Audio,Smart Speaker,Amazon,Mid-range,POSITIVE
+https://www.amazon.in/Apple-HomePod-Space-Gray/dp/B084KBXB8V,Apple HomePod,Smart Speaker,Amazon,Premium,POSITIVE
+https://www.amazon.in/JBL-Flip-6-Portable-Speaker/dp/B096FHXQBC,JBL Flip 6,Bluetooth Speaker,Amazon,Mid-range,POSITIVE
+https://www.amazon.in/Ultimate-Ears-BOOM-3-Bluetooth/dp/B07DD6XXM1,Ultimate Ears BOOM 3,Bluetooth Speaker,Amazon,Mid-range,MIXED
+https://www.flipkart.com/mi-power-bank-3i-20000mah-fast-charging/p/itm3e2d1c9b8a7f6,Mi Power Bank 3i 20000mAh,Power Bank,Flipkart,Mid-range,POSITIVE
+https://www.flipkart.com/anker-powercore-26800-portable-charger/p/itm6f5e4d3c2b1a9,Anker PowerCore 26800,Power Bank,Flipkart,Mid-range,POSITIVE
+https://www.flipkart.com/ambrane-stylo-20k-20000mah-power-bank/p/itm9a8b7c6d5e4f3,Ambrane Stylo-20K,Power Bank,Flipkart,Budget,MIXED
+https://www.flipkart.com/syska-power-pro-200-20000mah-power-bank/p/itm2b1a9f8e7d6c5,Syska Power Pro 200,Power Bank,Flipkart,Budget,NEGATIVE
+https://www.flipkart.com/urbn-premium-20000-mah-power-bank/p/itm5e4d3c2b1a9f8,URBN Premium 20000 mAh,Power Bank,Flipkart,Budget,NEGATIVE
+https://www.amazon.in/Samsung-Portable-SSD-T7-Shield/dp/B09VLG9BMG,Samsung Portable SSD T7 Shield,Storage,Amazon,Premium,POSITIVE
+https://www.amazon.in/SanDisk-Extreme-Portable-SSD-1TB/dp/B078SWJ3CF,SanDisk Extreme Portable SSD,Storage,Amazon,Premium,POSITIVE
+https://www.amazon.in/Western-Digital-Elements-Portable-WDBUZG0010BBK/dp/B06VVS7S94,WD Elements Portable HDD,Storage,Amazon,Mid-range,MIXED
+https://www.amazon.in/Seagate-Backup-Plus-Slim-STHN2000400/dp/B00FRHTTIA,Seagate Backup Plus Slim,Storage,Amazon,Mid-range,MIXED
+https://www.amazon.in/Toshiba-Canvio-Basics-Portable-HDTB420XK3AA/dp/B079D359S6,Toshiba Canvio Basics,Storage,Amazon,Budget,NEGATIVE
+https://www.flipkart.com/logitech-mx-master-3s-wireless-mouse/p/itm7g6f5e4d3c2b1,Logitech MX Master 3S,Mouse,Flipkart,Premium,POSITIVE
+https://www.flipkart.com/razer-deathadder-v3-pro-wireless/p/itm4d3c2b1a9f8e7,Razer DeathAdder V3 Pro,Mouse,Flipkart,Premium,POSITIVE
+https://www.flipkart.com/hp-z5000-bluetooth-wireless-mouse/p/itm1a9f8e7d6c5b4,HP Z5000 Bluetooth Mouse,Mouse,Flipkart,Mid-range,MIXED
+https://www.flipkart.com/dell-ms116-optical-wired-mouse/p/itm8e7d6c5b4a3f2,Dell MS116 Optical Mouse,Mouse,Flipkart,Budget,NEGATIVE
+https://www.flipkart.com/quantum-qhm222-wired-optical-mouse/p/itm5b4a3f2e1d9c8,Quantum QHM222 Wired Mouse,Mouse,Flipkart,Budget,NEGATIVE
+https://www.amazon.in/Logitech-MX-Keys-Advanced-Keyboard/dp/B07S92QBCX,Logitech MX Keys,Keyboard,Amazon,Premium,POSITIVE
+https://www.amazon.in/Apple-Magic-Keyboard-Touch-Latest/dp/B071ZZTNBM,Apple Magic Keyboard,Keyboard,Amazon,Premium,POSITIVE
+https://www.amazon.in/Razer-BlackWidow-V4-Pro-Mechanical/dp/B0C1H2I3J4,Razer BlackWidow V4 Pro,Keyboard,Amazon,Premium,POSITIVE
+https://www.amazon.in/Corsair-K95-RGB-Platinum-Mechanical/dp/B01MU3R9VM,Corsair K95 RGB Platinum,Keyboard,Amazon,Premium,MIXED
+https://www.amazon.in/HP-Pavilion-Gaming-Keyboard-500/dp/B07MNPQR6F,HP Pavilion Gaming 500,Keyboard,Amazon,Mid-range,MIXED
+https://www.flipkart.com/samsung-galaxy-buds2-pro-graphite/p/itm2c1b9a8f7e6d5,Samsung Galaxy Buds2 Pro,Audio,Flipkart,Premium,POSITIVE
+https://www.flipkart.com/sony-wf-1000xm4-noise-canceling-earbuds/p/itm9f8e7d6c5b4a3,Sony WF-1000XM4,Audio,Flipkart,Premium,POSITIVE
+https://www.flipkart.com/jabra-elite-7-pro-dark-gray/p/itm6d5c4b3a2f1e9,Jabra Elite 7 Pro,Audio,Flipkart,Premium,POSITIVE
+https://www.flipkart.com/skullcandy-crusher-evo-wireless-headphones/p/itm3a2f1e9d8c7b6,Skullcandy Crusher Evo,Audio,Flipkart,Mid-range,MIXED
+https://www.flipkart.com/jbl-tune-760nc-wireless-noise-canceling/p/itm8c7b6a5f4e3d2,JBL Tune 760NC,Audio,Flipkart,Mid-range,MIXED

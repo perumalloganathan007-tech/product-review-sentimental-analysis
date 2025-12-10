@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Analysis Results</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/styles.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .header-section .file-info {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .content-section {
+            padding: 30px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .print-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .dataset-results-hidden {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .back-button, .print-button {
+                display: none;
+            }
+
+            .main-container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="btn btn-light back-button" onclick="window.close()">
+        <i class="fas fa-arrow-left me-2"></i>Back
+    </button>
+
+    <!-- Spark UI Button -->
+    <button id="sparkWebUIBtn" class="btn btn-warning print-button" onclick="openSparkUI()" style="right: 120px;" title="Open Spark Web UI">
+        <i class="fas fa-fire me-2"></i>Spark Web UI
+    </button>
+
+    <!-- Print Button -->
+    <button class="btn btn-light print-button" onclick="window.print()">
+        <i class="fas fa-print me-2"></i>Print
+    </button>
+
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header-section">
+            <h1><i class="fas fa-chart-bar me-3"></i>Dataset Analysis Results</h1>
+            <div class="file-info" id="fileInfo">
+                <i class="fas fa-file-csv me-2"></i>Loading...
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content-section">
+            <!-- Summary Cards -->
+            <div class="row mb-4" id="datasetSummaryCards">
+                <!-- Summary cards will be inserted here -->
+            </div>
+
+            <!-- Charts -->
+            <div class="row mb-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-star me-2"></i>Top Rated Products</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="topRatedChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-comments me-2"></i>Most Reviewed Products</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="mostReviewedChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Charts Row: Sentiment & Rating Distribution -->
+            <div class="row mb-4">
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-smile me-2"></i>Sentiment Review Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="sentimentCategoryFilter" class="form-label"><i class="fas fa-filter me-1"></i>Select Category:</label>
+                                    <select id="sentimentCategoryFilter" class="form-select" onchange="updateSentimentProductFilter()" aria-label="Select product category for sentiment analysis">
+                                        <option value="all">All Categories</option>
+                                        <!-- Categories will be populated here -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="sentimentProductFilter" class="form-label"><i class="fas fa-box me-1"></i>Select Product:</label>
+                                    <select id="sentimentProductFilter" class="form-select" onchange="updateSentimentChart()" aria-label="Select specific product for sentiment analysis">
+                                        <option value="all">All Products</option>
+                                        <!-- Products will be populated based on category -->
+                                    </select>
+                                </div>
+                            </div>
+                            <canvas id="sentimentChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Rating Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="ratingCategoryFilter" class="form-label"><i class="fas fa-filter me-1"></i>Select Category:</label>
+                                    <select id="ratingCategoryFilter" class="form-select" onchange="updateRatingProductFilter()" aria-label="Select product category for rating distribution">
+                                        <option value="all">All Categories</option>
+                                        <!-- Categories will be populated here -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="ratingProductFilter" class="form-label"><i class="fas fa-box me-1"></i>Select Product:</label>
+                                    <select id="ratingProductFilter" class="form-select" onchange="updateRatingChart()" aria-label="Select specific product for rating distribution">
+                                        <option value="all">All Products</option>
+                                        <!-- Products will be populated based on category -->
+                                    </select>
+                                </div>
+                            </div>
+                            <canvas id="ratingChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Analysis -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-layer-group me-2"></i>Best Products by Category</h4>
+                </div>
+                <div class="card-body">
+                    <div id="categoryAnalysis">
+                        <!-- Category analysis will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ML Insights Section -->
+            <div id="mlInsightsSection" class="mt-4">
+                <!-- ML insights will be inserted here -->
+            </div>
+
+            <!-- Data Table -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-table me-2"></i>Complete Dataset</h5>
+                    <button class="btn btn-sm btn-success" onclick="exportDatasetResults()">
+                        <i class="fas fa-file-excel me-1"></i>Export to CSV
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="datasetDataTable" class="table-responsive">
+                        <!-- Data table will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Dataset Analysis Script -->
+    <script src="assets/dataset-analysis.js"></script>
+
+    <script>
+        // Load and display results when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            const dataStr = sessionStorage.getItem('datasetAnalysisResults');
+            const fileName = sessionStorage.getItem('datasetFileName');
+
+            if (!dataStr) {
+                document.querySelector('.content-section').innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4><i class="fas fa-exclamation-triangle me-2"></i>No Data Found</h4>
+                        <p>No analysis data was found. Please go back and analyze a dataset first.</p>
+                        <button class="btn btn-primary" onclick="window.close()">Go Back</button>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const data = JSON.parse(dataStr);
+                currentDatasetData = data;
+
+                // Update file info
+                document.getElementById('fileInfo').innerHTML = `
+                    <i class="fas fa-file-csv me-2"></i>${fileName || 'Dataset'}
+                    <span class="ms-3"><i class="fas fa-box me-1"></i>${data.totalProducts} Products</span>
+                `;
+
+                // Display all results
+                displayDatasetResults(data);
+
+            } catch (error) {
+                console.error('Error loading results:', error);
+                document.querySelector('.content-section').innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4><i class="fas fa-exclamation-triangle me-2"></i>Error Loading Results</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+
+        // Spark Web UI functions
+        function openSparkUI() {
+            const sparkURL = localStorage.getItem('sparkUIUrl') || 'http://192.168.1.35:4040/jobs/';
+            window.open(sparkURL, '_blank');
+        }
+
+        function configureSparkUI() {
+            const currentURL = localStorage.getItem('sparkUIUrl') || 'http://192.168.1.35:4040/jobs/';
+            const newURL = prompt('Enter Spark Web UI URL:', currentURL);
+            if (newURL) {
+                localStorage.setItem('sparkUIUrl', newURL);
+                alert('Spark UI URL updated!');
+            }
+        }
+    </script>
+</body>
+</html>

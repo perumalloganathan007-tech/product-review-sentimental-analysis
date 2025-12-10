@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dataset URL Scraping</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3><i class="fas fa-vial"></i> Dataset URL Scraping Test</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> Test Instructions</h5>
+                    <ol>
+                        <li>Select a CSV file with a "url" column containing Amazon/Flipkart product URLs</li>
+                        <li>Click "Test Upload" to see if the server can process it</li>
+                        <li>Check the console for detailed logs</li>
+                    </ol>
+                    <p class="mb-0"><strong>Sample Files Available:</strong> correct-format.csv, flipkart-phones-fresh.csv</p>
+                </div>
+
+                <form id="testForm">
+                    <div class="mb-3">
+                        <label for="testFile" class="form-label">Upload CSV File</label>
+                        <input type="file" class="form-control" id="testFile" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-2"></i>Test Upload
+                    </button>
+                </form>
+
+                <hr>
+
+                <div id="testResults" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:9000';
+
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('testFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            console.log('🧪 TEST: Starting dataset URL scraping test');
+            console.log('📁 File:', file.name, 'Size:', file.size, 'Type:', file.type);
+
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `
+                <div class="alert alert-info">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    Testing upload... Check console for details
+                </div>
+            `;
+
+            const formData = new FormData();
+            formData.append('analysisType', 'comprehensive');
+            formData.append('dataSource', 'upload');
+            formData.append('dataset', file);
+
+            console.log('📤 Sending to:', API_BASE_URL + '/api/analyze/dataset-categories');
+
+            try {
+                const response = await fetch(API_BASE_URL + '/api/analyze/dataset-categories', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('📥 Response Status:', response.status, response.statusText);
+
+                const result = await response.json();
+                console.log('📊 Response Data:', result);
+
+                if (response.ok) {
+                    resultsDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <h5><i class="fas fa-check-circle"></i> Success!</h5>
+                            <p><strong>Message:</strong> ${result.message}</p>
+                            <p><strong>Scraped:</strong> ${result.scrapedCount} / ${result.totalUrls} products</p>
+                            <p><strong>Data Source:</strong> ${result.dataSource}</p>
+                            <hr>
+                            <details>
+                                <summary>View Analysis Data</summary>
+                                <pre>${JSON.stringify(result.analysis, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-times-circle"></i> Error</h5>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Message:</strong> ${result.message || 'Unknown error'}</p>
+                            ${result.hint ? `<p><strong>Hint:</strong> ${result.hint}</p>` : ''}
+                            <hr>
+                            <details>
+                                <summary>View Full Response</summary>
+                                <pre>${JSON.stringify(result, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('❌ Test Error:', error);
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Request Failed</h5>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>Make sure the server is running on http://localhost:9000</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

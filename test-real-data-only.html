@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Real Data Only Mode</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+        .test-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .badge-real {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .badge-mock {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+        pre {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-container">
+            <div class="text-center mb-4">
+                <h2>🧪 Real Data Only Mode Test</h2>
+                <p class="text-muted">Testing multi-compare with sample URLs</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Test 1: Valid URLs (Should Return Real Data)</h5>
+                    <button class="btn btn-success w-100 mb-2" onclick="testValidUrls()">
+                        🧪 Test Valid URLs
+                    </button>
+                    <small class="text-muted">Using 2 real product URLs</small>
+                </div>
+                <div class="col-md-6">
+                    <h5>Test 2: Invalid URLs (Should Return Error)</h5>
+                    <button class="btn btn-danger w-100 mb-2" onclick="testInvalidUrls()">
+                        🧪 Test Invalid URLs
+                    </button>
+                    <small class="text-muted">Using fake URLs to trigger error</small>
+                </div>
+            </div>
+
+            <div id="status" class="mt-3"></div>
+            <div id="result" class="result-box result-hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            const alertClass = type === 'success' ? 'alert-success' :
+                             type === 'error' ? 'alert-danger' : 'alert-info';
+            statusDiv.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+        }
+
+        function showResult(title, data, isMockData) {
+            const resultDiv = document.getElementById('result');
+            const badge = isMockData ?
+                '<span class="badge badge-mock">⚠️ MOCK DATA DETECTED</span>' :
+                '<span class="badge badge-real">✅ REAL DATA</span>';
+
+            resultDiv.classList.remove('result-hidden');
+            resultDiv.innerHTML = `
+                <h5>${title} ${badge}</h5>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        async function testValidUrls() {
+            showStatus('🔄 Testing with valid URLs... This may take 30-60 seconds', 'info');
+
+            const urls = [
+                'https://www.amazon.in/dp/B0D1XD1ZV3',
+                'https://www.flipkart.com/apple-iphone-15-black-128-gb/p/itm6ac6485a830b2'
+            ];
+
+            try {
+                const response = await fetch('http://localhost:9000/api/analyze/urls', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        urls: urls,
+                        options: {
+                            includeInsights: true,
+                            includeRecommendation: true,
+                            maxReviews: 50
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showStatus(`❌ Error: ${data.error || 'Unknown error'}`, 'error');
+                    showResult('Error Response', data, false);
+                    return;
+                }
+
+                // Check for mock data indicators
+                const isMockData = data.products && data.products.some(p =>
+                    p.name === 'Amazon Product Analysis' ||
+                    p.name === 'Flipkart Product Analysis' ||
+                    p.confidence === 85 // Mock data typically has exactly 85% confidence
+                );
+
+                if (isMockData) {
+                    showStatus('⚠️ WARNING: Mock data detected! Real data only mode failed!', 'error');
+                } else {
+                    showStatus('✅ SUCCESS: Real data received! Product names and data are authentic.', 'success');
+                }
+
+                showResult('Valid URLs Response', data, isMockData);
+
+            } catch (error) {
+                showStatus(`❌ Request failed: ${error.message}`, 'error');
+                showResult('Error', { error: error.message }, false);
+            }
+        }
+
+        async function testInvalidUrls() {
+            showStatus('🔄 Testing with invalid URLs... Should return error', 'info');
+
+            const urls = [
+                'https://invalid-url.com/product/123',
+                'https://not-amazon-or-flipkart.com/item/456'
+            ];
+
+            try {
+                const response = await fetch('http://localhost:9000/api/analyze/urls', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        urls: urls,
+                        options: {
+                            includeInsights: true,
+                            includeRecommendation: true,
+                            maxReviews: 50
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                // This should fail with an error, not return mock data
+                if (!response.ok) {
+                    const hasMockFallbackMessage = data.details && data.details.includes('Real data only mode');
+
+                    if (hasMockFallbackMessage) {
+                        showStatus('✅ SUCCESS: Proper error returned! No mock data fallback.', 'success');
+                    } else {
+                        showStatus('⚠️ Error returned but message unclear', 'error');
+                    }
+                } else {
+                    // If it succeeded with invalid URLs, it's using mock data
+                    showStatus('❌ FAILURE: Invalid URLs should have failed! Mock data may be in use.', 'error');
+                }
+
+                showResult('Invalid URLs Response', data, false);
+
+            } catch (error) {
+                showStatus(`❌ Request failed: ${error.message}`, 'error');
+                showResult('Error', { error: error.message }, false);
+            }
+        }
+    </script>
+</body>
+</html>

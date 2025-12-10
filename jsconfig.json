@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "allowSyntheticDefaultImports": false,
+        "baseUrl": "./",
+        "checkJs": false,
+        "allowJs": true,
+        "noEmit": true
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*",
+        "webscraper.js"
+    ],
+    "include": [
+        "*.js",
+        "!webscraper.js"
+    ]
+}

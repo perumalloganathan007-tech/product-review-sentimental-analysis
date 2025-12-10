@@ -1,0 +1,8 @@
+Product Name,Review Text,Sentiment,Rating,Price,URL,Category,Scraped Date
+OnePlus Nord CE 5G,Great phone with excellent battery life and good camera quality,POSITIVE,4.2,₹24999,https://www.amazon.in/OnePlus-Nord-CE-5G/dp/B094RYL3XZ,electronics,2025-12-10
+OnePlus Nord CE 5G,Average performance but good value for money,NEUTRAL,3.8,₹24999,https://www.amazon.in/OnePlus-Nord-CE-5G/dp/B094RYL3XZ,electronics,2025-12-10
+OnePlus Nord CE 5G,Not satisfied with build quality and heating issues,NEGATIVE,2.5,₹24999,https://www.amazon.in/OnePlus-Nord-CE-5G/dp/B094RYL3XZ,electronics,2025-12-10
+Samsung Galaxy M32,Excellent display and long battery life. Highly recommended!,POSITIVE,4.5,₹16999,https://www.flipkart.com/samsung-galaxy-m32/p/itm123456,electronics,2025-12-10
+Samsung Galaxy M32,Good phone overall but camera could be better,NEUTRAL,3.9,₹16999,https://www.flipkart.com/samsung-galaxy-m32/p/itm123456,electronics,2025-12-10
+Redmi Note 11 Pro,Amazing value for money with great features and performance,POSITIVE,4.3,₹19999,https://www.amazon.in/Redmi-Note-11-Pro/dp/B09MQR7PQN,electronics,2025-12-10
+Redmi Note 11 Pro,Decent phone but software has some bugs,NEUTRAL,3.6,₹19999,https://www.amazon.in/Redmi-Note-11-Pro/dp/B09MQR7PQN,electronics,2025-12-10

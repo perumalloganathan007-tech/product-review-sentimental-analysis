@@ -1,0 +1,282 @@
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:82:62: value getOrElse is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m                  url = Some(s"dataset://${filePart.filename.getOrElse("dataset.csv")}"),[0m
+[0m[[0m[31merror[0m] [0m[0m                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:86:61: value getOrElse is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m                    "originalFilename" -> filePart.filename.getOrElse("dataset.csv")[0m
+[0m[[0m[31merror[0m] [0m[0m                                                            ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:110:25: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m                  Review(analysis.id.get, "This product is absolutely amazing! Love it!", SentimentType.Positive, BigDecimal(0.92)),[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:111:25: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m                  Review(analysis.id.get, "Good quality, meets expectations.", SentimentType.Positive, BigDecimal(0.75)),[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:112:25: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m                  Review(analysis.id.get, "It's okay, nothing special.", SentimentType.Neutral, BigDecimal(0.05)),[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:113:25: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m                  Review(analysis.id.get, "Not worth the money, disappointing.", SentimentType.Negative, BigDecimal(-0.78))[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:116:45: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: Seq[models.Review][0m
+[0m[[0m[31merror[0m] [0m[0m                _ <- reviewRepo.createBatch(sampleReviews)[0m
+[0m[[0m[31merror[0m] [0m[0m                                            ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:120:33: value id is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  id = analysis.id.get,[0m
+[0m[[0m[31merror[0m] [0m[0m                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:123:43: value totalReviews is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  totalReviews = analysis.totalReviews,[0m
+[0m[[0m[31merror[0m] [0m[0m                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:124:44: value positiveCount is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  positiveCount = analysis.positiveCount,[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:125:43: value neutralCount is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  neutralCount = analysis.neutralCount,[0m
+[0m[[0m[31merror[0m] [0m[0m                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:126:44: value negativeCount is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  negativeCount = analysis.negativeCount,[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:127:49: value positivePercentage is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  positivePercentage = analysis.positivePercentage,[0m
+[0m[[0m[31merror[0m] [0m[0m                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:128:48: value neutralPercentage is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  neutralPercentage = analysis.neutralPercentage,[0m
+[0m[[0m[31merror[0m] [0m[0m                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:129:49: value negativePercentage is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  negativePercentage = analysis.negativePercentage,[0m
+[0m[[0m[31merror[0m] [0m[0m                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:130:47: value overallSentiment is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  overallSentiment = analysis.overallSentiment.toString,[0m
+[0m[[0m[31merror[0m] [0m[0m                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:131:48: value overallSuggestion is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  overallSuggestion = analysis.overallSuggestion,[0m
+[0m[[0m[31merror[0m] [0m[0m                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:132:40: value createdAt is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m                  createdAt = analysis.createdAt[0m
+[0m[[0m[31merror[0m] [0m[0m                                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:188:21: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m              Review(analysis.id.get, "Great product from this website!", SentimentType.Positive, BigDecimal(0.85)),[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:189:21: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m              Review(analysis.id.get, "Decent quality for the price.", SentimentType.Neutral, BigDecimal(0.15)),[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:190:21: not enough arguments for method apply: (id: Option[Long], analysisId: Long, reviewText: String, sentiment: models.SentimentType, sentimentScore: BigDecimal, confidenceScore: Option[BigDecimal], wordCount: Option[Int], language: Option[String], sourceUrl: Option[String], extractedKeywords: Option[play.api.libs.json.JsValue], createdAt: Option[java.time.ZonedDateTime])models.Review in object Review.[0m
+[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter sentimentScore.[0m
+[0m[[0m[31merror[0m] [0m[0m              Review(analysis.id.get, "Could be better, had some issues.", SentimentType.Negative, BigDecimal(-0.65))[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:193:41: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: Seq[models.Review][0m
+[0m[[0m[31merror[0m] [0m[0m            _ <- reviewRepo.createBatch(sampleReviews)[0m
+[0m[[0m[31merror[0m] [0m[0m                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:196:27: value id is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            id = analysis.id.get,[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:199:37: value totalReviews is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            totalReviews = analysis.totalReviews,[0m
+[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:200:38: value positiveCount is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            positiveCount = analysis.positiveCount,[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:201:37: value neutralCount is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            neutralCount = analysis.neutralCount,[0m
+[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:202:38: value negativeCount is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            negativeCount = analysis.negativeCount,[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:203:43: value positivePercentage is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            positivePercentage = analysis.positivePercentage,[0m
+[0m[[0m[31merror[0m] [0m[0m                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:204:42: value neutralPercentage is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            neutralPercentage = analysis.neutralPercentage,[0m
+[0m[[0m[31merror[0m] [0m[0m                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:205:43: value negativePercentage is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            negativePercentage = analysis.negativePercentage,[0m
+[0m[[0m[31merror[0m] [0m[0m                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:206:41: value overallSentiment is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            overallSentiment = analysis.overallSentiment.toString,[0m
+[0m[[0m[31merror[0m] [0m[0m                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:207:42: value overallSuggestion is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            overallSuggestion = analysis.overallSuggestion,[0m
+[0m[[0m[31merror[0m] [0m[0m                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:208:34: value createdAt is not a member of Any[0m
+[0m[[0m[31merror[0m] [0m[0m            createdAt = analysis.createdAt[0m
+[0m[[0m[31merror[0m] [0m[0m                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\AnalysisController.scala:213:25: No Json serializer found for type Seq[Nothing]. Try to implement an implicit Writes or Format for this type.[0m
+[0m[[0m[31merror[0m] [0m[0m          Ok(Json.toJson(results))[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\WebScrapingService.scala:8:14: object jdk is not a member of package scala[0m
+[0m[[0m[31merror[0m] [0m[0mimport scala.jdk.CollectionConverters._[0m
+[0m[[0m[31merror[0m] [0m[0m             ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\FlipkartScraperController.scala:50:62: value metadata is not a member of services.ProductInfo[0m
+[0m[[0m[31merror[0m] [0m[0m                price = extractPriceFromMetadata(productInfo.metadata),[0m
+[0m[[0m[31merror[0m] [0m[0m                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\FlipkartScraperController.scala:51:78: value metadata is not a member of services.ProductInfo[0m
+[0m[[0m[31merror[0m] [0m[0m                originalPrice = extractOriginalPriceFromMetadata(productInfo.metadata),[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\FlipkartScraperController.scala:52:68: value metadata is not a member of services.ProductInfo[0m
+[0m[[0m[31merror[0m] [0m[0m                discount = extractDiscountFromMetadata(productInfo.metadata),[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\FlipkartScraperController.scala:139:63: value metadata is not a member of services.ProductInfo[0m
+[0m[[0m[31merror[0m] [0m[0m              "price" -> extractPriceFromMetadata(productInfo.metadata),[0m
+[0m[[0m[31merror[0m] [0m[0m                                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\FlipkartScraperController.scala:187:46: value metadata is not a member of services.ProductInfo[0m
+[0m[[0m[31merror[0m] [0m[0m    if (extractPriceFromMetadata(productInfo.metadata).isDefined) score += 30[0m
+[0m[[0m[31merror[0m] [0m[0m                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:49:16: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m        Logger.error("Error getting history", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:92:20: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m            Logger.error("Error adding history entry", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:111:16: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m        Logger.error(s"Error getting history entry $id", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:138:20: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m            Logger.error(s"Error updating history status for $id", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:160:16: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m        Logger.error(s"Error deleting history entry $id", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:179:16: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m        Logger.error("Error clearing history", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:211:16: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m        Logger.error("Error searching history", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\HistoryController.scala:227:16: value error is not a member of object play.api.Logger[0m
+[0m[[0m[31merror[0m] [0m[0m        Logger.error("Error getting history stats", ex)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:56:44: not found: type Analysis[0m
+[0m[[0m[31merror[0m] [0m[0m  private def generateTextReport(analysis: Analysis, product: Product, reviews: Seq[Review]): String = {[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:56:85: not found: type Review[0m
+[0m[[0m[31merror[0m] [0m[0m  private def generateTextReport(analysis: Analysis, product: Product, reviews: Seq[Review]): String = {[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:89:44: not found: type Analysis[0m
+[0m[[0m[31merror[0m] [0m[0m  private def generateCSVContent(analysis: Analysis, product: Product, reviews: Seq[Review]): String = {[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:89:85: not found: type Review[0m
+[0m[[0m[31merror[0m] [0m[0m  private def generateCSVContent(analysis: Analysis, product: Product, reviews: Seq[Review]): String = {[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:64:25: value name is not a member of Product[0m
+[0m[[0m[31merror[0m] [0m[0m    |Product: ${product.name}[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:65:21: value url is not a member of Product[0m
+[0m[[0m[31merror[0m] [0m[0m    |URL: ${product.url.getOrElse("N/A")}[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:94:40: value name is not a member of Product[0m
+[0m[[0m[31merror[0m] [0m[0m      val escapedProductName = product.name.replace("\"", "\"\"")[0m
+[0m[[0m[31merror[0m] [0m[0m                                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\ReportController.scala:109:26: value $ is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m      s"Recommendation,\"${analysis.overallSuggestion.getOrElse("").replace("\"", "\"\"")}\""[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\TestController.scala:74:7: value recover is not a member of play.api.mvc.Result[0m
+[0m[[0m[31merror[0m] [0m[0mpossible cause: maybe a semicolon is missing before `value recover'?[0m
+[0m[[0m[31merror[0m] [0m[0m    }.recover {[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\controllers\TestController.scala:90:21: value TestController is not a member of object controllers.routes[0m
+[0m[[0m[31merror[0m] [0m[0m    Redirect(routes.TestController.testPage())[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\repositories\Repositories.scala:158:11: could not find implicit value for parameter rconv: slick.jdbc.GetResult[models.Review][0m
+[0m[[0m[31merror[0m] [0m[0m    """.as[Review])[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:80:26: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : java.sql.Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m required: java.time.ZonedDateTime[0m
+[0m[[0m[31merror[0m] [0m[0m        createdAt = Some(new Timestamp(System.currentTimeMillis())),[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:85:39: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: models.Analysis[0m
+[0m[[0m[31merror[0m] [0m[0m      savedAnalysis <- createAnalysis(analysis)[0m
+[0m[[0m[31merror[0m] [0m[0m                                      ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:88:63: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: scala.collection.GenIterable[?][0m
+[0m[[0m[31merror[0m] [0m[0m      _ <- saveReviews(savedAnalysis.id.get, validReviews.zip(sentimentResults))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:150:28: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : java.sql.Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m required: java.time.ZonedDateTime[0m
+[0m[[0m[31merror[0m] [0m[0m          createdAt = Some(new Timestamp(System.currentTimeMillis())),[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:155:41: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: models.Analysis[0m
+[0m[[0m[31merror[0m] [0m[0m        savedAnalysis <- createAnalysis(analysis)[0m
+[0m[[0m[31merror[0m] [0m[0m                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:158:65: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: scala.collection.GenIterable[?][0m
+[0m[[0m[31merror[0m] [0m[0m        _ <- saveReviews(savedAnalysis.id.get, validReviews.zip(sentimentResults))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:218:24: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : java.sql.Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m required: java.time.ZonedDateTime[0m
+[0m[[0m[31merror[0m] [0m[0m      createdAt = Some(new Timestamp(System.currentTimeMillis()))[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\AnalysisService.scala:243:26: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : java.sql.Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m required: java.time.ZonedDateTime[0m
+[0m[[0m[31merror[0m] [0m[0m        createdAt = Some(new Timestamp(System.currentTimeMillis()))[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\ComparisonService.scala:11:8: object ComparisonProduct is not a member of package controllers[0m
+[0m[[0m[31merror[0m] [0m[0mimport controllers.{ComparisonProduct, ComparisonDataset}[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\ComparisonService.scala:62:49: value getOrElse is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m      val tempFile = new File(filePart.filename.getOrElse(s"dataset_$index"))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\ComparisonService.scala:81:19: not found: type ComparisonProduct[0m
+[0m[[0m[31merror[0m] [0m[0m    products: Seq[ComparisonProduct][0m
+[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\ComparisonService.scala:250:24: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : java.sql.Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m required: java.time.ZonedDateTime[0m
+[0m[[0m[31merror[0m] [0m[0m      createdAt = Some(new Timestamp(System.currentTimeMillis()))[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\ComparisonService.scala:262:26: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : java.sql.Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m required: java.time.ZonedDateTime[0m
+[0m[[0m[31merror[0m] [0m[0m        createdAt = Some(new Timestamp(System.currentTimeMillis()))[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\HistoryService.scala:110:27: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : slick.lifted.Query[models.Tables.AnalysisHistoryTable,models.Tables.AnalysisHistoryTable#TableElementType,Seq][0m
+[0m[[0m[31merror[0m] [0m[0m    (which expands to)  slick.lifted.Query[models.Tables.AnalysisHistoryTable,models.AnalysisHistory,Seq][0m
+[0m[[0m[31merror[0m] [0m[0m required: slick.lifted.TableQuery[models.Tables.AnalysisHistoryTable][0m
+[0m[[0m[31merror[0m] [0m[0m      query = query.filter(_.sessionId === sid)[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\HistoryService.scala:140:27: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : slick.lifted.Query[models.Tables.AnalysisHistoryTable,models.Tables.AnalysisHistoryTable#TableElementType,Seq][0m
+[0m[[0m[31merror[0m] [0m[0m    (which expands to)  slick.lifted.Query[models.Tables.AnalysisHistoryTable,models.AnalysisHistory,Seq][0m
+[0m[[0m[31merror[0m] [0m[0m required: slick.lifted.TableQuery[models.Tables.AnalysisHistoryTable][0m
+[0m[[0m[31merror[0m] [0m[0m      query = query.filter(_.sessionId === sid)[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\NLPService.scala:137:44: value length is not a member of org.ejml.simple.SimpleMatrix[0m
+[0m[[0m[31merror[0m] [0m[0m    if (predictions != null && predictions.length > 0) {[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\NLPService.scala:138:19: value max is not a member of org.ejml.simple.SimpleMatrix[0m
+[0m[[0m[31merror[0m] [0m[0m      predictions.max[0m
+[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\ReportService.scala:297:49: not found: type Timestamp[0m
+[0m[[0m[31merror[0m] [0m[0m  private def formatTimestamp(timestamp: Option[Timestamp]): String = {[0m
+[0m[[0m[31merror[0m] [0m[0m                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\WebScrapingService.scala:243:22: value asScala is not a member of org.jsoup.select.Elements[0m
+[0m[[0m[31merror[0m] [0m[0m      reviewElements.asScala.map { reviewElement =>[0m
+[0m[[0m[31merror[0m] [0m[0m                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\WebScrapingService.scala:353:54: value asScala is not a member of org.jsoup.select.Elements[0m
+[0m[[0m[31merror[0m] [0m[0m      .flatMap(selector => document.select(selector).asScala)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\WebScrapingService.scala:476:33: value asScala is not a member of org.jsoup.select.Elements[0m
+[0m[[0m[31merror[0m] [0m[0m      document.select(selector).asScala[0m
+[0m[[0m[31merror[0m] [0m[0m                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mD:\project zip flies\scala project\scala project\app\services\WebScrapingService.scala:480:38: value text is not a member of Nothing[0m
+[0m[[0m[31merror[0m] [0m[0m      val reviewText = reviewElement.text().trim[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0m81 errors found[0m

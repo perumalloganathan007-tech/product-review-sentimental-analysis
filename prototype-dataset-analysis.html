@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototype: Dataset Analysis with Spark Integration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .prototype-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+        .spark-button {
+            transition: all 0.3s ease;
+        }
+        .spark-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .code-section {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .feature-card {
+            border: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-flask me-3"></i>Prototype: Dataset Analysis</h1>
+                    <p class="lead mb-0">Standalone demonstration with Spark Web UI integration</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button id="sparkWebUIBtn" class="btn btn-warning btn-lg spark-button" onclick="openSparkUI()">
+                        <i class="fas fa-fire me-2"></i>Spark Web UI
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-4">
+            <!-- Overview Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <h4><i class="fas fa-info-circle me-2"></i>Prototype Overview</h4>
+                        <p class="mb-0">This is a standalone prototype demonstrating dataset analysis with Spark integration.
+                        It shows the complete workflow without modifying your main project.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-upload fa-3x text-primary mb-3"></i>
+                            <h5>CSV Upload</h5>
+                            <p class="text-muted">Upload product datasets for analysis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-fire fa-3x text-warning mb-3"></i>
+                            <h5>Spark Processing</h5>
+                            <p class="text-muted">Generate Spark jobs for sentiment analysis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
+                            <h5>Visual Results</h5>
+                            <p class="text-muted">Interactive charts and insights</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-cloud-upload-alt me-2"></i>Step 1: Upload Dataset</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="file" class="form-control form-control-lg" id="csvFile" accept=".csv">
+                            <small class="text-muted">
+                                Required columns: product_name, category, rating, reviews_count
+                            </small>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-lg w-100" onclick="analyzeDataset()">
+                                <i class="fas fa-play me-2"></i>Analyze Dataset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spark Script Generation -->
+            <div class="code-section">
+                <h5><i class="fas fa-code me-2"></i>Generated Spark Script</h5>
+                <div id="sparkScript">
+                    <pre id="scriptCode">// Spark script will be generated here after analysis...</pre>
+                </div>
+                <button class="btn btn-success mt-3" onclick="copyScript()">
+                    <i class="fas fa-copy me-2"></i>Copy Script
+                </button>
+                <button class="btn btn-info mt-3" onclick="downloadScript()">
+                    <i class="fas fa-download me-2"></i>Download Script
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" style="display: none;">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Analysis Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="sentimentChart"></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h3 id="totalProducts">0</h3>
+                                        <p class="mb-0">Total Products</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h3 id="avgRating">0.0</h3>
+                                        <p class="mb-0">Avg Rating</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h3 id="totalReviews">0</h3>
+                                        <p class="mb-0">Total Reviews</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body text-center">
+                                        <h3 id="topCategory">-</h3>
+                                        <p class="mb-0">Top Category</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions Section -->
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-terminal me-2"></i>Spark Execution Instructions</h5>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>Start spark-shell in a terminal: <code>spark-shell</code></li>
+                        <li>Copy the generated Spark script above</li>
+                        <li>Paste it into spark-shell or save as .scala file</li>
+                        <li>Execute with: <code>:load your-script.scala</code></li>
+                        <li>View results in Spark Web UI: <a href="#" onclick="openSparkUI(); return false;">http://localhost:4040/jobs/</a></li>
+                    </ol>
+                    <div class="alert alert-warning">
+                        <strong>Note:</strong> This prototype generates scripts for manual execution in spark-shell.
+                        For automated integration, see the integration documentation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const SPARK_UI_URL = localStorage.getItem('sparkUIUrl') || 'http://192.168.1.35:4040/jobs/';
+        let currentScript = '';
+        let sentimentChartInstance = null;
+        let categoryChartInstance = null;
+
+        // Open Spark UI
+        function openSparkUI() {
+            window.open(SPARK_UI_URL, '_blank');
+        }
+
+        // Analyze Dataset
+        function analyzeDataset() {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a CSV file first!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csvData = e.target.result;
+                const parsedData = parseCSV(csvData);
+
+                // Generate Spark script
+                const script = generateSparkScript(parsedData, file.name);
+                currentScript = script;
+                document.getElementById('scriptCode').textContent = script;
+
+                // Display results
+                displayResults(parsedData);
+            };
+            reader.readAsText(file);
+        }
+
+        // Parse CSV
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                if (values.length === headers.length) {
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index].trim();
+                    });
+                    data.push(row);
+                }
+            }
+
+            return data;
+        }
+
+        // Generate Spark Script
+        function generateSparkScript(data, fileName) {
+            const timestamp = new Date().toISOString();
+            const sampleSize = Math.min(data.length, 50);
+            const samples = data.slice(0, sampleSize);
+
+            const sparkData = samples.map(row => {
+                const rating = parseFloat(row.rating || row.Rating || 3.5);
+                const review = (row.review_text || row.product_name || 'sample').replace(/"/g, '\\"').substring(0, 100);
+                return `      ("${review}", ${rating})`;
+            }).join(',\n');
+
+            return `// ============================================
+// Spark Job: Dataset Analysis - ${fileName}
+// Generated: ${timestamp}
+// Total Records: ${data.length}
+// Sample Size: ${sampleSize}
+// ============================================
+
+println("\\n" + "="*70)
+println("🚀 Starting Spark Job: ${fileName}")
+println("📊 Processing ${data.length} records (showing ${sampleSize} samples)")
+println("="*70 + "\\n")
+
+import org.apache.spark.sql.functions._
+
+// Create DataFrame from product data
+val productData = Seq(
+${sparkData}
+)
+
+val df = productData.toDF("product_name", "rating")
+
+println(s"✅ DataFrame created with \${df.count()} rows\\n")
+
+// Perform sentiment analysis based on ratings
+val withSentiment = df.withColumn("sentiment",
+  when($"rating" >= 4.0, "POSITIVE")
+  .when($"rating" >= 3.0, "NEUTRAL")
+  .otherwise("NEGATIVE")
+)
+
+// Calculate sentiment distribution
+val sentimentCounts = withSentiment
+  .groupBy("sentiment")
+  .count()
+  .orderBy(desc("count"))
+
+println("\\n📈 Sentiment Distribution:")
+sentimentCounts.show()
+
+// Calculate statistics
+val stats = withSentiment.agg(
+  count("*").as("total"),
+  avg("rating").as("avg_rating"),
+  min("rating").as("min_rating"),
+  max("rating").as("max_rating")
+).first()
+
+println("\\n📊 Statistics:")
+println(s"   Total Products: \${stats.getLong(0)}")
+println(s"   Average Rating: \${stats.getDouble(1)}")
+println(s"   Min Rating: \${stats.getDouble(2)}")
+println(s"   Max Rating: \${stats.getDouble(3)}")
+
+// Calculate sentiment percentages
+val totalCount = withSentiment.count()
+val sentimentPercentages = withSentiment
+  .groupBy("sentiment")
+  .count()
+  .withColumn("percentage", round(($"count" / totalCount) * 100, 2))
+  .orderBy(desc("percentage"))
+
+println("\\n💯 Sentiment Percentages:")
+sentimentPercentages.show()
+
+println("\\n" + "="*70)
+println("✅ Job Completed Successfully!")
+println("="*70 + "\\n")
+`;
+        }
+
+        // Display Results
+        function displayResults(data) {
+            document.getElementById('resultsSection').style.display = 'block';
+
+            // Calculate statistics
+            const totalProducts = data.length;
+            const totalReviews = data.reduce((sum, row) => sum + parseInt(row.reviews_count || 0), 0);
+            const avgRating = (data.reduce((sum, row) => sum + parseFloat(row.rating || 0), 0) / totalProducts).toFixed(2);
+
+            // Count categories
+            const categories = {};
+            data.forEach(row => {
+                const cat = row.category || 'Unknown';
+                categories[cat] = (categories[cat] || 0) + 1;
+            });
+            const topCategory = Object.keys(categories).sort((a, b) => categories[b] - categories[a])[0];
+
+            // Update stats
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('avgRating').textContent = avgRating;
+            document.getElementById('totalReviews').textContent = totalReviews.toLocaleString();
+            document.getElementById('topCategory').textContent = topCategory;
+
+            // Calculate sentiment distribution
+            const sentiments = { POSITIVE: 0, NEUTRAL: 0, NEGATIVE: 0 };
+            data.forEach(row => {
+                const rating = parseFloat(row.rating || 0);
+                if (rating >= 4.0) sentiments.POSITIVE++;
+                else if (rating >= 3.0) sentiments.NEUTRAL++;
+                else sentiments.NEGATIVE++;
+            });
+
+            // Create charts
+            createSentimentChart(sentiments);
+            createCategoryChart(categories);
+        }
+
+        // Create Sentiment Chart
+        function createSentimentChart(sentiments) {
+            const ctx = document.getElementById('sentimentChart');
+            if (sentimentChartInstance) sentimentChartInstance.destroy();
+
+            sentimentChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Positive', 'Neutral', 'Negative'],
+                    datasets: [{
+                        data: [sentiments.POSITIVE, sentiments.NEUTRAL, sentiments.NEGATIVE],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Sentiment Distribution'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create Category Chart
+        function createCategoryChart(categories) {
+            const ctx = document.getElementById('categoryChart');
+            if (categoryChartInstance) categoryChartInstance.destroy();
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{
+                        label: 'Products',
+                        data: Object.values(categories),
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Products by Category'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Copy Script
+        function copyScript() {
+            navigator.clipboard.writeText(currentScript).then(() => {
+                alert('Spark script copied to clipboard!');
+            });
+        }
+
+        // Download Script
+        function downloadScript() {
+            const blob = new Blob([currentScript], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `spark-job-${Date.now()}.scala`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

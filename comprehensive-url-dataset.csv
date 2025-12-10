@@ -1,0 +1,56 @@
+url,product_name,category,brand,expected_sentiment
+https://www.flipkart.com/apple-iphone-16-ultramarine-128-gb/p/itm3a4b5c6d7e8f9,Apple iPhone 16,Smartphones,Apple,POSITIVE
+https://www.flipkart.com/samsung-galaxy-s24-ultra-titanium-gray-256-gb/p/itm9f8e7d6c5b4a3,Samsung Galaxy S24 Ultra,Smartphones,Samsung,POSITIVE
+https://www.flipkart.com/oneplus-12-silky-black-256-gb/p/itm2c1b9a8f7e6d5,OnePlus 12,Smartphones,OnePlus,POSITIVE
+https://www.flipkart.com/xiaomi-14-ultra-white-512-gb/p/itm8d7c6b5a4f3e2,Xiaomi 14 Ultra,Smartphones,Xiaomi,POSITIVE
+https://www.flipkart.com/google-pixel-8-pro-obsidian-128-gb/p/itm7e6d5c4b3a2f1,Google Pixel 8 Pro,Smartphones,Google,POSITIVE
+https://www.flipkart.com/vivo-x100-pro-asteroid-black-256-gb/p/itm5f4e3d2c1b9a8,Vivo X100 Pro,Smartphones,Vivo,POSITIVE
+https://www.flipkart.com/oppo-find-x7-ultra-ocean-blue-512-gb/p/itm1a9b8c7d6e5f4,OPPO Find X7 Ultra,Smartphones,OPPO,POSITIVE
+https://www.flipkart.com/realme-gt-6-pro-fluid-silver-256-gb/p/itm6e5d4c3b2a1f9,Realme GT 6 Pro,Smartphones,Realme,POSITIVE
+https://www.flipkart.com/nothing-phone-2a-milk-128-gb/p/itm4c3b2a1f9e8d7,Nothing Phone (2a),Smartphones,Nothing,POSITIVE
+https://www.flipkart.com/asus-rog-phone-8-phantom-black-256-gb/p/itm9a8b7c6d5e4f3,ASUS ROG Phone 8,Smartphones,ASUS,POSITIVE
+https://www.amazon.in/Apple-iPhone-16-Pro-Max/dp/B0DGFCSXY1,Apple iPhone 16 Pro Max,Smartphones,Apple,POSITIVE
+https://www.amazon.in/Samsung-Galaxy-Z-Fold6-Graphite/dp/B0D5M7Q8X3,Samsung Galaxy Z Fold6,Smartphones,Samsung,POSITIVE
+https://www.amazon.in/OnePlus-Open-Emerald-Dusk-512GB/dp/B0CLXR4Y7M,OnePlus Open,Smartphones,OnePlus,POSITIVE
+https://www.amazon.in/Google-Pixel-Fold-Obsidian-256GB/dp/B0C34K8XTH,Google Pixel Fold,Smartphones,Google,POSITIVE
+https://www.amazon.in/Xiaomi-Mix-Fold-4-Black/dp/B0D8H9K2L5,Xiaomi Mix Fold 4,Smartphones,Xiaomi,POSITIVE
+https://www.flipkart.com/apple-macbook-air-m3-midnight-256-gb/p/itm7f6e5d4c3b2a1,Apple MacBook Air M3,Laptops,Apple,POSITIVE
+https://www.flipkart.com/dell-xps-13-plus-platinum-silver-512-gb/p/itm2a1f9e8d7c6b5,Dell XPS 13 Plus,Laptops,Dell,POSITIVE
+https://www.flipkart.com/hp-spectre-x360-nightfall-black-1tb/p/itm8d7c6b5a4f3e2,HP Spectre x360,Laptops,HP,POSITIVE
+https://www.flipkart.com/lenovo-thinkpad-x1-carbon-black-512-gb/p/itm5f4e3d2c1b9a8,Lenovo ThinkPad X1 Carbon,Laptops,Lenovo,POSITIVE
+https://www.flipkart.com/asus-zenbook-pro-oled-space-gray-1tb/p/itm1a9b8c7d6e5f4,ASUS ZenBook Pro OLED,Laptops,ASUS,POSITIVE
+https://www.amazon.in/MacBook-Air-13-inch-M3-chip/dp/B0CX23V2ZK,Apple MacBook Air 13 M3,Laptops,Apple,POSITIVE
+https://www.amazon.in/Microsoft-Surface-Laptop-Studio-Platinum/dp/B09J4M7K8L,Microsoft Surface Laptop Studio,Laptops,Microsoft,POSITIVE
+https://www.amazon.in/ASUS-ROG-Strix-SCAR-Gaming/dp/B0D2F8H3K7,ASUS ROG Strix SCAR 18,Laptops,ASUS,POSITIVE
+https://www.amazon.in/HP-OMEN-Gaming-Laptop-16/dp/B0CXYZ123A,HP OMEN 16,Laptops,HP,POSITIVE
+https://www.amazon.in/Alienware-x17-R2-Gaming-Laptop/dp/B0B9C1D2E3,Alienware x17 R2,Laptops,Dell,POSITIVE
+https://www.flipkart.com/sony-wh-1000xm5-wireless-noise-canceling/p/itm6e5d4c3b2a1f9,Sony WH-1000XM5,Headphones,Sony,POSITIVE
+https://www.flipkart.com/bose-quietcomfort-45-midnight-blue/p/itm4c3b2a1f9e8d7,Bose QuietComfort 45,Headphones,Bose,POSITIVE
+https://www.flipkart.com/apple-airpods-pro-2nd-generation-white/p/itm9a8b7c6d5e4f3,Apple AirPods Pro 2nd Gen,Headphones,Apple,POSITIVE
+https://www.flipkart.com/sennheiser-momentum-4-wireless-black/p/itm7f6e5d4c3b2a1,Sennheiser Momentum 4,Headphones,Sennheiser,POSITIVE
+https://www.flipkart.com/jbl-live-660nc-blue-wireless-headphones/p/itm2a1f9e8d7c6b5,JBL Live 660NC,Headphones,JBL,POSITIVE
+https://www.amazon.in/Sony-WH-1000XM4-Wireless-Headphones/dp/B08C7KG5LP,Sony WH-1000XM4,Headphones,Sony,POSITIVE
+https://www.amazon.in/Apple-AirPods-Max-Sky-Blue/dp/B08PZHYWJS,Apple AirPods Max,Headphones,Apple,POSITIVE
+https://www.amazon.in/Bose-QuietComfort-Earbuds-Soapstone/dp/B08C4KWM9T,Bose QuietComfort Earbuds,Headphones,Bose,POSITIVE
+https://www.amazon.in/Sennheiser-HD-660S2-Headphones/dp/B0B8M9N1P2,Sennheiser HD 660S2,Headphones,Sennheiser,POSITIVE
+https://www.amazon.in/Audio-Technica-ATH-M50xBT2-Wireless/dp/B09HJBQX3C,Audio-Technica ATH-M50xBT2,Headphones,Audio-Technica,POSITIVE
+https://www.flipkart.com/samsung-65-inch-neo-qled-8k-smart-tv/p/itm8d7c6b5a4f3e2,Samsung 65 Neo QLED 8K TV,Television,Samsung,POSITIVE
+https://www.flipkart.com/lg-77-inch-oled-c4-smart-tv/p/itm5f4e3d2c1b9a8,LG 77 OLED C4 TV,Television,LG,POSITIVE
+https://www.flipkart.com/sony-75-inch-bravia-xr-a95l-oled/p/itm1a9b8c7d6e5f4,Sony 75 BRAVIA XR A95L,Television,Sony,POSITIVE
+https://www.flipkart.com/tcl-85-inch-qled-c855-premium-tv/p/itm6e5d4c3b2a1f9,TCL 85 QLED C855,Television,TCL,MIXED
+https://www.flipkart.com/mi-75-inch-qled-tv-4k-ultra-hd/p/itm4c3b2a1f9e8d7,Mi 75 QLED TV 4K,Television,Xiaomi,MIXED
+https://www.amazon.in/Samsung-inches-Ultra-Smart-UA65AU7700KXXL/dp/B094J7L8M9,Samsung 65 Crystal 4K UHD TV,Television,Samsung,POSITIVE
+https://www.amazon.in/LG-inches-Ultra-Smart-OLED77C1PSA/dp/B08WJQ8VZM,LG 77 OLED C1 TV,Television,LG,POSITIVE
+https://www.amazon.in/Sony-inches-Google-Smart-KD-75X80L/dp/B0C1M2N3O4,Sony 75 X80L LED TV,Television,Sony,POSITIVE
+https://www.amazon.in/OnePlus-inches-QLED-Smart-55Q1IN/dp/B089QRSTUV,OnePlus 55 Q1 QLED TV,Television,OnePlus,MIXED
+https://www.amazon.in/Power-Guard-inches-Smart-PG43F4K/dp/B0D5E6F7G8,Power Guard 43 4K LED TV,Television,Power Guard,NEGATIVE
+https://www.flipkart.com/apple-watch-series-9-gps-cellular-45mm/p/itm9a8b7c6d5e4f3,Apple Watch Series 9,Smartwatch,Apple,POSITIVE
+https://www.flipkart.com/samsung-galaxy-watch6-classic-47mm/p/itm7f6e5d4c3b2a1,Samsung Galaxy Watch6 Classic,Smartwatch,Samsung,POSITIVE
+https://www.flipkart.com/garmin-fenix-7x-sapphire-solar-edition/p/itm2a1f9e8d7c6b5,Garmin Fenix 7X Sapphire,Smartwatch,Garmin,POSITIVE
+https://www.flipkart.com/fitbit-sense-2-health-fitness-smartwatch/p/itm8d7c6b5a4f3e2,Fitbit Sense 2,Smartwatch,Fitbit,MIXED
+https://www.flipkart.com/amazfit-gtr-4-vintage-brown-leather/p/itm5f4e3d2c1b9a8,Amazfit GTR 4,Smartwatch,Amazfit,MIXED
+https://www.amazon.in/Apple-Watch-Series-GPS-Cellular/dp/B0CHX8SZQS,Apple Watch Series 9,Smartwatch,Apple,POSITIVE
+https://www.amazon.in/Samsung-Galaxy-Watch6-Bluetooth-Smartwatch/dp/B0C7P8Q9R1,Samsung Galaxy Watch6,Smartwatch,Samsung,POSITIVE
+https://www.amazon.in/Garmin-Venu-3-AMOLED-GPS/dp/B0C9L1M2N3,Garmin Venu 3,Smartwatch,Garmin,POSITIVE
+https://www.amazon.in/Fossil-Gen-6-Wellness-Smartwatch/dp/B096FGHIJK,Fossil Gen 6 Wellness,Smartwatch,Fossil,MIXED
+https://www.amazon.in/Noise-ColorFit-Pro-4-Alpha/dp/B0B2C3D4E5,Noise ColorFit Pro 4 Alpha,Smartwatch,Noise,NEGATIVE

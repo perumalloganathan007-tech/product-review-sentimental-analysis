@@ -1,0 +1,31 @@
+url,product_name,category,scraping_difficulty,expected_data_quality,notes
+https://www.flipkart.com/poco-m6-5g-orion-blue-128-gb/p/itm1e52814f06bee,POCO M6 5G,Smartphone,EASY,HIGH,Good for testing basic scraping
+https://www.flipkart.com/samsung-galaxy-m14-5g-sapphire-blue-128-gb/p/itm6f7e5c77b42d3,Samsung Galaxy M14 5G,Smartphone,EASY,HIGH,Reliable product page structure
+https://www.flipkart.com/vivo-t4x-5g-marine-blue-128-gb/p/itm017656bdd097b,Vivo T4x 5G,Smartphone,EASY,HIGH,Used in previous tests successfully
+https://www.flipkart.com/realme-narzo-70x-5g-ice-blue-128-gb/p/itm0cb0cc81980bf,Realme Narzo 70x 5G,Smartphone,MEDIUM,HIGH,Good review count for sentiment analysis
+https://www.flipkart.com/oppo-k12x-5g-breeze-blue-128-gb/p/itm8e3a4c5d6f7a8,OPPO K12x 5G,Smartphone,MEDIUM,MEDIUM,May have dynamic loading
+https://www.amazon.in/Apple-iPhone-15-128-GB/dp/B0CHX2F5QT,Apple iPhone 15,Smartphone,HARD,HIGH,Complex page structure but rich data
+https://www.amazon.in/Samsung-Galaxy-M34-Midnight-Storage/dp/B0C75WXYZ1,Samsung Galaxy M34 5G,Smartphone,MEDIUM,HIGH,Good for testing Amazon scraping
+https://www.amazon.in/OnePlus-Nord-CE-3-Lite/dp/B0BZ4ABCDE,OnePlus Nord CE 3 Lite,Smartphone,MEDIUM,HIGH,Consistent Amazon product layout
+https://www.amazon.in/Redmi-Note-12-Pro-5G/dp/B0BW123FGH,Redmi Note 12 Pro 5G,Smartphone,MEDIUM,HIGH,Popular product with many reviews
+https://www.amazon.in/Realme-11-Pro-Sunrise-Beige/dp/B0C456IJKL,Realme 11 Pro,Smartphone,EASY,HIGH,Standard product page
+https://www.flipkart.com/boat-airdopes-131-wireless-earbuds/p/itmabc123def456,boAt Airdopes 131,Audio,EASY,MEDIUM,Budget category product
+https://www.flipkart.com/sony-wh-ch720n-black/p/itm789ghi012jkl,Sony WH-CH720N,Headphones,MEDIUM,HIGH,Premium audio product
+https://www.flipkart.com/jbl-tune-230nc-tws-white/p/itm345mno678pqr,JBL Tune 230NC TWS,Audio,MEDIUM,HIGH,Mid-range audio product
+https://www.flipkart.com/noise-air-buds-mini-truly-wireless/p/itm901stu234vwx,Noise Air Buds Mini,Audio,EASY,LOW,Budget brand with mixed reviews
+https://www.flipkart.com/realme-buds-air6-pro-deep-sea-blue/p/itm567yz8901abc,Realme Buds Air6 Pro,Audio,MEDIUM,MEDIUM,Good for testing color variants
+https://www.amazon.in/Sony-WH-1000XM4-Wireless-Headphones/dp/B08C7KG5LP,Sony WH-1000XM4,Headphones,HARD,HIGH,Premium product with extensive reviews
+https://www.amazon.in/JBL-Tune-770NC-Wireless-Headphones/dp/B09DEFGHIJ,JBL Tune 770NC,Headphones,MEDIUM,HIGH,Good balance of features and reviews
+https://www.amazon.in/boAt-Rockerz-450-Bluetooth-Headphones/dp/B0KLMNOPQR,boAt Rockerz 450,Headphones,EASY,MEDIUM,Popular budget option
+https://www.amazon.in/Skullcandy-Crusher-Wireless-Over-Ear/dp/B0STUVWXYZ,Skullcandy Crusher Evo,Headphones,MEDIUM,MEDIUM,Unique product features
+https://www.amazon.in/Audio-Technica-ATH-M50xBT2-Wireless/dp/B09HJKLMNO,Audio-Technica ATH-M50xBT2,Headphones,MEDIUM,HIGH,Professional audio brand
+https://www.flipkart.com/mi-power-bank-3i-20000mah/p/itmdef456ghi789,Mi Power Bank 3i,Power Bank,EASY,HIGH,Popular accessory product
+https://www.flipkart.com/ambrane-powerlit-20-black/p/itmjkl012mno345,Ambrane PowerLit-20,Power Bank,EASY,MEDIUM,Indian brand good for testing
+https://www.flipkart.com/syska-power-boost-100-white/p/itmpqr678stu901,Syska Power Boost 100,Power Bank,EASY,LOW,Budget option with basic reviews
+https://www.flipkart.com/intex-it-pb11k-11000mah/p/itmvwx234yz5678,Intex IT-PB11K,Power Bank,EASY,LOW,Entry-level product
+https://www.flipkart.com/urbn-premium-10000-mah/p/itmabc901def234,URBN Premium 10000 mAh,Power Bank,EASY,LOW,Generic brand for edge case testing
+https://www.amazon.in/Anker-PowerCore-26800-Portable-Charger/dp/B01JIWQPMW,Anker PowerCore 26800,Power Bank,MEDIUM,HIGH,International brand premium product
+https://www.amazon.in/Xiaomi-Redmi-Power-Bank-18W/dp/B08567GHIJ,Xiaomi Redmi Power Bank,Power Bank,EASY,HIGH,Reliable brand and product
+https://www.amazon.in/Samsung-25000mAh-Triple-Portable/dp/B0KLMN890P,Samsung 25000mAh,Power Bank,MEDIUM,HIGH,Premium brand accessory
+https://www.amazon.in/RAVPower-26800mAh-Portable-External/dp/B01QRSTU12,RAVPower 26800mAh,Power Bank,MEDIUM,MEDIUM,Tech-focused brand
+https://www.amazon.in/Belkin-BOOST-CHARGE-Wireless-Charger/dp/B0VW345XYZ,Belkin BOOST CHARGE,Power Bank,MEDIUM,MEDIUM,International accessory brand

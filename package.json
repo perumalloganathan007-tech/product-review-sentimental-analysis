@@ -1,0 +1,28 @@
+{
+  "name": "sentiment-analysis-mock-server",
+  "version": "1.0.0",
+  "description": "Mock API server for testing frontend-backend integration",
+  "main": "mock-server.js",
+  "scripts": {
+    "start": "node mock-server.js",
+    "dev": "nodemon mock-server.js"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "natural": "^8.1.0",
+    "ngrok": "^5.0.0-beta.2",
+    "puppeteer": "^24.29.0",
+    "sentiment": "^5.0.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "author": "Sentiment Analysis System",
+  "license": "MIT"
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price & Rating Scraping Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { padding: 20px; background: #f8f9fa; }
+        .test-card { margin-bottom: 20px; }
+        .product-info { background: white; padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .price-tag { color: #28a745; font-size: 24px; font-weight: bold; }
+        .original-price { color: #6c757d; text-decoration: line-through; font-size: 16px; }
+        .discount-badge { background: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; font-size: 14px; }
+        .rating-badge { background: #28a745; color: white; padding: 5px 10px; border-radius: 5px; }
+        .log-output { background: #212529; color: #00ff00; padding: 15px; border-radius: 5px; font-family: monospace; height: 400px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4"><i class="fas fa-shopping-cart"></i> Price & Rating Scraping Test</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card test-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5><i class="fab fa-amazon"></i> Amazon Product Test</h5>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" class="form-control mb-3" id="amazonUrl"
+                            placeholder="Enter Amazon product URL"
+                            value="https://www.amazon.in/dp/B0XXXXXX">
+                        <button class="btn btn-primary" onclick="testAmazon()">
+                            <i class="fas fa-search"></i> Test Amazon Scraping
+                        </button>
+
+                        <div id="amazonResult" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card test-card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5><i class="fas fa-shopping-bag"></i> Flipkart Product Test</h5>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" class="form-control mb-3" id="flipkartUrl"
+                            placeholder="Enter Flipkart product URL"
+                            value="https://www.flipkart.com/product-name/p/itm">
+                        <button class="btn btn-warning" onclick="testFlipkart()">
+                            <i class="fas fa-search"></i> Test Flipkart Scraping
+                        </button>
+
+                        <div id="flipkartResult" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5><i class="fas fa-terminal"></i> Scraping Logs</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="log-output" id="logOutput"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('logOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function displayProductInfo(container, productData) {
+            const html = `
+                <div class="product-info">
+                    <h6><i class="fas fa-box"></i> ${productData.productName || 'Product Name'}</h6>
+                    <hr>
+                    <div class="mb-2">
+                        ${productData.price ?
+                            `<span class="price-tag"><i class="fas fa-tag"></i> ${productData.price}</span>` :
+                            '<span class="text-danger">Price not found</span>'}
+                        ${productData.originalPrice && productData.originalPrice !== productData.price ?
+                            `<span class="original-price ms-2">${productData.originalPrice}</span>` : ''}
+                        ${productData.discount ?
+                            `<span class="discount-badge ms-2"><i class="fas fa-percent"></i> ${productData.discount}</span>` : ''}
+                    </div>
+                    <div class="mb-2">
+                        ${productData.rating ?
+                            `<span class="rating-badge"><i class="fas fa-star"></i> ${productData.rating}/5</span>` :
+                            '<span class="text-danger">Rating not found</span>'}
+                        ${productData.reviewCount ?
+                            `<span class="text-muted ms-2">(${productData.reviewCount.toLocaleString()} reviews)</span>` : ''}
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-comment"></i> Found ${productData.reviews ? productData.reviews.length : 0} reviews
+                        </small>
+                    </div>
+                </div>
+            `;
+            document.getElementById(container).innerHTML = html;
+        }
+
+        async function testAmazon() {
+            const url = document.getElementById('amazonUrl').value;
+            if (!url) {
+                alert('Please enter an Amazon URL');
+                return;
+            }
+
+            log('🚀 Starting Amazon scraping test...');
+            log(`URL: ${url}`);
+
+            // Show loading
+            document.getElementById('amazonResult').innerHTML = '<div class="text-center"><div class="spinner-border text-primary"></div><p>Scraping Amazon...</p></div>';
+
+            try {
+                // Call backend scraping endpoint
+                const response = await fetch('/api/scrape', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url, platform: 'amazon' })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Amazon scraping completed successfully');
+                    log(`   Product: ${data.productName}`);
+                    log(`   Price: ${data.price || 'NOT FOUND'}`);
+                    log(`   Rating: ${data.rating || 'NOT FOUND'}`);
+                    log(`   Reviews: ${data.reviews ? data.reviews.length : 0}`);
+
+                    displayProductInfo('amazonResult', data);
+                } else {
+                    throw new Error('Scraping failed: ' + response.statusText);
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+                document.getElementById('amazonResult').innerHTML =
+                    `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ${error.message}</div>`;
+            }
+        }
+
+        async function testFlipkart() {
+            const url = document.getElementById('flipkartUrl').value;
+            if (!url) {
+                alert('Please enter a Flipkart URL');
+                return;
+            }
+
+            log('🚀 Starting Flipkart scraping test...');
+            log(`URL: ${url}`);
+
+            // Show loading
+            document.getElementById('flipkartResult').innerHTML = '<div class="text-center"><div class="spinner-border text-warning"></div><p>Scraping Flipkart...</p></div>';
+
+            try {
+                // Call backend scraping endpoint
+                const response = await fetch('/api/scrape', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url, platform: 'flipkart' })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Flipkart scraping completed successfully');
+                    log(`   Product: ${data.productName}`);
+                    log(`   Price: ${data.price || 'NOT FOUND'}`);
+                    log(`   Rating: ${data.rating || 'NOT FOUND'}`);
+                    log(`   Reviews: ${data.reviews ? data.reviews.length : 0}`);
+
+                    displayProductInfo('flipkartResult', data);
+                } else {
+                    throw new Error('Scraping failed: ' + response.statusText);
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+                document.getElementById('flipkartResult').innerHTML =
+                    `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ${error.message}</div>`;
+            }
+        }
+
+        // Initial log message
+        log('=== Price & Rating Scraping Test Ready ===');
+        log('Enter product URLs and click test buttons to verify scraping');
+    </script>
+</body>
+</html>

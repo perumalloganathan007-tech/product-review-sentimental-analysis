@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi-Product Analysis - Sentiment Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="assets/styles.css?v=10.1" rel="stylesheet">
+    <style>
+        .analysis-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        .process-step {
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+        .process-step.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .process-step.completed {
+            opacity: 0.8;
+        }
+        .product-card {
+            transition: all 0.3s ease;
+            border-left: 5px solid #dee2e6;
+        }
+        .product-card.analyzing {
+            border-left-color: #ffc107;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+        }
+        .product-card.completed {
+            border-left-color: #28a745;
+        }
+        .product-card.error {
+            border-left-color: #dc3545;
+        }
+        .progress-lg {
+            height: 30px;
+        }
+
+        /* Print Styles */
+        @media print {
+            /* Hide non-essential elements */
+            .btn, button, nav, .navbar,
+            .sticky-top, .fixed-top, .fixed-bottom,
+            .no-print, [onclick] {
+                display: none !important;
+            }
+
+            /* Page setup */
+            @page {
+                size: A4;
+                margin: 1.5cm 1cm;
+            }
+
+            body {
+                background: white !important;
+                color: #333 !important;
+                font-size: 11pt;
+                line-height: 1.4;
+            }
+
+            /* Professional Header */
+            .analysis-hero {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                color: white !important;
+                padding: 20px 15px !important;
+                margin: 0 0 15px 0 !important;
+                border-radius: 8px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                page-break-inside: avoid;
+            }
+
+            .analysis-hero h1 {
+                font-size: 24pt !important;
+                font-weight: bold;
+                margin: 0 0 8px 0 !important;
+                color: white !important;
+            }
+
+            .analysis-hero p {
+                font-size: 11pt !important;
+                margin: 0 !important;
+                color: white !important;
+                opacity: 0.95;
+            }
+
+            /* Container adjustments */
+            .container, .container-fluid {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 10px !important;
+                margin: 0 !important;
+            }
+
+            /* Enhanced Card styling */
+            .card {
+                border: 2px solid #e0e0e0 !important;
+                border-radius: 6px !important;
+                page-break-inside: avoid;
+                margin-bottom: 15px !important;
+                box-shadow: none !important;
+                background: white !important;
+            }
+
+            .card-header {
+                background: linear-gradient(to right, #f8f9fa, #e9ecef) !important;
+                border-bottom: 3px solid #667eea !important;
+                padding: 10px 15px !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                border-radius: 4px 4px 0 0 !important;
+            }
+
+            .card-header h3,
+            .card-header h4,
+            .card-header h5 {
+                color: #667eea !important;
+                font-weight: bold;
+                margin: 0 !important;
+                font-size: 14pt !important;
+            }
+
+            .card-body {
+                padding: 15px !important;
+                background: white !important;
+            }
+
+            /* Chart sizing for print */
+            canvas {
+                max-width: 100% !important;
+                max-height: 280px !important;
+                page-break-inside: avoid;
+                display: block !important;
+                margin: 15px auto !important;
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+                padding: 10px;
+                background: white !important;
+            }
+
+            /* Chart containers */
+            .chart-container, [style*="height"] {
+                height: auto !important;
+                min-height: 280px !important;
+                page-break-inside: avoid;
+                overflow: visible !important;
+                padding: 10px 0;
+            }
+
+            /* Chart titles */
+            .card-body h5,
+            .card-body h6 {
+                color: #667eea !important;
+                font-weight: 600;
+                margin: 10px 0 8px 0 !important;
+                font-size: 12pt !important;
+                text-align: center;
+                border-bottom: 1px solid #e0e0e0;
+                padding-bottom: 5px;
+            }
+
+            /* Prevent chart overlap */
+            .row .col-md-6 {
+                width: 100% !important;
+                float: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 20px !important;
+            }
+
+            .row .col-md-4 {
+                width: 100% !important;
+                float: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 15px !important;
+            }
+
+            /* Force each chart section to be on its own area */
+            .card-body > div[style*="height"] {
+                page-break-before: auto;
+                page-break-after: auto;
+                page-break-inside: avoid;
+                clear: both;
+            }
+
+            /* Table styling */
+            table {
+                page-break-inside: avoid;
+                font-size: 10pt;
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10px 0;
+            }
+
+            table th {
+                background: linear-gradient(to bottom, #667eea, #5a6fd8) !important;
+                color: white !important;
+                padding: 10px 8px !important;
+                font-weight: 600;
+                text-align: left;
+                border: 1px solid #5a6fd8 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            table td {
+                padding: 8px !important;
+                border: 1px solid #dee2e6 !important;
+                vertical-align: middle;
+            }
+
+            table tbody tr:nth-child(even) {
+                background-color: #f8f9fa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            table tbody tr:hover {
+                background-color: #e9ecef !important;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            /* Enhanced Badge styling */
+            .badge {
+                padding: 4px 10px !important;
+                font-size: 9pt !important;
+                font-weight: 600 !important;
+                border-radius: 12px !important;
+                border: 1px solid !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .bg-success, .badge.bg-success {
+                background-color: #28a745 !important;
+                color: white !important;
+                border-color: #228b3c !important;
+            }
+
+            .bg-warning, .badge.bg-warning {
+                background-color: #ffc107 !important;
+                color: #000 !important;
+                border-color: #e0a800 !important;
+            }
+
+            .bg-danger, .badge.bg-danger {
+                background-color: #dc3545 !important;
+                color: white !important;
+                border-color: #c82333 !important;
+            }
+
+            .bg-info, .badge.bg-info {
+                background-color: #17a2b8 !important;
+                color: white !important;
+                border-color: #138496 !important;
+            }
+
+            .bg-primary, .badge.bg-primary {
+                background-color: #667eea !important;
+                color: white !important;
+                border-color: #5a6fd8 !important;
+            }
+
+            /* Alert boxes */
+            .alert {
+                border: 2px solid !important;
+                border-radius: 6px !important;
+                padding: 12px 15px !important;
+                margin: 10px 0 !important;
+                page-break-inside: avoid;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .alert-success {
+                background-color: #d4edda !important;
+                border-color: #28a745 !important;
+                color: #155724 !important;
+            }
+
+            .alert-info {
+                background-color: #d1ecf1 !important;
+                border-color: #17a2b8 !important;
+                color: #0c5460 !important;
+            }
+
+            .alert-warning {
+                background-color: #fff3cd !important;
+                border-color: #ffc107 !important;
+                color: #856404 !important;
+            }
+
+            /* Icons in print */
+            .fas, .far, .fab {
+                color: #667eea !important;
+                margin-right: 5px;
+            }
+
+            /* Row adjustments */
+            .row {
+                page-break-inside: avoid;
+                margin: 0 !important;
+            }
+
+            /* Remove empty space */
+            .row:empty,
+            div:empty,
+            p:empty {
+                display: none !important;
+            }
+
+            /* Prevent orphaned content */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+                orphans: 3; /* Not supported in Firefox - graceful degradation */
+                widows: 3; /* Not supported in Firefox - graceful degradation */
+            }
+
+            /* Prevent unnecessary page breaks */
+            * {
+                page-break-before: auto !important;
+            }
+
+            /* Force content to stay together */
+            .card,
+            .alert,
+            .table-responsive,
+            table {
+                page-break-before: auto;
+                page-break-after: auto;
+            }
+
+            /* Product cards grid */
+            .col-md-4, .col-md-6 {
+                width: 100% !important;
+                float: none !important;
+                padding: 5px !important;
+                margin-bottom: 15px !important;
+            }
+
+            /* Single column sections */
+            .col-12 {
+                width: 100% !important;
+            }
+
+            /* Progress bars */
+            .progress {
+                border: 2px solid #667eea !important;
+                background-color: #f0f0f0 !important;
+                border-radius: 10px !important;
+                height: 24px !important;
+                overflow: hidden;
+            }
+
+            .progress-bar {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-weight: 600;
+                line-height: 24px;
+                padding: 0 10px;
+            }
+
+            .progress-bar.bg-success {
+                background-color: #28a745 !important;
+            }
+
+            .progress-bar.bg-info {
+                background-color: #17a2b8 !important;
+            }
+
+            .progress-bar.bg-warning {
+                background-color: #ffc107 !important;
+                color: #000 !important;
+            }
+
+            /* Product summary boxes */
+            .metric-box {
+                border: 2px solid #e0e0e0 !important;
+                border-radius: 6px;
+                padding: 10px;
+                text-align: center;
+                background: linear-gradient(to bottom, #ffffff, #f8f9fa) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                margin: 5px 0;
+            }
+
+            .metric-box h6 {
+                color: #667eea !important;
+                font-size: 18pt !important;
+                font-weight: bold;
+                margin: 5px 0 !important;
+            }
+
+            .metric-box small {
+                color: #666 !important;
+                font-size: 9pt;
+            }
+
+            /* Footer */
+            footer {
+                margin-top: 20px;
+                padding-top: 10px;
+                border-top: 2px solid #667eea;
+                text-align: center;
+                font-size: 9pt;
+                color: #666;
+            }
+
+            /* Page number */
+            @page {
+                @bottom-right {
+                    content: "Page " counter(page) " of " counter(pages);
+                    font-size: 9pt;
+                    color: #666;
+                }
+            }
+
+            /* Compact spacing for better page usage */
+            .mb-4, .my-4 {
+                margin-bottom: 12px !important;
+            }
+
+            .mt-4 {
+                margin-top: 12px !important;
+            }
+
+            .mb-3, .my-3 {
+                margin-bottom: 10px !important;
+            }
+
+            .mt-3 {
+                margin-top: 10px !important;
+            }
+
+            /* Remove excessive whitespace */
+            .container > .row:last-child,
+            .card-body > div:last-child {
+                margin-bottom: 0 !important;
+            }
+
+            /* Optimize vertical spacing */
+            section,
+            .section {
+                margin: 0 !important;
+                padding: 5px 0 !important;
+            }
+
+            /* Headings */
+            h1, h2 {
+                color: #667eea !important;
+                border-bottom: 3px solid #667eea;
+                padding-bottom: 5px;
+                margin-top: 15px !important;
+                page-break-after: avoid;
+            }
+
+            h3, h4, h5 {
+                color: #667eea !important;
+                margin-top: 10px !important;
+                page-break-after: avoid;
+            }
+
+            /* List styling */
+            ul, ol {
+                margin: 8px 0;
+                padding-left: 20px;
+            }
+
+            li {
+                margin: 4px 0;
+                line-height: 1.4;
+            }
+
+            /* Strong text emphasis */
+            strong, b {
+                color: #667eea !important;
+                font-weight: 700;
+            }
+
+            /* Summary statistics boxes */
+            .text-center h6 {
+                background: linear-gradient(to right, #f8f9fa, #e9ecef) !important;
+                padding: 8px;
+                border-radius: 4px;
+                border: 1px solid #dee2e6;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Force page breaks between major sections */
+            .page-break {
+                page-break-before: always;
+            }
+
+            /* Compact spacing */
+            .mb-4, .my-4 {
+                margin-bottom: 10px !important;
+            }
+
+            .mt-4 {
+                margin-top: 10px !important;
+            }
+
+            /* Hide gradient backgrounds but keep text visible */
+            .analysis-hero {
+                background: #667eea !important;
+                padding: 10px !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="analysis-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1><i class="fas fa-layer-group me-3"></i>Multi-Product Analysis</h1>
+                    <p class="lead mb-0">Analyzing <span id="totalProducts">0</span> products with advanced sentiment analysis</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button id="sparkWebUIBtn" class="btn btn-warning btn-lg me-2 shadow" onclick="window.open('https://unsummarisable-yamileth-shortsightedly.ngrok-free.dev/jobs/', '_blank')" title="Open Spark Web UI">
+                        <i class="fas fa-fire me-2"></i>Spark Web UI
+                    </button>
+                    <a href="main-app.html#multi-compare" class="btn btn-light btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Main
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Process Steps -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-tasks me-2"></i>Analysis Process</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div id="step1" class="process-step p-3">
+                                    <i class="fas fa-download fa-3x mb-2 text-primary"></i>
+                                    <h5>Scraping</h5>
+                                    <small class="text-muted">Extracting product data</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="step2" class="process-step p-3">
+                                    <i class="fas fa-comments fa-3x mb-2 text-info"></i>
+                                    <h5>Reviews</h5>
+                                    <small class="text-muted">Collecting reviews</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="step3" class="process-step p-3">
+                                    <i class="fas fa-brain fa-3x mb-2 text-warning"></i>
+                                    <h5>Analysis</h5>
+                                    <small class="text-muted">Sentiment processing</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="step4" class="process-step p-3">
+                                    <i class="fas fa-chart-line fa-3x mb-2 text-success"></i>
+                                    <h5>Results</h5>
+                                    <small class="text-muted">Generating insights</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="overallProgress" class="mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5><i class="fas fa-spinner fa-spin me-2"></i>Overall Progress</h5>
+                        <span id="progressPercentage" class="badge bg-primary">0%</span>
+                    </div>
+                    <div class="progress progress-lg mb-2">
+                        <div id="mainProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success progress-initial"
+                             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Overall analysis progress"></div>
+                    </div>
+                    <p id="progressMessage" class="text-muted mt-2 mb-0">Initializing analysis...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Cards -->
+        <div id="productCards" class="row">
+            <!-- Product cards will be dynamically added here -->
+        </div>
+
+        <!-- Final Results -->
+        <div id="finalResults" class="hidden">
+            <div class="card shadow-lg mb-5">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-trophy me-2"></i>Analysis Complete!</h3>
+                </div>
+                <div class="card-body" id="finalResultsContent">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Summary -->
+        <div id="errorSummary" class="hidden">
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Some Issues Occurred</h5>
+                <div id="errorList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">© 2025 Sentiment Analysis NLP Dashboard</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:9000';
+        let products = [];
+        let currentStep = 1;
+
+        // Get URLs from localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlsData = localStorage.getItem('multiCompareUrls');
+            if (!urlsData) {
+                alert('No URLs found. Redirecting back...');
+                window.location.href = 'main-app.html#multi-compare';
+                return;
+            }
+
+            const urls = JSON.parse(urlsData);
+            document.getElementById('totalProducts').textContent = urls.length;
+
+            // Initialize product cards
+            initializeProductCards(urls);
+
+            // Start analysis
+            startAnalysis(urls);
+        });
+
+        function initializeProductCards(urls) {
+            const container = document.getElementById('productCards');
+            urls.forEach((url, index) => {
+                const card = document.createElement('div');
+                card.className = 'col-md-6 mb-4';
+                card.innerHTML = `
+                    <div id="product-${index}" class="card product-card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-box me-2"></i>Product ${index + 1}
+                                <span id="status-${index}" class="badge bg-secondary float-end">Waiting</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-2"><i class="fas fa-link me-1"></i>${url}</p>
+                            <div id="product-info-${index}" class="mt-3">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-hourglass-half fa-2x"></i>
+                                    <p class="mt-2">Waiting to scrape...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateStep(step) {
+            // Mark previous steps as completed
+            for (let i = 1; i < step; i++) {
+                const stepEl = document.getElementById(`step${i}`);
+                stepEl.classList.remove('active');
+                stepEl.classList.add('completed');
+            }
+
+            // Mark current step as active
+            const currentStepEl = document.getElementById(`step${step}`);
+            currentStepEl.classList.add('active');
+            currentStepEl.classList.remove('completed');
+        }
+
+        async function startAnalysis(urls) {
+            updateStep(1);
+
+            for (let i = 0; i < urls.length; i++) {
+                await analyzeProduct(urls[i], i);
+
+                // Update overall progress
+                const progress = ((i + 1) / urls.length) * 100;
+                document.getElementById('mainProgressBar').style.width = `${progress}%`;
+                document.getElementById('mainProgressBar').setAttribute('aria-valuenow', progress);
+                document.getElementById('progressPercentage').textContent = `${Math.round(progress)}%`;
+                document.getElementById('progressMessage').textContent =
+                    `Analyzed ${i + 1} of ${urls.length} products...`;
+
+                // Update steps based on progress
+                if (i === 0) updateStep(2);
+                if (i === Math.floor(urls.length / 2)) updateStep(3);
+                if (i === urls.length - 1) updateStep(4);
+            }
+
+            // Show final results
+            displayFinalResults();
+        }
+
+        async function analyzeProduct(url, index) {
+            const productCard = document.getElementById(`product-${index}`);
+            const statusBadge = document.getElementById(`status-${index}`);
+            const productInfo = document.getElementById(`product-info-${index}`);
+
+            // Clean the URL - remove excessive query parameters for Amazon
+            let cleanUrl = url.trim();
+            try {
+                const urlObj = new URL(cleanUrl);
+
+                // For Amazon URLs, keep only essential parameters
+                if (urlObj.hostname.includes('amazon')) {
+                    // Extract the ASIN/product ID from the path
+                    const pathMatch = urlObj.pathname.match(/\/dp\/([A-Z0-9]+)/i) ||
+                                     urlObj.pathname.match(/\/product\/([A-Z0-9]+)/i);
+
+                    if (pathMatch) {
+                        // Rebuild URL with just the essential part
+                        cleanUrl = `${urlObj.protocol}//${urlObj.hostname}/dp/${pathMatch[1]}`;
+                        console.log(`🔧 Cleaned Amazon URL: ${cleanUrl}`);
+                    }
+                }
+
+                // For Flipkart, the URL structure is already clean
+                if (urlObj.hostname.includes('flipkart')) {
+                    // Keep Flipkart URLs as-is, they're usually clean
+                    console.log(`✅ Flipkart URL: ${cleanUrl}`);
+                }
+            } catch (e) {
+                console.warn('Failed to parse URL:', e);
+            }
+
+            // Update status to analyzing
+            productCard.classList.add('analyzing');
+            statusBadge.className = 'badge bg-warning float-end';
+            statusBadge.textContent = 'Analyzing...';
+
+            productInfo.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Scraping product data...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/analyze/urls`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        urls: [cleanUrl],  // Use cleaned URL
+                        options: {
+                            includeInsights: true,
+                            includeRecommendation: true,
+                            maxReviews: 50
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    const errorMsg = errorData?.message || errorData?.error || errorData?.details || `HTTP ${response.status}`;
+                    throw new Error(errorMsg);
+                }
+
+                const data = await response.json();
+
+                // Validate that we got actual data (not empty/mock)
+                if (!data || !data.analysis) {
+                    throw new Error('Invalid response from server');
+                }
+
+                products.push({ ...data, url, index });
+
+                // Update to completed
+                productCard.classList.remove('analyzing');
+                productCard.classList.add('completed');
+                statusBadge.className = 'badge bg-success float-end';
+                statusBadge.textContent = 'Completed';
+
+                // Display product info
+                displayProductInfo(data, productInfo);
+
+            } catch (error) {
+                console.error(`Error analyzing product ${index + 1}:`, error);
+                console.error(`Failed URL: ${url}`);
+
+                products.push({ error: error.message, url, index });
+
+                productCard.classList.remove('analyzing');
+                productCard.classList.add('error');
+                statusBadge.className = 'badge bg-danger float-end';
+                statusBadge.textContent = 'Error';
+
+                productInfo.innerHTML = `
+                    <div class="alert alert-danger mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Error:</strong> ${error.message}
+                        <hr>
+                        <small class="text-muted">
+                            <strong>Troubleshooting:</strong><br>
+                            • Check if the URL is accessible<br>
+                            • Ensure the server is running<br>
+                            • Try a different product URL<br>
+                            • Check browser console for details
+                        </small>
+                    </div>
+                `;
+            }
+        }
+
+        function displayProductInfo(data, container) {
+            const analysis = data.analysis || data;
+            const sentiment = analysis.overallSentiment || 'UNKNOWN';
+            const sentimentClass = sentiment === 'POSITIVE' ? 'success' :
+                                   sentiment === 'NEGATIVE' ? 'danger' : 'warning';
+
+            container.innerHTML = `
+                <div class="mb-3">
+                    <h6 class="text-primary">${analysis.productName || 'Unknown Product'}</h6>
+                </div>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="border rounded p-2">
+                            <h4 class="mb-0">${analysis.totalReviews || 0}</h4>
+                            <small class="text-muted">Reviews</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded p-2">
+                            <h4 class="mb-0">${((analysis.confidenceScore || 0) * 100).toFixed(1)}%</h4>
+                            <small class="text-muted">Confidence</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded p-2">
+                            <span class="badge bg-${sentimentClass} fs-6">${sentiment}</span>
+                            <br><small class="text-muted">Sentiment</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to get product display name
+        function getProductDisplayName(product) {
+            const analysis = product.analysis || product;
+            return analysis.productName || analysis.title || analysis.name ||
+                   analysis.product_name || product.url || 'Unknown Product';
+        }
+
+        // Intelligent Analysis Functions
+        function generateIntelligentAnalysis(products) {
+            if (!products || products.length === 0) return '';
+
+            const validProducts = products.filter(p => !p.error && p.analysis);
+            if (validProducts.length === 0) return '';
+
+            return `
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h4 class="mb-3">
+                            <i class="fas fa-brain text-primary me-2"></i>
+                            Intelligent Product Analysis
+                        </h4>
+                    </div>
+                    ${generateAnalysisCard('Best Overall Quality', findBestOverallQuality(validProducts), 'trophy', 'warning')}
+                    ${generateAnalysisCard('Best Value for Money', findBestValue(validProducts), 'dollar-sign', 'success')}
+                    ${generateAnalysisCard('Highest User Satisfaction', findHighestSatisfaction(validProducts), 'smile', 'info')}
+                    ${generateAnalysisCard('Premium Choice', findPremiumChoice(validProducts), 'star', 'primary')}
+                </div>
+            `;
+        }
+
+        function generateAnalysisCard(title, productData, icon, colorClass) {
+            if (!productData || !productData.product) return '';
+
+            const product = productData.product;
+            const analysis = product.analysis || product;
+            const productName = getProductDisplayName(product);
+
+            return `
+                <div class="col-md-6 mb-3">
+                    <div class="card border-${colorClass} h-100">
+                        <div class="card-header bg-${colorClass} text-white">
+                            <i class="fas fa-${icon} me-2"></i>${title}
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-primary">${productName}</h6>
+                            <p class="mb-2"><strong>Score:</strong> ${productData.score.toFixed(2)}/100</p>
+                            ${productData.reasoning ? `<p class="mb-2"><small class="text-muted">${productData.reasoning}</small></p>` : ''}
+                            ${generateTopFeatures(analysis)}
+                            ${generateTopProductsList(analysis)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateTopFeatures(analysis) {
+            if (!analysis.topFeatures || analysis.topFeatures.length === 0) return '';
+
+            const features = analysis.topFeatures.slice(0, 3);
+            return `
+                <div class="mt-2">
+                    <strong>Top Features:</strong>
+                    <ul class="mb-0 small">
+                        ${features.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function generateTopProductsList(analysis) {
+            if (!analysis.topProducts || analysis.topProducts.length === 0) return '';
+
+            const products = analysis.topProducts.slice(0, 3);
+            return `
+                <div class="mt-2">
+                    <strong>Highlights:</strong>
+                    <ul class="mb-0 small">
+                        ${products.map(p => {
+                            const productName = p.productName || p.title || p.name || 'Product';
+                            return `<li>${productName}: ${p.score.toFixed(1)}/5</li>`;
+                        }).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function findBestOverallQuality(products) {
+            let bestProduct = null;
+            let bestScore = -1;
+
+            products.forEach(product => {
+                const score = calculateQualityScore(product);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestProduct = product;
+                }
+            });
+
+            return {
+                product: bestProduct,
+                score: bestScore,
+                reasoning: 'Based on sentiment, confidence, and review volume'
+            };
+        }
+
+        function findBestValue(products) {
+            let bestProduct = null;
+            let bestScore = -1;
+
+            products.forEach(product => {
+                const score = calculateValueScore(product);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestProduct = product;
+                }
+            });
+
+            return {
+                product: bestProduct,
+                score: bestScore,
+                reasoning: 'Optimal balance of quality and affordability'
+            };
+        }
+
+        function findHighestSatisfaction(products) {
+            let bestProduct = null;
+            let bestScore = -1;
+
+            products.forEach(product => {
+                const score = calculateSatisfactionScore(product);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestProduct = product;
+                }
+            });
+
+            return {
+                product: bestProduct,
+                score: bestScore,
+                reasoning: 'Highest positive sentiment and user approval'
+            };
+        }
+
+        function findPremiumChoice(products) {
+            let bestProduct = null;
+            let bestScore = -1;
+
+            products.forEach(product => {
+                const score = calculatePremiumScore(product);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestProduct = product;
+                }
+            });
+
+            return {
+                product: bestProduct,
+                score: bestScore,
+                reasoning: 'Best overall features and highest quality standards'
+            };
+        }
+
+        // Scoring functions
+        function calculateQualityScore(product) {
+            const analysis = product.analysis || product;
+            let score = 0;
+
+            // Sentiment weight (40%)
+            const sentimentRates = analysis.sentimentRates || {};
+            score += (sentimentRates.positive || 0) * 0.4;
+
+            // Confidence weight (30%)
+            score += (analysis.confidenceScore || 0) * 30;
+
+            // Review volume weight (20%)
+            const reviewCount = analysis.totalReviews || 0;
+            const reviewScore = Math.min(reviewCount / 100, 1) * 20;
+            score += reviewScore;
+
+            // Negative sentiment penalty (10%)
+            score -= (sentimentRates.negative || 0) * 0.1;
+
+            return Math.max(0, score);
+        }
+
+        function calculateValueScore(product) {
+            const analysis = product.analysis || product;
+            let score = 0;
+
+            // Positive sentiment (50%)
+            const sentimentRates = analysis.sentimentRates || {};
+            score += (sentimentRates.positive || 0) * 0.5;
+
+            // Confidence (30%)
+            score += (analysis.confidenceScore || 0) * 30;
+
+            // Review credibility (20%)
+            const reviewCount = analysis.totalReviews || 0;
+            score += Math.min(reviewCount / 50, 1) * 20;
+
+            return Math.max(0, score);
+        }
+
+        function calculateSatisfactionScore(product) {
+            const analysis = product.analysis || product;
+            const sentimentRates = analysis.sentimentRates || {};
+
+            // Heavy weight on positive sentiment
+            let score = (sentimentRates.positive || 0) * 0.7;
+
+            // Bonus for high confidence
+            score += (analysis.confidenceScore || 0) * 20;
+
+            // Penalty for negative reviews
+            score -= (sentimentRates.negative || 0) * 0.1;
+
+            return Math.max(0, score);
+        }
+
+        function calculatePremiumScore(product) {
+            const analysis = product.analysis || product;
+            let score = 0;
+
+            // Sentiment quality (35%)
+            const sentimentRates = analysis.sentimentRates || {};
+            score += (sentimentRates.positive || 0) * 0.35;
+
+            // Confidence (35%)
+            score += (analysis.confidenceScore || 0) * 35;
+
+            // Review volume indicates popularity (20%)
+            const reviewCount = analysis.totalReviews || 0;
+            score += Math.min(reviewCount / 200, 1) * 20;
+
+            // Consistency bonus (10%)
+            const neutralRate = sentimentRates.neutral || 0;
+            if (neutralRate < 0.3) score += 10;
+
+            return Math.max(0, score);
+        }
+
+        // Category detection and color mapping
+        function detectCategory(products) {
+            if (!products || products.length === 0) return 'general';
+
+            // Check URLs and product names for category keywords
+            const allText = products.map(p => {
+                const analysis = p.analysis || p;
+                return (
+                    (p.url || '') + ' ' +
+                    (analysis.productName || '') + ' ' +
+                    (analysis.title || '')
+                ).toLowerCase();
+            }).join(' ');
+
+            // Electronics categories
+            if (allText.includes('phone') || allText.includes('mobile') || allText.includes('smartphone')) return 'smartphones';
+            if (allText.includes('laptop') || allText.includes('computer') || allText.includes('notebook')) return 'laptops';
+            if (allText.includes('tablet') || allText.includes('ipad')) return 'tablets';
+            if (allText.includes('headphone') || allText.includes('earphone') || allText.includes('earbuds')) return 'audio';
+            if (allText.includes('camera') || allText.includes('dslr')) return 'cameras';
+            if (allText.includes('watch') || allText.includes('smartwatch')) return 'watches';
+            if (allText.includes('tv') || allText.includes('television')) return 'tvs';
+
+            // Fashion categories
+            if (allText.includes('shirt') || allText.includes('tshirt') || allText.includes('clothing')) return 'fashion';
+            if (allText.includes('shoe') || allText.includes('sneaker') || allText.includes('footwear')) return 'footwear';
+
+            // Home & Kitchen
+            if (allText.includes('furniture') || allText.includes('sofa') || allText.includes('chair')) return 'furniture';
+            if (allText.includes('kitchen') || allText.includes('appliance')) return 'home';
+
+            // Books & Media
+            if (allText.includes('book') || allText.includes('novel')) return 'books';
+
+            return 'general';
+        }
+
+        function getCategoryColor(category) {
+            const colorMap = {
+                'smartphones': '#4A90E2',  // Blue
+                'laptops': '#7B68EE',      // Medium Purple
+                'tablets': '#50C878',      // Emerald
+                'audio': '#FF6B6B',        // Coral Red
+                'cameras': '#FFA500',      // Orange
+                'watches': '#20B2AA',      // Light Sea Green
+                'tvs': '#9370DB',          // Medium Purple
+                'fashion': '#FF69B4',      // Hot Pink
+                'footwear': '#8B4513',     // Saddle Brown
+                'furniture': '#CD853F',    // Peru
+                'home': '#32CD32',         // Lime Green
+                'books': '#DAA520',        // Goldenrod
+                'general': '#6C757D'       // Gray
+            };
+            return colorMap[category] || '#6C757D';
+        }
+
+        function getCategoryIcon(category) {
+            const iconMap = {
+                'smartphones': 'mobile-alt',
+                'laptops': 'laptop',
+                'tablets': 'tablet-alt',
+                'audio': 'headphones',
+                'cameras': 'camera',
+                'watches': 'clock',
+                'tvs': 'tv',
+                'fashion': 'tshirt',
+                'footwear': 'shoe-prints',
+                'furniture': 'couch',
+                'home': 'home',
+                'books': 'book',
+                'general': 'box'
+            };
+            return iconMap[category] || 'box';
+        }
+
+
+
+
+
+
+
+        function displayFinalResults() {
+            document.getElementById('overallProgress').classList.add('hidden');
+            document.getElementById('finalResults').classList.remove('hidden');
+
+            const successCount = products.filter(p => !p.error).length;
+            const totalCount = products.length;
+            const successProducts = products.filter(p => !p.error);
+
+            const resultsContent = document.getElementById('finalResultsContent');
+
+            // Generate comparison summary
+            const summaryHTML = generateComparisonSummary(successProducts);
+
+            // Generate charts
+            const chartsHTML = generateComparisonCharts(successProducts);
+
+            // Generate detailed comparison table
+            const tableHTML = generateComparisonTable(successProducts);
+
+            // Generate recommendations
+            const recommendationsHTML = generateRecommendations(successProducts);
+
+            // Generate intelligent analysis
+            const intelligentAnalysisHTML = generateIntelligentAnalysis(successProducts);
+
+            resultsContent.innerHTML = `
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="alert alert-success border-success">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle fa-3x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading mb-1">Analysis Complete!</h4>
+                                    <p class="mb-0">Successfully analyzed ${successCount} out of ${totalCount} products with comprehensive sentiment analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ${intelligentAnalysisHTML}
+
+                ${summaryHTML}
+
+                <!-- Comparison Charts -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Visual Comparison</h5>
+                            </div>
+                            <div class="card-body">
+                                ${chartsHTML}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                ${recommendationsHTML}
+
+                ${tableHTML}
+
+                <!-- Action Buttons -->
+                <div class="row mb-4">
+                    <div class="col-md-12 text-center">
+                        <a href="main-app.html#multi-compare" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                        <button class="btn btn-success btn-lg me-2" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i>Print Results
+                        </button>
+                        <button class="btn btn-info btn-lg me-2" onclick="exportResults()">
+                            <i class="fas fa-download me-2"></i>Export Data
+                        </button>
+                        <button id="sparkUIButton" class="btn btn-warning btn-lg me-2" onclick="window.open('https://unsummarisable-yamileth-shortsightedly.ngrok-free.dev/jobs/', '_blank')" title="Open Spark Web UI">
+                            <i class="fas fa-fire me-2"></i>Spark Web UI
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Apply category-based detection
+            const category = detectCategory(successProducts);
+            const categoryColor = getCategoryColor(category);
+            const categoryIcon = getCategoryIcon(category);
+            const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+
+            // Render charts after DOM is updated
+            setTimeout(() => {
+                renderComparisonCharts(successProducts);
+            }, 100);
+
+            // Clear localStorage
+            localStorage.removeItem('multiCompareUrls');
+        }
+
+        function generateComparisonSummary(products) {
+            if (products.length === 0) return '';
+
+            const totalReviews = products.reduce((sum, p) => sum + ((p.analysis || p).totalReviews || 0), 0);
+            const avgConfidence = products.reduce((sum, p) => sum + ((p.analysis || p).confidenceScore || 0), 0) / products.length;
+            const positiveCount = products.filter(p => {
+                const sentiment = (p.analysis || p).overallSentiment || '';
+                return sentiment === 'POSITIVE';
+            }).length;
+
+            return `
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center border-primary">
+                            <div class="card-body">
+                                <i class="fas fa-shopping-bag fa-2x text-primary mb-2"></i>
+                                <h3 class="mb-0">${products.length}</h3>
+                                <p class="text-muted mb-0">Products Analyzed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-info">
+                            <div class="card-body">
+                                <i class="fas fa-comments fa-2x text-info mb-2"></i>
+                                <h3 class="mb-0">${totalReviews}</h3>
+                                <p class="text-muted mb-0">Total Reviews</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-warning">
+                            <div class="card-body">
+                                <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
+                                <h3 class="mb-0">${(avgConfidence * 100).toFixed(1)}%</h3>
+                                <p class="text-muted mb-0">Avg Confidence</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center border-success">
+                            <div class="card-body">
+                                <i class="fas fa-thumbs-up fa-2x text-success mb-2"></i>
+                                <h3 class="mb-0">${positiveCount}/${products.length}</h3>
+                                <p class="text-muted mb-0">Positive Products</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateComparisonCharts(products) {
+            return `
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <h6 class="text-center mb-3">Sentiment Distribution</h6>
+                        <canvas id="sentimentChart" height="200"></canvas>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <h6 class="text-center mb-3">Review Count Comparison</h6>
+                        <canvas id="reviewsChart" height="200"></canvas>
+                    </div>
+                    <div class="col-md-12">
+                        <h6 class="text-center mb-3">Confidence Score Comparison</h6>
+                        <canvas id="confidenceChart" height="150"></canvas>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateComparisonTable(products) {
+            if (products.length === 0) return '';
+
+            let rows = '';
+            products.forEach((product, index) => {
+                const analysis = product.analysis || product;
+                const sentiment = analysis.overallSentiment || 'UNKNOWN';
+                const sentimentClass = sentiment === 'POSITIVE' ? 'success' :
+                                      sentiment === 'NEGATIVE' ? 'danger' : 'warning';
+
+                const sentimentPercentages = analysis.sentimentPercentages || {};
+
+                rows += `
+                    <tr>
+                        <td><strong>${index + 1}</strong></td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 300px;" title="${analysis.productName || 'Unknown'}">
+                                ${analysis.productName || 'Unknown Product'}
+                            </div>
+                            <small class="text-muted">${product.url.substring(0, 50)}...</small>
+                        </td>
+                        <td><span class="badge bg-${sentimentClass}">${sentiment}</span></td>
+                        <td class="text-center">${analysis.totalReviews || 0}</td>
+                        <td class="text-center">${((analysis.confidenceScore || 0) * 100).toFixed(1)}%</td>
+                        <td>
+                            <small class="text-success">✓ ${sentimentPercentages.positive || 0}%</small><br>
+                            <small class="text-danger">✗ ${sentimentPercentages.negative || 0}%</small>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-table me-2"></i>Detailed Comparison</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Product</th>
+                                                <th>Sentiment</th>
+                                                <th class="text-center">Reviews</th>
+                                                <th class="text-center">Confidence</th>
+                                                <th>Breakdown</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${rows}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateRecommendations(products) {
+            if (products.length === 0) return '';
+
+            // Find best product
+            const sortedByConfidence = [...products].sort((a, b) => {
+                const confA = (a.analysis || a).confidenceScore || 0;
+                const confB = (b.analysis || b).confidenceScore || 0;
+                return confB - confA;
+            });
+
+            const bestProduct = sortedByConfidence[0];
+            const bestAnalysis = bestProduct.analysis || bestProduct;
+            const bestSentiment = bestAnalysis.overallSentiment || 'UNKNOWN';
+
+            // Find most reviewed
+            const sortedByReviews = [...products].sort((a, b) => {
+                const revA = (a.analysis || a).totalReviews || 0;
+                const revB = (b.analysis || b).totalReviews || 0;
+                return revB - revA;
+            });
+
+            const mostReviewed = sortedByReviews[0];
+            const mostReviewedAnalysis = mostReviewed.analysis || mostReviewed;
+
+            return `
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow border-success">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-star me-2"></i>Recommendations & Insights</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="p-3 bg-light rounded">
+                                            <h6 class="text-success"><i class="fas fa-trophy me-2"></i>Highest Confidence</h6>
+                                            <p class="mb-1"><strong>${bestAnalysis.productName || 'Unknown'}</strong></p>
+                                            <p class="mb-1">Confidence: <strong>${((bestAnalysis.confidenceScore || 0) * 100).toFixed(1)}%</strong></p>
+                                            <p class="mb-0">Sentiment: <span class="badge bg-${bestSentiment === 'POSITIVE' ? 'success' : bestSentiment === 'NEGATIVE' ? 'danger' : 'warning'}">${bestSentiment}</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="p-3 bg-light rounded">
+                                            <h6 class="text-info"><i class="fas fa-comments me-2"></i>Most Reviewed</h6>
+                                            <p class="mb-1"><strong>${mostReviewedAnalysis.productName || 'Unknown'}</strong></p>
+                                            <p class="mb-1">Reviews: <strong>${mostReviewedAnalysis.totalReviews || 0}</strong></p>
+                                            <p class="mb-0">Popular choice with extensive customer feedback</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-info mb-0 mt-3">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Pro Tip:</strong> Consider both confidence scores and review counts when making your decision. Higher confidence indicates more reliable sentiment analysis.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderComparisonCharts(products) {
+            if (products.length === 0) return;
+
+            // Sentiment Distribution Pie Chart
+            const sentimentCounts = {
+                POSITIVE: 0,
+                NEGATIVE: 0,
+                NEUTRAL: 0
+            };
+
+            products.forEach(p => {
+                const sentiment = (p.analysis || p).overallSentiment || 'NEUTRAL';
+                sentimentCounts[sentiment] = (sentimentCounts[sentiment] || 0) + 1;
+            });
+
+            const sentimentCtx = document.getElementById('sentimentChart');
+            if (sentimentCtx) {
+                new Chart(sentimentCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Positive', 'Negative', 'Neutral'],
+                        datasets: [{
+                            data: [sentimentCounts.POSITIVE, sentimentCounts.NEGATIVE, sentimentCounts.NEUTRAL],
+                            backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Reviews Bar Chart
+            const reviewsCtx = document.getElementById('reviewsChart');
+            if (reviewsCtx) {
+                new Chart(reviewsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: products.map((p, i) => `Product ${i + 1}`),
+                        datasets: [{
+                            label: 'Number of Reviews',
+                            data: products.map(p => (p.analysis || p).totalReviews || 0),
+                            backgroundColor: '#17a2b8',
+                            borderColor: '#117a8b',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Confidence Score Line Chart
+            const confidenceCtx = document.getElementById('confidenceChart');
+            if (confidenceCtx) {
+                new Chart(confidenceCtx, {
+                    type: 'line',
+                    data: {
+                        labels: products.map((p, i) => `Product ${i + 1}`),
+                        datasets: [{
+                            label: 'Confidence Score (%)',
+                            data: products.map(p => ((p.analysis || p).confidenceScore || 0) * 100),
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function exportResults() {
+            const successProducts = products.filter(p => !p.error);
+            const csvData = generateCSV(successProducts);
+
+            const blob = new Blob([csvData], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `multi-product-analysis-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function generateCSV(products) {
+            let csv = 'Product #,Product Name,URL,Sentiment,Total Reviews,Confidence Score,Positive %,Negative %,Neutral %\n';
+
+            products.forEach((product, index) => {
+                const analysis = product.analysis || product;
+                const sentimentPercentages = analysis.sentimentPercentages || {};
+
+                csv += `${index + 1},`;
+                csv += `"${(analysis.productName || 'Unknown').replace(/"/g, '""')}",`;
+                csv += `"${product.url}",`;
+                csv += `${analysis.overallSentiment || 'UNKNOWN'},`;
+                csv += `${analysis.totalReviews || 0},`;
+                csv += `${((analysis.confidenceScore || 0) * 100).toFixed(2)}%,`;
+                csv += `${sentimentPercentages.positive || 0}%,`;
+                csv += `${sentimentPercentages.negative || 0}%,`;
+                csv += `${sentimentPercentages.neutral || 0}%\n`;
+            });
+
+            return csv;
+        }
+    </script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

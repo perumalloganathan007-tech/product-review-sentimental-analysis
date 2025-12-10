@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache Spark Web UI - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .spark-logo {
+            width: 60px;
+            height: 60px;
+        }
+        .status-badge {
+            font-size: 1.2em;
+            padding: 10px 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="dashboard-card">
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6">
+                    <h1><i class="fas fa-fire text-danger"></i> Apache Spark Dashboard</h1>
+                    <p class="text-muted">Real-time monitoring and analytics</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span id="statusBadge" class="badge bg-secondary status-badge">
+                        <i class="fas fa-spinner fa-spin"></i> Checking...
+                    </span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" onclick="openSparkUI()">
+                        <i class="fas fa-external-link-alt"></i> Open Spark Web UI
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-success w-100" onclick="testSpark()">
+                        <i class="fas fa-play"></i> Test Spark
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-info w-100" onclick="refreshStats()">
+                        <i class="fas fa-sync"></i> Refresh Stats
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-warning w-100" onclick="loadSparkUI()">
+                        <i class="fas fa-desktop"></i> Load UI Below
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Application ID</div>
+                        <div class="stat-value" id="appId">-</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Master</div>
+                        <div class="stat-value" id="master">-</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Active Jobs</div>
+                        <div class="stat-value" id="activeJobs">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Active Stages</div>
+                        <div class="stat-value" id="activeStages">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spark Info -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5><i class="fas fa-info-circle"></i> Spark Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <pre id="sparkInfo" class="bg-light p-3 rounded">Loading...</pre>
+                </div>
+            </div>
+
+            <!-- Test Results -->
+            <div class="card mb-4" id="testResults" style="display: none;">
+                <div class="card-header bg-success text-white">
+                    <h5><i class="fas fa-check-circle"></i> Test Results</h5>
+                </div>
+                <div class="card-body">
+                    <pre id="testOutput" class="bg-light p-3 rounded"></pre>
+                </div>
+            </div>
+
+            <!-- Embedded Spark Web UI -->
+            <div class="card" id="embeddedUI" style="display: none;">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-desktop"></i> Spark Web UI (Embedded)</h5>
+                </div>
+                <div class="card-body p-0">
+                    <iframe id="sparkFrame" src=""></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '';
+
+        // Load Spark info on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshStats();
+            setInterval(refreshStats, 5000); // Refresh every 5 seconds
+        });
+
+        async function refreshStats() {
+            try {
+                // Get Spark info
+                const infoRes = await fetch('/api/spark/info');
+                const info = await infoRes.json();
+
+                // Update status badge
+                const statusBadge = document.getElementById('statusBadge');
+                if (info.status === 'running') {
+                    statusBadge.className = 'badge bg-success status-badge';
+                    statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Running';
+                } else {
+                    statusBadge.className = 'badge bg-danger status-badge';
+                    statusBadge.innerHTML = '<i class="fas fa-times-circle"></i> Stopped';
+                }
+
+                // Update stats
+                document.getElementById('appId').textContent = info.applicationId || '-';
+                document.getElementById('master').textContent = info.master || '-';
+
+                // Update info display
+                document.getElementById('sparkInfo').textContent = JSON.stringify(info, null, 2);
+
+                // Get metrics
+                const metricsRes = await fetch('/api/spark/metrics');
+                const metrics = await metricsRes.json();
+                document.getElementById('activeJobs').textContent = metrics.activeJobs || 0;
+                document.getElementById('activeStages').textContent = metrics.activeStages || 0;
+
+            } catch (error) {
+                console.error('Failed to refresh stats:', error);
+            }
+        }
+
+        function openSparkUI() {
+            window.open('/api/spark/webui', '_blank');
+        }
+
+        function loadSparkUI() {
+            const embeddedUI = document.getElementById('embeddedUI');
+            const iframe = document.getElementById('sparkFrame');
+            
+            fetch('/api/spark/info')
+                .then(res => res.json())
+                .then(info => {
+                    iframe.src = info.webUIUrl;
+                    embeddedUI.style.display = 'block';
+                    embeddedUI.scrollIntoView({ behavior: 'smooth' });
+                });
+        }
+
+        async function testSpark() {
+            const testResults = document.getElementById('testResults');
+            const testOutput = document.getElementById('testOutput');
+            
+            testOutput.textContent = 'Running Spark test...';
+            testResults.style.display = 'block';
+            testResults.scrollIntoView({ behavior: 'smooth' });
+
+            try {
+                const response = await fetch('/api/spark/test');
+                const result = await response.json();
+                testOutput.textContent = JSON.stringify(result, null, 2);
+                
+                if (result.status === 'success') {
+                    testResults.querySelector('.card-header').className = 'card-header bg-success text-white';
+                }
+            } catch (error) {
+                testOutput.textContent = `Error: ${error.message}`;
+                testResults.querySelector('.card-header').className = 'card-header bg-danger text-white';
+            }
+        }
+    </script>
+</body>
+</html>

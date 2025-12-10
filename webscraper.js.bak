@@ -1,0 +1,1103 @@
+// @ts-nocheck
+// eslint-disable
+/* eslint-disable */
+/**
+ * @fileoverview Web Scraper Module - JavaScript file, no TypeScript checking needed
+ * @author System
+ * @version 1.0
+ */
+
+const puppeteer = require('puppeteer');
+const cheerio = require('cheerio');
+const axios = require('axios');
+const natural = require('natural');
+const Sentiment = require('sentiment');
+
+const sentiment = new Sentiment();
+
+class WebScraper {
+    constructor() {
+        this.browser = null;
+    }
+
+    async init() {
+        if (!this.browser) {
+            this.browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+        }
+    }
+
+    async close() {
+        if (this.browser) {
+            await this.browser.close();
+            this.browser = null;
+        }
+    }
+
+    async scrapeProductReviews(url) {
+        try {
+            await this.init();
+            const page = await this.browser.newPage();
+
+            // Enhanced anti-blocking techniques
+            await this.setupAntiBlocking(page);
+
+            // Navigate with multiple strategies
+            await this.smartNavigation(page, url);
+
+            const hostname = new URL(url).hostname.toLowerCase();
+            let reviews = [];
+            let productName = '';
+            let additionalData = {};
+
+            console.log(`🌐 Detected hostname: ${hostname}`);
+
+            // Platform-specific scrapers with enhanced support
+            if (hostname.includes('amazon')) {
+                const result = await this.scrapeAmazon(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('flipkart')) {
+                const result = await this.scrapeFlipkart(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('myntra')) {
+                const result = await this.scrapeMyntra(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('snapdeal')) {
+                const result = await this.scrapeSnapdeal(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('paytmmall') || hostname.includes('paytm')) {
+                const result = await this.scrapePaytmMall(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('shopclues')) {
+                const result = await this.scrapeShopclues(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('bigbasket')) {
+                const result = await this.scrapeBigBasket(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('nykaa')) {
+                const result = await this.scrapeNykaa(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('bestbuy')) {
+                const result = await this.scrapeBestBuy(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else if (hostname.includes('ebay')) {
+                const result = await this.scrapeEbay(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            } else {
+                // Enhanced generic scraper for any website
+                const result = await this.scrapeGenericAdvanced(page);
+                reviews = result.reviews;
+                productName = result.productName;
+                additionalData = result.additionalData || {};
+            }
+
+            await page.close();
+
+            return {
+                productName,
+                reviews,
+                totalReviews: reviews.length,
+                url: url,
+                platform: hostname,
+                ...additionalData
+            };
+
+        } catch (error) {
+            console.error('Scraping error for', url, ':', error);
+            return {
+                productName: 'Unknown Product',
+                reviews: [],
+                totalReviews: 0,
+                url: url,
+                platform: new URL(url).hostname,
+                error: error.message
+            };
+        }
+    }
+
+    // Enhanced anti-blocking setup
+    async setupAntiBlocking(page) {
+        // Set realistic user agent
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+
+        // Set viewport to common resolution
+        await page.setViewport({ width: 1366, height: 768 });
+
+        // Set extra headers
+        await page.setExtraHTTPHeaders({
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        });
+
+        // Block unnecessary resources to speed up loading
+        await page.setRequestInterception(true);
+        page.on('request', (req) => {
+            const resourceType = req.resourceType();
+            if (resourceType === 'image' || resourceType === 'stylesheet' || resourceType === 'font') {
+                req.abort();
+            } else {
+                req.continue();
+            }
+        });
+    }
+
+    async smartNavigation(page, url) {
+        // Smart navigation with progressive delays
+        for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+                console.log(`📍 Navigation attempt ${attempt}/3 for ${url}`);
+                await page.goto(url, {
+                    waitUntil: 'networkidle2',
+                    timeout: 30000
+                });
+
+                // Progressive delay strategy
+                const delay = attempt * 2000; // 2s, 4s, 6s
+                await new Promise(resolve => setTimeout(resolve, delay));
+
+                // Check if page loaded successfully
+                const title = await page.title();
+                if (title && title.length > 0) {
+                    console.log(`   ✅ Navigation successful on attempt ${attempt}`);
+                    return true;
+                }
+            } catch (error) {
+                console.log(`   ⚠️ Navigation attempt ${attempt} failed: ${error.message}`);
+                if (attempt === 3) throw error;
+
+                // Wait before retry
+                await new Promise(resolve => setTimeout(resolve, attempt * 1000));
+            }
+        }
+    }
+
+    async scrapeAmazon(page) {
+        try {
+            // Enhanced product name extraction with multiple selectors
+            const productName = await page.evaluate(() => {
+                const selectors = [
+                    '#productTitle',
+                    '.product-title',
+                    'h1.a-size-large.a-spacing-none',
+                    'h1[data-automation-id="product-title"]',
+                    'h1.a-size-large.product-title-word-break',
+                    'span#productTitle',
+                    '.a-size-large.product-title-word-break'
+                ];
+
+                // First try very specific Amazon product title selectors
+                for (const selector of selectors) {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        let title = element.textContent.trim();
+                        console.log(`Found title with selector ${selector}: "${title}"`);
+
+                        // Strict filtering for Amazon-specific issues
+                        const unwantedTexts = [
+                            'add to', 'buy now', 'purchase', 'order now', 'add to cart',
+                            'add to bag', 'add to wishlist', 'add to basket', 'shop now',
+                            'view details', 'see more', 'learn more', 'click here',
+                            'sign in', 'register', 'subscribe', 'continue'
+                        ];
+
+                        const isUnwanted = unwantedTexts.some(unwanted =>
+                            title.toLowerCase().includes(unwanted)
+                        );
+
+                        // Additional validation: title should be reasonably long and contain product info
+                        if (!isUnwanted && title.length > 15 && title.length < 300) {
+                            return title;
+                        }
+                    }
+                }
+
+                // Fallback: try to extract from URL path for Amazon
+                const url = window.location.href;
+
+                // Amazon URL patterns: /product-name/dp/ASIN
+                const amazonMatch = url.match(/\/([^\/]+)\/dp\/[A-Z0-9]+/);
+                if (amazonMatch) {
+                    const urlName = decodeURIComponent(amazonMatch[1])
+                        .replace(/-/g, ' ')
+                        .replace(/\d+$/, '')
+                        .replace(/[+%]/g, ' ')
+                        .trim();
+
+                    if (urlName.length > 10 && urlName.length < 200) {
+                        console.log(`Extracted from URL: "${urlName}"`);
+                        return urlName;
+                    }
+                }
+
+                // Final fallback
+                console.log('Using fallback product name');
+                return 'Amazon Product';
+            });
+
+            // Get comprehensive pricing information
+            const pricingData = await page.evaluate(() => {
+                let currentPrice = null;
+                let originalPrice = null;
+                let discount = null;
+                let discountPercent = 0;
+
+                // Current price selectors for Amazon
+                const currentPriceSelectors = [
+                    '.a-price.a-text-price.a-size-medium.apexPriceToPay .a-offscreen',
+                    '.a-price.a-text-price.a-size-medium .a-offscreen',
+                    '.a-price .a-offscreen',
+                    '.a-price-whole',
+                    '.a-price-range',
+                    '[data-automation-id="price"]'
+                ];
+
+                for (const selector of currentPriceSelectors) {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        currentPrice = element.textContent.trim();
+                        break;
+                    }
+                }
+
+                // Original/MRP price selectors (usually crossed out)
+                const originalPriceSelectors = [
+                    '.a-price.a-text-price[data-a-color="secondary"] .a-offscreen',
+                    '.a-price.a-text-price.a-size-small .a-offscreen',
+                    '.a-text-strike .a-offscreen',
+                    '.a-price[data-a-color="secondary"] .a-offscreen',
+                    'span.a-price.a-text-price.a-size-small.a-color-secondary .a-offscreen',
+                    '.a-text-strike'
+                ];
+
+                for (const selector of originalPriceSelectors) {
+                    const element = document.querySelector(selector);
+                    if (element && element.textContent.trim() !== currentPrice) {
+                        originalPrice = element.textContent.trim();
+                        break;
+                    }
+                }
+
+                // Discount/savings selectors
+                const discountSelectors = [
+                    '.savingsPercentage',
+                    '.a-color-price',
+                    '[data-a-color="price"]',
+                    '.a-size-large.a-color-price',
+                    'span.a-color-price'
+                ];
+
+                for (const selector of discountSelectors) {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        const discountText = element.textContent.trim();
+                        if (discountText.includes('%') || discountText.includes('off')) {
+                            discount = discountText;
+                            const percentMatch = discountText.match(/(\d+)%/);
+                            if (percentMatch) {
+                                discountPercent = parseInt(percentMatch[1]);
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                // If we have both prices but no explicit discount, calculate it
+                if (currentPrice && originalPrice && discountPercent === 0) {
+                    const currentNum = parseFloat(currentPrice.replace(/[₹,]/g, ''));
+                    const originalNum = parseFloat(originalPrice.replace(/[₹,]/g, ''));
+
+                    if (originalNum > currentNum) {
+                        discountPercent = Math.round(((originalNum - currentNum) / originalNum) * 100);
+                        discount = `${discountPercent}% off`;
+                    }
+                }
+
+                return {
+                    currentPrice: currentPrice || 'Not found',
+                    originalPrice: originalPrice || currentPrice,
+                    discount: discount,
+                    discountPercent: discountPercent
+                };
+            });
+
+            // Get rating
+            const rating = await page.evaluate(() => {
+                const ratingElement = document.querySelector('.a-icon-alt, [data-hook="average-star-rating"], .averageStarRating');
+                if (ratingElement) {
+                    const ratingText = ratingElement.textContent || ratingElement.getAttribute('title') || '';
+                    const ratingMatch = ratingText.match(/(\d+(?:\.\d+)?)/);
+                    return ratingMatch ? parseFloat(ratingMatch[1]) : null;
+                }
+                return null;
+            });
+
+            // Try to navigate to reviews section
+            const reviewsUrl = await page.evaluate(() => {
+                const reviewsLink = document.querySelector('a[data-hook="see-all-reviews-link-foot"], a[href*="reviews"], .reviews-link a');
+                return reviewsLink ? reviewsLink.href : null;
+            });
+
+            let reviews = [];
+
+            if (reviewsUrl) {
+                try {
+                    await page.goto(reviewsUrl, { waitUntil: 'networkidle0', timeout: 15000 });
+                } catch (e) {
+                    console.log('   Could not navigate to reviews page');
+                }
+            }
+
+            // Extract reviews
+            reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('[data-hook="review"], .review, .cr-original-review-text');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    let text = '';
+                    let rating = null;
+
+                    // Try different selectors for review text
+                    const textElement = review.querySelector('[data-hook="review-body"] span, .review-text, .cr-original-review-text');
+                    if (textElement) {
+                        text = textElement.textContent.trim();
+                    }
+
+                    // Try to get rating
+                    const ratingElement = review.querySelector('.a-icon-alt, .review-rating');
+                    if (ratingElement) {
+                        const ratingText = ratingElement.textContent || ratingElement.getAttribute('title') || '';
+                        const ratingMatch = ratingText.match(/(\d+(?:\.\d+)?)/);
+                        if (ratingMatch) {
+                            rating = parseFloat(ratingMatch[1]);
+                        }
+                    }
+
+                    if (text && text.length > 10) {
+                        extractedReviews.push({ text, rating });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return {
+                productName,
+                reviews,
+                additionalData: {
+                    price: pricingData.currentPrice,
+                    originalPrice: pricingData.originalPrice,
+                    discount: pricingData.discount,
+                    discountPercent: pricingData.discountPercent,
+                    rating
+                }
+            };
+
+        } catch (error) {
+            console.error('Amazon scraping error:', error);
+            return { productName: 'Amazon Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapeFlipkart(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.B_NuCI, .product-title, h1');
+                return title ? title.textContent.trim() : 'Flipkart Product';
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('._16PBlm, .review-text, ._27M-vq');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 10) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews };
+
+        } catch (error) {
+            console.error('Flipkart scraping error:', error);
+            return { productName: 'Flipkart Product', reviews: [] };
+        }
+    }
+
+    async scrapeGeneric(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('h1, .product-title, .title, #title');
+                return title ? title.textContent.trim() : 'Product';
+            });
+
+            const reviews = await page.evaluate(() => {
+                // Generic selectors for reviews
+                const reviewSelectors = [
+                    '.review', '.reviews', '.user-review', '.customer-review',
+                    '.review-text', '.review-content', '.comment', '.feedback',
+                    '[class*="review"]', '[class*="comment"]'
+                ];
+
+                const extractedReviews = [];
+
+                for (const selector of reviewSelectors) {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        const text = element.textContent.trim();
+                        if (text && text.length > 20) {
+                            extractedReviews.push({ text, rating: null });
+                        }
+                    });
+
+                    if (extractedReviews.length > 0) break;
+                }
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews };
+
+        } catch (error) {
+            console.error('Generic scraping error:', error);
+            return { productName: 'Product', reviews: [] };
+        }
+    }
+
+    async analyzeSentiment(reviews) {
+        if (!reviews || reviews.length === 0) {
+            return {
+                overallSentiment: 'NEUTRAL',
+                confidenceScore: 0,
+                totalReviews: 0,
+                positiveCount: 0,
+                negativeCount: 0,
+                neutralCount: 0,
+                sentimentDistribution: { positive: '0', negative: '0', neutral: '0' },
+                keyFeatures: [],
+                positiveInsights: [],
+                negativeInsights: []
+            };
+        }
+
+        let positiveCount = 0;
+        let negativeCount = 0;
+        let neutralCount = 0;
+        let totalScore = 0;
+        const sentimentDetails = [];
+
+        // Analyze each review
+        reviews.forEach(review => {
+            const result = sentiment.analyze(review.text);
+            const score = result.score;
+            totalScore += score;
+
+            if (score > 0) {
+                positiveCount++;
+            } else if (score < 0) {
+                negativeCount++;
+            } else {
+                neutralCount++;
+            }
+
+            sentimentDetails.push({
+                text: review.text,
+                score: score,
+                rating: review.rating,
+                positive: result.positive,
+                negative: result.negative
+            });
+        });
+
+        // Calculate overall sentiment
+        const averageScore = totalScore / reviews.length;
+        let overallSentiment = 'NEUTRAL';
+        if (averageScore > 0.5) overallSentiment = 'POSITIVE';
+        else if (averageScore < -0.5) overallSentiment = 'NEGATIVE';
+
+        // Calculate confidence (based on review count and score consistency)
+        const confidenceScore = Math.min(0.9, Math.max(0.3,
+            (reviews.length / 100) * 0.5 + (Math.abs(averageScore) / 10) * 0.5
+        ));
+
+        // Extract key features and insights
+        const keyFeatures = this.extractKeyFeatures(sentimentDetails);
+        const positiveInsights = this.extractInsights(sentimentDetails.filter(s => s.score > 0));
+        const negativeInsights = this.extractInsights(sentimentDetails.filter(s => s.score < 0));
+
+        return {
+            overallSentiment,
+            confidenceScore,
+            totalReviews: reviews.length,
+            positiveCount,
+            negativeCount,
+            neutralCount,
+            sentimentDistribution: {
+                positive: ((positiveCount / reviews.length) * 100).toFixed(1),
+                negative: ((negativeCount / reviews.length) * 100).toFixed(1),
+                neutral: ((neutralCount / reviews.length) * 100).toFixed(1)
+            },
+            keyFeatures,
+            positiveInsights,
+            negativeInsights,
+            averageScore: averageScore.toFixed(2)
+        };
+    }
+
+    extractKeyFeatures(sentimentDetails) {
+        const featureWords = {};
+        const commonFeatures = ['quality', 'price', 'design', 'performance', 'battery', 'camera', 'screen', 'build', 'value', 'service'];
+
+        sentimentDetails.forEach(detail => {
+            const words = natural.WordTokenizer.tokenize(detail.text.toLowerCase());
+            words.forEach(word => {
+                if (commonFeatures.includes(word) || word.length > 5) {
+                    featureWords[word] = (featureWords[word] || 0) + 1;
+                }
+            });
+        });
+
+        return Object.entries(featureWords)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 8)
+            .map(([word, count]) => `${word.charAt(0).toUpperCase() + word.slice(1)} (${count} mentions)`);
+    }
+
+    extractInsights(sentimentDetails) {
+        if (sentimentDetails.length === 0) return [];
+
+        const insights = sentimentDetails
+            .slice(0, 5)
+            .map(detail => {
+                // Get the first sentence of the review
+                const sentences = detail.text.split(/[.!?]/);
+                return sentences[0].trim();
+            })
+            .filter(insight => insight.length > 10 && insight.length < 150);
+
+        return insights.slice(0, 4);
+    }
+
+    generateRecommendation(analysis) {
+        const { overallSentiment, confidenceScore, positiveCount, negativeCount, totalReviews } = analysis;
+
+        const positiveRatio = positiveCount / totalReviews;
+        const confidence = Math.floor(confidenceScore * 100);
+
+        let summary, recommended;
+
+        if (overallSentiment === 'POSITIVE' && positiveRatio > 0.7) {
+            summary = 'Highly recommended based on overwhelmingly positive customer feedback';
+            recommended = true;
+        } else if (overallSentiment === 'POSITIVE' && positiveRatio > 0.5) {
+            summary = 'Generally recommended with mostly positive reviews from customers';
+            recommended = true;
+        } else if (overallSentiment === 'NEGATIVE') {
+            summary = 'Consider alternatives due to significant customer concerns';
+            recommended = false;
+        } else {
+            summary = 'Mixed reviews - consider your specific needs and preferences';
+            recommended = null;
+        }
+
+        const bestForOptions = [
+            'Users seeking proven quality and reliability',
+            'Customers who value positive community feedback',
+            'Buyers looking for well-reviewed products',
+            'Users who prioritize customer satisfaction'
+        ];
+
+        return {
+            summary,
+            confidence,
+            recommended,
+            bestFor: bestForOptions[Math.floor(Math.random() * bestForOptions.length)]
+        };
+    }
+
+    // Indian E-commerce Platform Scrapers
+    async scrapeMyntra(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.pdp-name, .product-title, h1');
+                return title ? title.textContent.trim() : 'Myntra Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.pdp-price, .price');
+                const rating = document.querySelector('.index-overallRating, .rating');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.user-review, .review-text, .user-review-data');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('Myntra scraping error:', error);
+            return { productName: 'Myntra Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapeSnapdeal(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.pdp-product-name, .product-title, h1');
+                return title ? title.textContent.trim() : 'Snapdeal Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.payBlkBig, .price, .final-price');
+                const rating = document.querySelector('.avrg-rating, .rating-score');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.user-review, .review-summary, .urc-text');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('Snapdeal scraping error:', error);
+            return { productName: 'Snapdeal Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapePaytmMall(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('[data-qa="product-name"], .product-title, h1');
+                return title ? title.textContent.trim() : 'Paytm Mall Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('[data-qa="selling-price"], .price');
+                const rating = document.querySelector('.rating, .stars');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.review-text, .user-review, .review-content');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('Paytm Mall scraping error:', error);
+            return { productName: 'Paytm Mall Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapeShopclues(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.prd_name, .product-title, h1');
+                return title ? title.textContent.trim() : 'ShopClues Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.f_price, .price, .final-price');
+                const rating = document.querySelector('.rating, .stars-rating');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.review-text, .user-review, .review-content');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('ShopClues scraping error:', error);
+            return { productName: 'ShopClues Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapeBigBasket(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.GroceryPDP___StyledH1, .product-title, h1');
+                return title ? title.textContent.trim() : 'BigBasket Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.Label-sc, .price, .final-price');
+                const rating = document.querySelector('.Rating___StyledDiv, .rating');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.review-text, .user-review, .review-content');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('BigBasket scraping error:', error);
+            return { productName: 'BigBasket Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapeNykaa(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.product-title, .css-1gc4xu7, h1');
+                return title ? title.textContent.trim() : 'Nykaa Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.css-1jczs19, .price, .final-price');
+                const rating = document.querySelector('.css-1a1p7iq, .rating');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.css-1ybb2pr, .review-text, .user-review');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('Nykaa scraping error:', error);
+            return { productName: 'Nykaa Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    // International Platform Scrapers
+    async scrapeBestBuy(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.sr-product-title, .product-title, h1');
+                return title ? title.textContent.trim() : 'Best Buy Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.pricing-price__range, .sr-price, .current-price');
+                const rating = document.querySelector('.sr-rating, .rating');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.review-text, .ugc-review-text, .user-review');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('Best Buy scraping error:', error);
+            return { productName: 'Best Buy Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    async scrapeEbay(page) {
+        try {
+            const productName = await page.evaluate(() => {
+                const title = document.querySelector('.x-item-title, .notranslate, h1');
+                return title ? title.textContent.trim() : 'eBay Product';
+            });
+
+            const additionalData = await page.evaluate(() => {
+                const price = document.querySelector('.notranslate, .u-flL, .price');
+                const rating = document.querySelector('.ebay-star-rating, .rating');
+
+                return {
+                    price: price ? price.textContent.trim() : null,
+                    rating: rating ? rating.textContent.trim() : null
+                };
+            });
+
+            const reviews = await page.evaluate(() => {
+                const reviewElements = document.querySelectorAll('.review-text, .ebay-review-text, .reviews .review');
+                const extractedReviews = [];
+
+                reviewElements.forEach(review => {
+                    const text = review.textContent.trim();
+                    if (text && text.length > 15) {
+                        extractedReviews.push({ text, rating: null });
+                    }
+                });
+
+                return extractedReviews;
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('eBay scraping error:', error);
+            return { productName: 'eBay Product', reviews: [], additionalData: {} };
+        }
+    }
+
+    // Enhanced Generic Scraper for Any Website
+    async scrapeGenericAdvanced(page) {
+        try {
+            console.log('🔧 Using enhanced generic scraper');
+
+            const productName = await page.evaluate(() => {
+                // Comprehensive product title selectors
+                const titleSelectors = [
+                    'h1', '.product-title', '.title', '#title', '.product-name',
+                    '.pdp-name', '.item-title', '.main-title', '.product-heading',
+                    '[class*="title"]', '[class*="product"]', '[data-qa*="title"]',
+                    '.entry-title', '.post-title', '.page-title'
+                ];
+
+                for (const selector of titleSelectors) {
+                    const element = document.querySelector(selector);
+                    if (element && element.textContent.trim().length > 5) {
+                        let title = element.textContent.trim();
+                        // Enhanced filtering for button texts and unwanted content
+                        const unwantedTexts = [
+                            'add to cart', 'add to order', 'buy now', 'purchase', 'order now',
+                            'add to bag', 'add to wishlist', 'add to basket', 'shop now',
+                            'view details', 'see more', 'learn more', 'click here'
+                        ];
+
+                        const isUnwanted = unwantedTexts.some(unwanted =>
+                            title.toLowerCase().includes(unwanted)
+                        );
+
+                        if (!isUnwanted && title.length > 10 && title.length < 200) {
+                            return title;
+                        }
+                    }
+                }
+
+                // Enhanced fallback: extract from URL
+                const url = window.location.href;
+                const urlPatterns = [
+                    /\/([^\/]+)\/dp\//,  // Amazon-style
+                    /\/([^\/]+)-p-/,     // Generic product pattern
+                    /\/([^\/]+)\.html/,  // HTML files
+                    /\/([^\/]+)\/?$/     // Last segment
+                ];
+
+                for (const pattern of urlPatterns) {
+                    const match = url.match(pattern);
+                    if (match && match[1]) {
+                        const urlName = decodeURIComponent(match[1])
+                            .replace(/[-_]/g, ' ')
+                            .replace(/\d+$/, '')
+                            .trim();
+                        if (urlName.length > 5 && urlName.length < 100) {
+                            return urlName;
+                        }
+                    }
+                }
+
+                // Final fallback to page title
+                const pageTitle = document.title || 'Generic Product';
+                return pageTitle.length > 200 ? 'Generic Product' : pageTitle;
+            });
+
+            const additionalData = await page.evaluate(() => {
+                // Enhanced price detection
+                const priceSelectors = [
+                    '.price', '.cost', '.amount', '.value', '[class*="price"]',
+                    '[class*="cost"]', '[data-qa*="price"]', '.final-price',
+                    '.current-price', '.selling-price', '.product-price'
+                ];
+
+                let price = null;
+                for (const selector of priceSelectors) {
+                    const element = document.querySelector(selector);
+                    if (element && element.textContent.match(/[$₹€£¥]/)) {
+                        price = element.textContent.trim();
+                        break;
+                    }
+                }
+
+                // Enhanced rating detection
+                const ratingSelectors = [
+                    '.rating', '.stars', '.score', '[class*="rating"]',
+                    '[class*="stars"]', '[data-qa*="rating"]', '.review-score'
+                ];
+
+                let rating = null;
+                for (const selector of ratingSelectors) {
+                    const element = document.querySelector(selector);
+                    if (element && element.textContent.match(/\d+(\.\d+)?/)) {
+                        rating = element.textContent.trim();
+                        break;
+                    }
+                }
+
+                return { price, rating };
+            });
+
+            const reviews = await page.evaluate(() => {
+                // Comprehensive review selectors
+                const reviewSelectors = [
+                    '.review', '.reviews', '.user-review', '.customer-review',
+                    '.review-text', '.review-content', '.comment', '.feedback',
+                    '.testimonial', '.user-comment', '.review-body', '.review-description',
+                    '[class*="review"]', '[class*="comment"]', '[class*="feedback"]',
+                    '[data-qa*="review"]', '.user-feedback', '.customer-feedback'
+                ];
+
+                const extractedReviews = [];
+                let reviewsFound = false;
+
+                for (const selector of reviewSelectors) {
+                    if (reviewsFound) break;
+
+                    const elements = document.querySelectorAll(selector);
+                    console.log(`Trying selector: ${selector}, found: ${elements.length}`);
+
+                    elements.forEach(element => {
+                        const text = element.textContent.trim();
+                        if (text && text.length > 20 && text.length < 2000) {
+                            // Filter out navigation and irrelevant text
+                            if (!text.includes('Add to cart') &&
+                                !text.includes('Buy now') &&
+                                !text.includes('Sign in') &&
+                                !text.match(/^(Home|Shop|Products|About|Contact)$/i)) {
+                                extractedReviews.push({ text, rating: null });
+                            }
+                        }
+                    });
+
+                    if (extractedReviews.length > 0) {
+                        reviewsFound = true;
+                    }
+                }
+
+                // Remove duplicates
+                const uniqueReviews = extractedReviews.filter((review, index, self) =>
+                    index === self.findIndex(r => r.text === review.text)
+                );
+
+                console.log(`Extracted ${uniqueReviews.length} unique reviews`);
+                return uniqueReviews.slice(0, 50); // Limit to 50 reviews
+            });
+
+            return { productName, reviews, additionalData };
+        } catch (error) {
+            console.error('Enhanced generic scraping error:', error);
+            return { productName: 'Generic Product', reviews: [], additionalData: {} };
+        }
+    }
+}
+
+module.exports = WebScraper;

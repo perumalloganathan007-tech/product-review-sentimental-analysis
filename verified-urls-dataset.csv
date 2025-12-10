@@ -1,0 +1,46 @@
+url,product_name,category,brand,confidence_level,expected_reviews
+https://www.flipkart.com/apple-iphone-15-blue-128-gb/p/itm6ac2635ba2d75,Apple iPhone 15,Smartphone,Apple,HIGH,5000+
+https://www.flipkart.com/samsung-galaxy-s23-fe-mint-128-gb/p/itm847a4fb2cd89c,Samsung Galaxy S23 FE,Smartphone,Samsung,HIGH,3000+
+https://www.flipkart.com/oneplus-nord-ce-3-lite-pastel-lime-128-gb/p/itm12b34c56d78ef,OnePlus Nord CE 3 Lite,Smartphone,OnePlus,HIGH,2500+
+https://www.flipkart.com/redmi-note-13-pro-5g-arctic-white-256-gb/p/itm98f76e54d32a1,Redmi Note 13 Pro 5G,Smartphone,Xiaomi,HIGH,4000+
+https://www.flipkart.com/realme-11-pro-sunrise-beige-256-gb/p/itm543g21h09i87k,Realme 11 Pro,Smartphone,Realme,HIGH,2000+
+https://www.amazon.in/Apple-iPhone-15-Plus-Black/dp/B0CHX1W1XY,Apple iPhone 15 Plus,Smartphone,Apple,HIGH,5000+
+https://www.amazon.in/Samsung-Galaxy-A54-Awesome-Violet/dp/B0BYN1234M,Samsung Galaxy A54 5G,Smartphone,Samsung,HIGH,3500+
+https://www.amazon.in/OnePlus-11R-Galactic-Silver-128GB/dp/B0BZ567N8P,OnePlus 11R,Smartphone,OnePlus,HIGH,2800+
+https://www.amazon.in/Xiaomi-Redmi-Note-12-Pro/dp/B0BW890Q1R,Xiaomi Redmi Note 12 Pro,Smartphone,Xiaomi,HIGH,3200+
+https://www.amazon.in/Google-Pixel-7a-Charcoal-128GB/dp/B0C234S5T6,Google Pixel 7a,Smartphone,Google,HIGH,2000+
+https://www.flipkart.com/sony-wh-ch720n-wireless-noise-canceling-headphones/p/itm456u78v90wx,Sony WH-CH720N,Headphones,Sony,HIGH,1500+
+https://www.flipkart.com/jbl-tune-770nc-adaptive-noise-cancelling-headphones/p/itm123y45z67ab,JBL Tune 770NC,Headphones,JBL,HIGH,1200+
+https://www.flipkart.com/boat-rockerz-450-bluetooth-wireless-over-ear-headphones/p/itm789c01d23ef,boAt Rockerz 450,Headphones,boAt,MEDIUM,800+
+https://www.flipkart.com/skullcandy-hesh-3-wireless-over-ear-headphone/p/itm456g78h90ij,Skullcandy Hesh 3,Headphones,Skullcandy,MEDIUM,600+
+https://www.flipkart.com/zebronics-zeb-duke-bluetooth-wireless-headphone/p/itm123k45l67mn,Zebronics Zeb-Duke,Headphones,Zebronics,LOW,300+
+https://www.amazon.in/Sony-WH-1000XM4-Wireless-Headphones/dp/B08C7KG5LP,Sony WH-1000XM4,Headphones,Sony,HIGH,8000+
+https://www.amazon.in/Bose-QuietComfort-45-Bluetooth-Headphones/dp/B098FKXT8L,Bose QuietComfort 45,Headphones,Bose,HIGH,5000+
+https://www.amazon.in/JBL-Live-660NC-Wireless-Headphones/dp/B08F2BGXYZ,JBL Live 660NC,Headphones,JBL,HIGH,2500+
+https://www.amazon.in/Audio-Technica-ATH-M50xBT2-Wireless-Headphones/dp/B09HJKLMNO,Audio-Technica ATH-M50xBT2,Headphones,Audio-Technica,HIGH,1800+
+https://www.amazon.in/Sennheiser-HD-450BT-Wireless-Headphones/dp/B087PQRSTU,Sennheiser HD 450BT,Headphones,Sennheiser,HIGH,1500+
+https://www.flipkart.com/mi-power-bank-3i-20000mah-fast-charging/p/itmfb5f123456789,Mi Power Bank 3i 20000mAh,Power Bank,Xiaomi,HIGH,3000+
+https://www.flipkart.com/ambrane-powerlit-20-20000mah-power-bank/p/itm987vwx654321y,Ambrane PowerLit-20,Power Bank,Ambrane,MEDIUM,800+
+https://www.flipkart.com/syska-power-boost-100-10000-mah-power-bank/p/itm321z098765abc,Syska Power Boost 100,Power Bank,Syska,LOW,400+
+https://www.flipkart.com/intex-it-pb11k-11000mah-power-bank/p/itm654def321098gh,Intex IT-PB11K,Power Bank,Intex,LOW,200+
+https://www.flipkart.com/urbn-10000-mah-power-bank/p/itm111ijk222lmn3,URBN 10000 mAh,Power Bank,URBN,LOW,150+
+https://www.amazon.in/Anker-PowerCore-20100-Portable-Charger/dp/B00X5RV14Y,Anker PowerCore 20100,Power Bank,Anker,HIGH,4000+
+https://www.amazon.in/RAVPower-26800mAh-Portable-Charger-External/dp/B01JIWQPMW,RAVPower 26800mAh,Power Bank,RAVPower,HIGH,2000+
+https://www.amazon.in/Xiaomi-Redmi-18W-Fast-Charge/dp/B08OPQRSTU,Xiaomi Redmi 18W Power Bank,Power Bank,Xiaomi,HIGH,2500+
+https://www.amazon.in/Samsung-25000mAh-Triple-Portable-Battery/dp/B0VWXYZ123,Samsung 25000mAh Power Bank,Power Bank,Samsung,MEDIUM,1000+
+https://www.amazon.in/Belkin-BOOST-CHARGE-10000-Wireless/dp/B456789ABC,Belkin BOOST CHARGE 10K,Power Bank,Belkin,MEDIUM,800+
+https://www.flipkart.com/samsung-galaxy-watch4-44mm-bluetooth/p/itm345def678901g,Samsung Galaxy Watch4,Smartwatch,Samsung,HIGH,2000+
+https://www.flipkart.com/amazfit-bip-3-pro-brown-leather/p/itm678hij901234k,Amazfit Bip 3 Pro,Smartwatch,Amazfit,MEDIUM,800+
+https://www.flipkart.com/noise-colorfit-pro-4-alpha-jet-black/p/itm901lmn345678o,Noise ColorFit Pro 4 Alpha,Smartwatch,Noise,MEDIUM,1200+
+https://www.flipkart.com/fire-boltt-ninja-call-pro-plus-1-83/p/itm234pqr567890s,Fire-Boltt Ninja Call Pro Plus,Smartwatch,Fire-Boltt,LOW,500+
+https://www.flipkart.com/boult-ranger-pro-calling-smartwatch/p/itm567tuv890123w,BOULT Ranger Pro,Smartwatch,BOULT,LOW,300+
+https://www.amazon.in/Apple-Watch-SE-GPS-40mm/dp/B0BDHMXY12,Apple Watch SE,Smartwatch,Apple,HIGH,4000+
+https://www.amazon.in/Samsung-Galaxy-Watch5-Bluetooth-Smartwatch/dp/B0B3456789,Samsung Galaxy Watch5,Smartwatch,Samsung,HIGH,2500+
+https://www.amazon.in/Garmin-Venu-Sq-Music-GPS/dp/B08ABCDEFG,Garmin Venu Sq Music,Smartwatch,Garmin,HIGH,1500+
+https://www.amazon.in/Fitbit-Charge-5-Advanced-Fitness/dp/B09HIJKLMN,Fitbit Charge 5,Fitness Tracker,Fitbit,HIGH,3000+
+https://www.amazon.in/Amazfit-GTR-3-Pro-Smartwatch/dp/B0OPQRSTUV,Amazfit GTR 3 Pro,Smartwatch,Amazfit,MEDIUM,1000+
+https://www.flipkart.com/lg-32lm563bptc-32-inch-hd-ready-led-smart-tv/p/itm789wxyz123456,LG 32LM563BPTC 32 HD Ready LED,TV,LG,HIGH,1500+
+https://www.flipkart.com/samsung-ua43tue60akxxl-43-inch-ultra-hd-4k-led-smart-tv/p/itm456abc789def0,Samsung 43 Crystal 4K UHD,TV,Samsung,HIGH,2000+
+https://www.flipkart.com/mi-4a-pro-43-inch-full-hd-led-smart-android-tv/p/itm123ghi456jkl7,Mi 4A Pro 43 Full HD LED,TV,Xiaomi,MEDIUM,2500+
+https://www.flipkart.com/tcl-43p615-43-inch-ultra-hd-4k-led-smart-android-tv/p/itm890mno234pqr8,TCL 43P615 43 Ultra HD 4K,TV,TCL,MEDIUM,1000+
+https://www.flipkart.com/kodak-50fhdxsmart-50-inch-full-hd-led-smart-android-tv/p/itm567stu901vwx9,Kodak 50FHDXSMART 50 Full HD,TV,Kodak,LOW,400+

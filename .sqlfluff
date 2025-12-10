@@ -1,0 +1,10 @@
+[sqlfluff]
+dialect = mysql
+exclude_rules = L003,L009,L014,L016,L031
+max_line_length = 120
+
+[sqlfluff:rules:L010]
+capitalisation_policy = lower
+
+[sqlfluff:rules:L030]
+capitalisation_policy = lower

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dataset Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #fff;
+            border-left: 4px solid #007bff;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        #fileInput {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1>🧪 Dataset Analysis Debug Tool</h1>
+        <button onclick="openSparkUI()" style="background: #FF8C00; padding: 12px 20px;">
+            <span style="margin-right: 8px;">🔥</span>Spark Web UI
+        </button>
+    </div>
+
+    <div class="status">
+        <h3>Step 1: Select CSV File</h3>
+        <label for="fileInput">Choose a dataset file (CSV, XLSX, or XLS):</label>
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" aria-label="Upload dataset file for analysis">
+    </div>
+
+    <div class="status">
+        <h3>Step 2: Test Analysis</h3>
+        <button onclick="testAnalysis()">Run Dataset Analysis</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:9000';
+
+        async function testAnalysis() {
+            const fileInput = document.getElementById('fileInput');
+            const resultsDiv = document.getElementById('results');
+
+            if (!fileInput.files[0]) {
+                resultsDiv.innerHTML = '<div class="status error"><h3>❌ Error</h3><p>Please select a file first</p></div>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<div class="status"><h3>⏳ Processing...</h3><p>Uploading file and analyzing...</p></div>';
+
+            const formData = new FormData();
+            formData.append('dataset', fileInput.files[0]);
+            formData.append('analysisType', 'comprehensive');
+
+            try {
+                console.log('📤 Sending request to:', `${API_BASE_URL}/api/analyze/dataset-categories`);
+
+                const response = await fetch(`${API_BASE_URL}/api/analyze/dataset-categories`, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'cors'
+                });
+
+                console.log('📥 Response status:', response.status);
+                console.log('📥 Response OK:', response.ok);
+
+                const result = await response.json();
+                console.log('📊 Full Response:', result);
+                console.log('📊 Status:', result.status);
+                console.log('📊 Has Analysis:', !!result.analysis);
+
+                if (result.analysis) {
+                    console.log('📊 Analysis Structure:', {
+                        categoryStats: result.analysis.categoryStats?.length || 0,
+                        categoryRecommendations: result.analysis.categoryRecommendations?.length || 0,
+                        recommendations: result.analysis.recommendations?.length || 0
+                    });
+                }
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${result.message || 'Unknown error'}`);
+                }
+
+                if (result.status === 'error') {
+                    resultsDiv.innerHTML = `
+                        <div class="status error">
+                            <h3>❌ Error from Server</h3>
+                            <p>${result.message}</p>
+                            <h4>Response Data:</h4>
+                            <pre>${JSON.stringify(result, null, 2)}</pre>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Check if analysis object has required properties
+                const analysis = result.analysis;
+                if (!analysis) {
+                    throw new Error('No analysis object in response');
+                }
+
+                if (!analysis.categoryStats) {
+                    throw new Error('Missing categoryStats in analysis');
+                }
+
+                if (!analysis.categoryRecommendations) {
+                    throw new Error('Missing categoryRecommendations in analysis');
+                }
+
+                if (!analysis.recommendations) {
+                    throw new Error('Missing recommendations in analysis');
+                }
+
+                // Success!
+                resultsDiv.innerHTML = `
+                    <div class="status success">
+                        <h3>✅ Success!</h3>
+                        <p><strong>Message:</strong> ${result.message}</p>
+                        <p><strong>Scraped:</strong> ${result.scrapedCount} products</p>
+                        <p><strong>Best Category:</strong> ${analysis.bestCategory}</p>
+                        <p><strong>Best Product:</strong> ${analysis.bestProduct}</p>
+
+                        <h4>Analysis Data Structure:</h4>
+                        <ul>
+                            <li>Category Stats: ${analysis.categoryStats.length} items</li>
+                            <li>Category Recommendations: ${analysis.categoryRecommendations.length} items</li>
+                            <li>Recommendations: ${analysis.recommendations.length} items</li>
+                            <li>Total Products: ${analysis.overallStats?.totalProducts || 0}</li>
+                            <li>Total Reviews: ${analysis.overallStats?.totalReviews || 0}</li>
+                        </ul>
+
+                        <h4>Full Response:</h4>
+                        <pre>${JSON.stringify(result, null, 2)}</pre>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                resultsDiv.innerHTML = `
+                    <div class="status error">
+                        <h3>❌ JavaScript Error</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Stack:</strong></p>
+                        <pre>${error.stack}</pre>
+                        <p>Check the browser console (F12) for more details.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function openSparkUI() {
+            const sparkURL = localStorage.getItem('sparkUIUrl') || 'http://192.168.1.35:4040/jobs/';
+            window.open(sparkURL, '_blank');
+        }
+    </script>
+</body>
+</html>

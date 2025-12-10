@@ -1,0 +1,46 @@
+url,product_name,category,brand,launch_year,sentiment_prediction,price_category
+https://www.flipkart.com/apple-iphone-16-plus-ultramarine-256-gb/p/itm2025a1b2c3d4e5,Apple iPhone 16 Plus,Smartphone,Apple,2024,POSITIVE,Premium
+https://www.flipkart.com/samsung-galaxy-s25-ultra-titanium-blue-512-gb/p/itm2025f6g7h8i9j1,Samsung Galaxy S25 Ultra,Smartphone,Samsung,2025,POSITIVE,Premium
+https://www.flipkart.com/google-pixel-9-pro-porcelain-128-gb/p/itm2025k2l3m4n5o6,Google Pixel 9 Pro,Smartphone,Google,2024,POSITIVE,Premium
+https://www.flipkart.com/oneplus-13-glacial-white-256-gb/p/itm2025p7q8r9s1t2,OnePlus 13,Smartphone,OnePlus,2025,POSITIVE,Premium
+https://www.flipkart.com/xiaomi-15-pro-ceramic-black-512-gb/p/itm2025u3v4w5x6y7,Xiaomi 15 Pro,Smartphone,Xiaomi,2025,POSITIVE,Premium
+https://www.amazon.in/Apple-MacBook-Pro-16-inch-M4/dp/B0D2025A1B2C,Apple MacBook Pro 16 M4,Laptop,Apple,2024,POSITIVE,Premium
+https://www.amazon.in/Dell-XPS-17-9730-OLED/dp/B0C2025D3E4F,Dell XPS 17 9730,Laptop,Dell,2024,POSITIVE,Premium
+https://www.amazon.in/HP-Spectre-x360-16-2024/dp/B0B2025G5H6I,HP Spectre x360 16,Laptop,HP,2024,POSITIVE,Premium
+https://www.amazon.in/ASUS-ROG-Zephyrus-G16-2024/dp/B0A2025J7K8L,ASUS ROG Zephyrus G16,Laptop,ASUS,2024,POSITIVE,Premium
+https://www.amazon.in/Lenovo-Legion-Pro-7i-Gen9/dp/B09202509M1N,Lenovo Legion Pro 7i,Laptop,Lenovo,2024,POSITIVE,Premium
+https://www.flipkart.com/sony-wh-1000xm6-midnight-black/p/itm2025o2p3q4r5s6,Sony WH-1000XM6,Headphones,Sony,2025,POSITIVE,Premium
+https://www.flipkart.com/apple-airpods-pro-3rd-gen-white/p/itm2025t7u8v9w1x2,Apple AirPods Pro 3rd Gen,Earbuds,Apple,2025,POSITIVE,Premium
+https://www.flipkart.com/bose-quietcomfort-ultra-earbuds-black/p/itm2025y3z4a5b6c7,Bose QC Ultra Earbuds,Earbuds,Bose,2024,POSITIVE,Premium
+https://www.flipkart.com/sennheiser-momentum-true-wireless-4/p/itm2025d8e9f1g2h3,Sennheiser Momentum TW 4,Earbuds,Sennheiser,2024,POSITIVE,Premium
+https://www.flipkart.com/bang-olufsen-beoplay-h95-gold-tone/p/itm2025i4j5k6l7m8,Bang & Olufsen Beoplay H95,Headphones,B&O,2024,POSITIVE,Luxury
+https://www.amazon.in/Samsung-Neo-QLED-QN95D-75-inch/dp/B0C2025N9O1P,Samsung 75 Neo QLED QN95D,TV,Samsung,2024,POSITIVE,Premium
+https://www.amazon.in/LG-OLED-G4-77-inch-2024/dp/B0B2025Q2R3S,LG 77 OLED G4,TV,LG,2024,POSITIVE,Premium
+https://www.amazon.in/Sony-BRAVIA-XR-A95L-65-2024/dp/B0A2025T4U5V,Sony 65 BRAVIA XR A95L,TV,Sony,2024,POSITIVE,Premium
+https://www.amazon.in/Panasonic-OLED-MZ2000-65-inch/dp/B09202526W7X,Panasonic 65 OLED MZ2000,TV,Panasonic,2024,POSITIVE,Premium
+https://www.amazon.in/Philips-OLED-908-55-Ambilight/dp/B08202528Y9Z,Philips 55 OLED 908,TV,Philips,2024,MIXED,Premium
+https://www.flipkart.com/apple-watch-ultra-3-titanium-49mm/p/itm2025a1b2c3d4e5,Apple Watch Ultra 3,Smartwatch,Apple,2025,POSITIVE,Premium
+https://www.flipkart.com/samsung-galaxy-watch7-ultra-titanium/p/itm2025f6g7h8i9j0,Samsung Galaxy Watch7 Ultra,Smartwatch,Samsung,2025,POSITIVE,Premium
+https://www.flipkart.com/garmin-epix-pro-gen-3-sapphire/p/itm2025k1l2m3n4o5,Garmin Epix Pro Gen 3,Smartwatch,Garmin,2025,POSITIVE,Premium
+https://www.flipkart.com/huawei-watch-gt5-pro-titanium/p/itm2025p6q7r8s9t0,Huawei Watch GT5 Pro,Smartwatch,Huawei,2025,MIXED,Premium
+https://www.flipkart.com/amazfit-falcon-rugged-smartwatch/p/itm2025u1v2w3x4y5,Amazfit Falcon,Smartwatch,Amazfit,2024,MIXED,Mid-range
+https://www.amazon.in/iPad-Pro-13-inch-M4-2024/dp/B0C20259A1B2,Apple iPad Pro 13 M4,Tablet,Apple,2024,POSITIVE,Premium
+https://www.amazon.in/Samsung-Galaxy-Tab-S10-Ultra/dp/B0B2025C3D4E,Samsung Galaxy Tab S10 Ultra,Tablet,Samsung,2024,POSITIVE,Premium
+https://www.amazon.in/Microsoft-Surface-Pro-11-Snapdragon/dp/B0A2025F5G6H,Microsoft Surface Pro 11,Tablet,Microsoft,2024,POSITIVE,Premium
+https://www.amazon.in/Google-Pixel-Tablet-Hazel-2024/dp/B09202517I8J,Google Pixel Tablet,Tablet,Google,2024,MIXED,Mid-range
+https://www.amazon.in/Lenovo-Tab-P12-Pro-Gen3/dp/B08202519K0L,Lenovo Tab P12 Pro Gen3,Tablet,Lenovo,2024,MIXED,Mid-range
+https://www.flipkart.com/sony-playstation-5-pro-2tb-ssd/p/itm2025m1n2o3p4q5,Sony PlayStation 5 Pro,Gaming Console,Sony,2024,POSITIVE,Premium
+https://www.flipkart.com/microsoft-xbox-series-x-2tb-carbon/p/itm2025r6s7t8u9v0,Microsoft Xbox Series X 2TB,Gaming Console,Microsoft,2024,POSITIVE,Premium
+https://www.flipkart.com/nintendo-switch-2-oled-white/p/itm2025w1x2y3z4a5,Nintendo Switch 2 OLED,Gaming Console,Nintendo,2025,POSITIVE,Mid-range
+https://www.flipkart.com/steam-deck-oled-1tb-limited/p/itm2025b6c7d8e9f0,Steam Deck OLED 1TB,Handheld Gaming,Valve,2024,POSITIVE,Premium
+https://www.flipkart.com/asus-rog-ally-x-black-1tb/p/itm2025g1h2i3j4k5,ASUS ROG Ally X,Handheld Gaming,ASUS,2024,MIXED,Premium
+https://www.amazon.in/DJI-Mini-4K-Drone-Combo/dp/B0C2025L6M7N,DJI Mini 4K,Drone,DJI,2024,POSITIVE,Mid-range
+https://www.amazon.in/DJI-Air-3S-Fly-More/dp/B0B2025O8P9Q,DJI Air 3S,Drone,DJI,2024,POSITIVE,Premium
+https://www.amazon.in/GoPro-HERO13-Black-Creator/dp/B0A2025R0S1T,GoPro HERO13 Black,Action Camera,GoPro,2024,POSITIVE,Premium
+https://www.amazon.in/Insta360-X4-8K-360-Camera/dp/B09202522U3V,Insta360 X4,Action Camera,Insta360,2024,POSITIVE,Premium
+https://www.amazon.in/DJI-Osmo-Action-5-Pro/dp/B08202524W5X,DJI Osmo Action 5 Pro,Action Camera,DJI,2024,POSITIVE,Premium
+https://www.flipkart.com/meta-quest-3s-128gb-mixed-reality/p/itm2025y6z7a8b9c0,Meta Quest 3S,VR Headset,Meta,2024,POSITIVE,Mid-range
+https://www.flipkart.com/pico-4-enterprise-256gb-vr/p/itm2025d1e2f3g4h5,Pico 4 Enterprise,VR Headset,ByteDance,2024,MIXED,Premium
+https://www.flipkart.com/htc-vive-pro-2-full-kit/p/itm2025i6j7k8l9m0,HTC Vive Pro 2,VR Headset,HTC,2024,MIXED,Premium
+https://www.flipkart.com/varjo-aero-professional-vr-headset/p/itm2025n1o2p3q4r5,Varjo Aero,VR Headset,Varjo,2024,POSITIVE,Luxury
+https://www.flipkart.com/valve-index-vr-kit-full-body/p/itm2025s6t7u8v9w0,Valve Index VR Kit,VR Headset,Valve,2024,MIXED,Premium

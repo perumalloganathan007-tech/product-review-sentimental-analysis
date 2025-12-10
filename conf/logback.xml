@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date{ISO8601} %-5level [%logger{36}] - %message%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Quiet Spark logging -->
+  <logger name="org.apache.spark" level="WARN"/>
+  <logger name="org.spark_project" level="WARN"/>
+  <logger name="org.apache.hadoop" level="WARN"/>
+  <logger name="org.apache.parquet" level="WARN"/>
+
+  <!-- Play Framework logging -->
+  <logger name="play" level="INFO"/>
+  <logger name="application" level="DEBUG"/>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+  </root>
+
+</configuration>

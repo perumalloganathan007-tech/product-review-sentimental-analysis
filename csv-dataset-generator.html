@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL to CSV Dataset Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .url-input {
+            height: 150px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .progress {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 5px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #2196f3;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #1565c0;
+        }
+        .results {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .download-btn:hover {
+            background: #218838;
+        }
+        .sample-urls {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .sample-urls h4 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .sample-url {
+            display: block;
+            color: #0066cc;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 URL to CSV Dataset Generator</h1>
+
+        <form id="datasetForm">
+            <div class="form-group">
+                <label for="datasetName">Dataset Name:</label>
+                <input type="text" id="datasetName" placeholder="e.g., Electronics Reviews Dataset" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" required>
+                    <option value="">Select Category</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="books">Books</option>
+                    <option value="home">Home & Garden</option>
+                    <option value="beauty">Beauty & Personal Care</option>
+                    <option value="sports">Sports & Outdoors</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="sample-urls">
+                <h4>Sample URLs (copy and paste):</h4>
+                <span class="sample-url">https://www.amazon.in/OnePlus-Nord-CE-5G-Blue/dp/B094RYL3XZ</span>
+                <span class="sample-url">https://www.flipkart.com/samsung-galaxy-m32/p/itm123456</span>
+                <span class="sample-url">https://www.amazon.in/Redmi-Note-11-Pro/dp/B09MQR7PQN</span>
+            </div>
+
+            <div class="form-group">
+                <label for="urls">Product URLs (one per line):</label>
+                <textarea id="urls" class="url-input" placeholder="Paste your product URLs here, one per line..." required></textarea>
+            </div>
+
+            <button type="submit" id="generateBtn">🚀 Generate CSV Dataset</button>
+        </form>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="status" id="status">Initializing...</div>
+        </div>
+
+        <div class="results" id="results">
+            <h3>✅ Dataset Generated Successfully!</h3>
+            <div id="resultInfo"></div>
+            <a href="#" id="downloadLink" class="download-btn" download>📄 Download CSV Dataset</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('datasetForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const datasetName = document.getElementById('datasetName').value.trim();
+            const category = document.getElementById('category').value;
+            const urlsText = document.getElementById('urls').value.trim();
+
+            if (!urlsText) {
+                alert('Please enter at least one URL');
+                return;
+            }
+
+            const urls = urlsText.split('\n')
+                                 .map(url => url.trim())
+                                 .filter(url => url && url.startsWith('http'));
+
+            if (urls.length === 0) {
+                alert('Please enter valid URLs starting with http:// or https://');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateBtn');
+            const progress = document.getElementById('progress');
+            const results = document.getElementById('results');
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating...';
+            progress.style.display = 'block';
+            results.style.display = 'none';
+
+            try {
+                updateProgress(10, 'Initializing web scraper...');
+
+                const response = await fetch('http://localhost:9000/api/analyze/urls', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        urls: urls,
+                        datasetName: datasetName,
+                        category: category
+                    })
+                });
+
+                updateProgress(60, 'Scraping product reviews...');
+
+                if (!response.ok) {
+                    throw new Error(`Failed to scrape URLs: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                updateProgress(80, 'Processing data...');
+
+                // Generate CSV
+                const csvData = generateCSV(data, category);
+
+                updateProgress(100, 'Dataset generated successfully!');
+
+                // Show results
+                showResults(csvData, datasetName, urls.length, data);
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('status').textContent = 'Error: ' + error.message;
+                document.getElementById('status').style.color = '#dc3545';
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = '🚀 Generate CSV Dataset';
+            }
+        });
+
+        function updateProgress(percentage, status) {
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('status').textContent = status;
+        }
+
+        function generateCSV(data, category) {
+            const headers = [
+                'Product Name',
+                'Review Text',
+                'Sentiment',
+                'Rating',
+                'Price',
+                'URL',
+                'Category',
+                'Scraped Date'
+            ];
+
+            let csvContent = headers.join(',') + '\n';
+
+            if (data.products && Array.isArray(data.products)) {
+                data.products.forEach(product => {
+                    const productName = escapeCSV(product.productName || product.title || 'Unknown Product');
+                    const price = product.price || 'N/A';
+                    const url = escapeCSV(product.url || '');
+                    const scrapedDate = new Date().toISOString().split('T')[0];
+
+                    if (product.reviews && Array.isArray(product.reviews)) {
+                        product.reviews.forEach(review => {
+                            const reviewText = escapeCSV(review.text || review.reviewText || '');
+                            const sentiment = review.sentiment || 'NEUTRAL';
+                            const rating = review.rating || product.rating || 'N/A';
+
+                            const row = [
+                                productName,
+                                reviewText,
+                                sentiment,
+                                rating,
+                                price,
+                                url,
+                                category,
+                                scrapedDate
+                            ];
+
+                            csvContent += row.join(',') + '\n';
+                        });
+                    } else {
+                        // If no reviews, add product info only
+                        const row = [
+                            productName,
+                            'No reviews found',
+                            'NEUTRAL',
+                            product.rating || 'N/A',
+                            price,
+                            url,
+                            category,
+                            scrapedDate
+                        ];
+                        csvContent += row.join(',') + '\n';
+                    }
+                });
+            }
+
+            return csvContent;
+        }
+
+        function escapeCSV(text) {
+            if (typeof text !== 'string') text = String(text);
+            if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+                return '"' + text.replace(/"/g, '""') + '"';
+            }
+            return text;
+        }
+
+        function showResults(csvData, datasetName, totalUrls, scrapedData) {
+            const resultInfo = document.getElementById('resultInfo');
+            const downloadLink = document.getElementById('downloadLink');
+            const results = document.getElementById('results');
+            const progress = document.getElementById('progress');
+
+            const totalReviews = csvData.split('\n').length - 2; // Subtract header and empty line
+            const successfulProducts = scrapedData.products?.length || 0;
+
+            resultInfo.innerHTML = `
+                <p><strong>Dataset:</strong> ${datasetName}</p>
+                <p><strong>URLs Processed:</strong> ${totalUrls}</p>
+                <p><strong>Products Scraped:</strong> ${successfulProducts}</p>
+                <p><strong>Total Reviews:</strong> ${totalReviews}</p>
+                <p><strong>File Size:</strong> ${(csvData.length / 1024).toFixed(2)} KB</p>
+            `;
+
+            // Create download
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const fileName = datasetName.replace(/\s+/g, '_').toLowerCase() + '_dataset.csv';
+
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+
+            progress.style.display = 'none';
+            results.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

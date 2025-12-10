@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Clean URL Scraping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .loading {
+            display: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .url-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Clean URL Scraping Test</h1>
+        <p>This page tests web scraping with clean URLs (without query parameters)</p>
+
+        <div class="test-section">
+            <h3>Test 1: Clean Amazon URL</h3>
+            <label for="cleanUrl" class="sr-only">Amazon Product URL</label>
+            <input type="text" class="url-input" id="cleanUrl" value="https://www.amazon.in/iQOO-Titanium-Dimensity-Processor-Shock-Resistance/dp/B0FC5TDB9P" placeholder="Enter Amazon product URL">
+            <button onclick="testCleanUrl()">🔍 Test Clean URL</button>
+            <div class="loading" id="loading1">⏳ Scraping... This may take 15-30 seconds...</div>
+            <div class="result hidden" id="result1"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 2: Minimal Amazon URL (just /dp/ASIN)</h3>
+            <label for="minimalUrl" class="sr-only">Minimal Amazon URL</label>
+            <input type="text" class="url-input" id="minimalUrl" value="https://www.amazon.in/dp/B0FC5TDB9P" placeholder="Enter minimal Amazon URL">
+            <button onclick="testMinimalUrl()">🔍 Test Minimal URL</button>
+            <div class="loading" id="loading2">⏳ Scraping... This may take 15-30 seconds...</div>
+            <div class="result hidden" id="result2"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>Test 3: Comparison (Two URLs)</h3>
+            <button onclick="testComparison()">🔍 Compare Two Products</button>
+            <div class="loading" id="loading3">⏳ Scraping... This may take 30-60 seconds...</div>
+            <div class="result hidden" id="result3"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:9000';
+
+        async function testCleanUrl() {
+            const url = document.getElementById('cleanUrl').value;
+            const loadingEl = document.getElementById('loading1');
+            const resultEl = document.getElementById('result1');
+
+            loadingEl.style.display = 'block';
+            resultEl.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/analyze/urls`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls: [url] })
+                });
+
+                const data = await response.json();
+
+                loadingEl.style.display = 'none';
+                resultEl.classList.remove('hidden');
+                resultEl.className = 'result ' + (data.success ? 'success' : 'error');
+                resultEl.textContent = JSON.stringify(data, null, 2);
+
+                console.log('Clean URL Result:', data);
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                resultEl.classList.remove('hidden');
+                resultEl.className = 'result error';
+                resultEl.textContent = 'Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+
+        async function testMinimalUrl() {
+            const url = document.getElementById('minimalUrl').value;
+            const loadingEl = document.getElementById('loading2');
+            const resultEl = document.getElementById('result2');
+
+            loadingEl.style.display = 'block';
+            resultEl.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/analyze/urls`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls: [url] })
+                });
+
+                const data = await response.json();
+
+                loadingEl.style.display = 'none';
+                resultEl.classList.remove('hidden');
+                resultEl.className = 'result ' + (data.success ? 'success' : 'error');
+                resultEl.textContent = JSON.stringify(data, null, 2);
+
+                console.log('Minimal URL Result:', data);
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                resultEl.classList.remove('hidden');
+                resultEl.className = 'result error';
+                resultEl.textContent = 'Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+
+        async function testComparison() {
+            const loadingEl = document.getElementById('loading3');
+            const resultEl = document.getElementById('result3');
+
+            loadingEl.style.display = 'block';
+            resultEl.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/compare/urls`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        products: [
+                            {
+                                name: 'IQOO Phone 1',
+                                urls: ['https://www.amazon.in/dp/B0FC5TDB9P']
+                            },
+                            {
+                                name: 'IQOO Phone 2',
+                                urls: ['https://www.amazon.in/dp/B0FC5TDB9P']
+                            }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+
+                loadingEl.style.display = 'none';
+                resultEl.classList.remove('hidden');
+                resultEl.className = 'result ' + (data.success !== false ? 'success' : 'error');
+                resultEl.textContent = JSON.stringify(data, null, 2);
+
+                console.log('Comparison Result:', data);
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                resultEl.classList.remove('hidden');
+                resultEl.className = 'result error';
+                resultEl.textContent = 'Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
